@@ -25,7 +25,7 @@ import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-public class DynamicWorldRasterizer implements WorldRasterizer {
+public class BaseFlatWorldRasterizer implements WorldRasterizer {
     private Block dirt;
 
     @Override

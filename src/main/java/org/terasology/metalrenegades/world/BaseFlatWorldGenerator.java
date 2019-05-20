@@ -24,20 +24,20 @@ import org.terasology.world.generation.WorldBuilder;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
-@RegisterWorldGenerator(id = "tutorialWorld", displayName = "Tutorial World")
-public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
+@RegisterWorldGenerator(id = "baseFlatWorld", displayName = "Base Flat World")
+public class BaseFlatWorldGenerator extends BaseFacetedWorldGenerator {
     @In
     private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
 
-    public DynamicWorldGenerator(SimpleUri uri) {
+    public BaseFlatWorldGenerator(SimpleUri uri) {
         super(uri);
     }
 
     @Override
     protected WorldBuilder createWorld() {
         return new WorldBuilder(worldGeneratorPluginLibrary)
-                .addProvider(new SurfaceProvider())
+                .addProvider(new BaseFlatSurfaceProvider())
                 .addProvider(new SeaLevelProvider(0))
-                .addRasterizer(new DynamicWorldRasterizer());
+                .addRasterizer(new BaseFlatWorldRasterizer());
     }
 }

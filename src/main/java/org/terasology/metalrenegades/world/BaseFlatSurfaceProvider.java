@@ -24,7 +24,7 @@ import org.terasology.world.generation.Produces;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 @Produces(SurfaceHeightFacet.class)
-public class SurfaceProvider implements FacetProvider {
+public class BaseFlatSurfaceProvider implements FacetProvider {
     @Override
     public void setSeed(long seed) {
     }
