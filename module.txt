@@ -1,0 +1,9 @@
+{
+    "id" : "MetalRenegades",
+    "version" : "0.1.0-SNAPSHOT",
+    "author" : "",
+    "displayName" : "MetalRenegades",
+    "description" : "",
+    "dependencies" : [],
+    "serverSideOnly" : false
+}
