@@ -15,10 +15,9 @@
  */
 package org.terasology.metalrenegades.world.dynamic;
 
-import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.*;
+import org.terasology.core.world.generator.rasterizers.SolidRasterizer;
 import org.terasology.engine.SimpleUri;
-import org.terasology.metalrenegades.world.BaseFlatWorldGenerator;
-import org.terasology.metalrenegades.world.BaseFlatWorldRasterizer;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
@@ -39,8 +38,16 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
         int seaLevel = 0;
         return new WorldBuilder(worldGeneratorPluginLibrary)
                 .addProvider(new SeaLevelProvider(seaLevel))
+//                .addProvider(new FlatSurfaceHeightProvider(2))
                 .addProvider(new SurfaceProvider())
-                .addProvider(new MountainsProvider())
-                .addRasterizer(new BaseFlatWorldRasterizer());
+//                .addProvider(new PerlinHumidityProvider())
+                .addProvider(new HumidityProvider())
+                .addProvider(new TemperatureProvider())
+                .addProvider(new SurfaceToDensityProvider())
+//                .addProvider(new PerlinHillsAndMountainsProvider())
+//                .addProvider(new PerlinRiverProvider())
+                .addProvider(new BiomeProvider())
+//                .addRasterizer(new BaseFlatWorldRasterizer())
+                .addRasterizer(new SolidRasterizer());
     }
 }
