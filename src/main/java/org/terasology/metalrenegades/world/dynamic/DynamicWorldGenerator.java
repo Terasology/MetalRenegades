@@ -16,7 +16,9 @@
 package org.terasology.metalrenegades.world.dynamic;
 
 import org.terasology.core.world.generator.facetProviders.*;
+import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.core.world.generator.rasterizers.SolidRasterizer;
+import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
@@ -42,12 +44,16 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SurfaceProvider())
 //                .addProvider(new PerlinHumidityProvider())
                 .addProvider(new HumidityProvider())
+//                .addProvider(new PerlinHumidityProvider())
                 .addProvider(new TemperatureProvider())
                 .addProvider(new SurfaceToDensityProvider())
-//                .addProvider(new PerlinHillsAndMountainsProvider())
+                .addProvider(new PerlinHillsAndMountainsProvider())
 //                .addProvider(new PerlinRiverProvider())
                 .addProvider(new BiomeProvider())
-//                .addRasterizer(new BaseFlatWorldRasterizer())
-                .addRasterizer(new SolidRasterizer());
+                .addProvider(new DefaultFloraProvider())
+                .addProvider(new DefaultTreeProvider())
+                .addRasterizer(new SolidRasterizer())
+                .addRasterizer(new FloraRasterizer())
+                .addRasterizer(new TreeRasterizer());
     }
 }
