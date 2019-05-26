@@ -15,7 +15,14 @@
  */
 package org.terasology.metalrenegades.world.dynamic;
 
-import org.terasology.core.world.generator.facetProviders.*;
+import org.terasology.Lakes.LakeProvider;
+import org.terasology.Lakes.LakeRasterizer;
+import org.terasology.core.world.generator.facetProviders.BiomeProvider;
+import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
+import org.terasology.core.world.generator.facetProviders.DefaultTreeProvider;
+import org.terasology.core.world.generator.facetProviders.PerlinHillsAndMountainsProvider;
+import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.core.world.generator.rasterizers.SolidRasterizer;
 import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
@@ -50,10 +57,13 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new PerlinHillsAndMountainsProvider())
 //                .addProvider(new PerlinRiverProvider())
                 .addProvider(new BiomeProvider())
+                .addProvider(new LakeProvider())
                 .addProvider(new DefaultFloraProvider())
                 .addProvider(new DefaultTreeProvider())
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())
-                .addRasterizer(new TreeRasterizer());
+                .addRasterizer(new TreeRasterizer())
+                .addRasterizer(new LakeRasterizer())
+                .addPlugins();
     }
 }
