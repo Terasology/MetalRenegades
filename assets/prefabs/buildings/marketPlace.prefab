@@ -1,0 +1,18 @@
+{
+    "GenericBuilding" : {
+     "name" : "Marketplace",
+     "generatorNames" : ["CommercialBuildingGenerator"],
+     "zone" : "COMMERCIAL",
+     "minSize" : [17, 17],
+     "maxSize" : [24, 24],
+     "isEntity" : true
+    },
+    "MarketSubscriber" : {
+     "production" : {"waffles" : 10},
+     "productionInterval" : 100
+    },
+    "InfiniteStorage" : {
+     "inventory" : {}
+    }
+}
+
