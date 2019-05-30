@@ -19,13 +19,17 @@ import org.terasology.Lakes.LakeProvider;
 import org.terasology.Lakes.LakeRasterizer;
 import org.terasology.core.world.generator.facetProviders.BiomeProvider;
 import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
-import org.terasology.core.world.generator.facetProviders.DefaultTreeProvider;
 import org.terasology.core.world.generator.facetProviders.PerlinHillsAndMountainsProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
-import org.terasology.core.world.generator.rasterizers.SolidRasterizer;
-import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
+import org.terasology.dynamicCities.region.RegionEntityProvider;
+import org.terasology.dynamicCities.region.ResourceProvider;
+import org.terasology.dynamicCities.region.RoughnessProvider;
+import org.terasology.dynamicCities.sites.SiteFacetProvider;
+import org.terasology.dynamicCities.world.SolidRasterizer;
+import org.terasology.dynamicCities.world.TreeRasterizer;
+import org.terasology.dynamicCities.world.trees.DefaultTreeProvider;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
@@ -60,6 +64,10 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new LakeProvider())
                 .addProvider(new DefaultFloraProvider())
                 .addProvider(new DefaultTreeProvider())
+                .addProvider(new ResourceProvider())
+                .addProvider(new RoughnessProvider())
+                .addProvider(new SiteFacetProvider())
+                .addEntities(new RegionEntityProvider())
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())
                 .addRasterizer(new TreeRasterizer())
