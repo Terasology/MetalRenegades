@@ -5,7 +5,9 @@
     "displayName" : "MetalRenegades",
     "description" : "",
     "dependencies" : [
-        {"id" : "Core", "minVersion" : "2.0.0"}
+        {"id" : "Core", "minVersion" : "2.0.0"},
+        {"id" : "Lakes", "minVersion" : "0.0.2"},
+        {"id" : "DynamicCities", "minVersion" : "0.2.1"}
     ],
     "serverSideOnly" : false
 }

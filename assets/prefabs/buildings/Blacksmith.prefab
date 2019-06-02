@@ -1,0 +1,17 @@
+{
+    "GenericBuilding" : {
+     "name" : "blacksmith",
+     "templateNames" : ["TutorialDynamicCity:smithyTemplate"],
+     "zone" : "COMMERCIAL",
+     "minSize" : [14, 14],
+     "maxSize" : [17, 17],
+     "isEntity" : true
+    },
+    "MarketSubscriber" : {
+     "production" : {"StructuralResources:Barrel" : 2},
+     "productionInterval" : 500,
+     "consumption" : {"Core:plank" : 16},
+     "consumptionInterval" : 100
+    }
+}
+

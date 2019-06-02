@@ -1,0 +1,10 @@
+{
+    "GenericBuilding" : {
+     "name" : "SimpleChurch",
+     "generatorNames" : ["SimpleChurchGenerator"],
+     "zone" : "CLERICAL",
+     "minSize" : [20, 20],
+     "maxSize" : [30, 30]
+    }
+}
+
