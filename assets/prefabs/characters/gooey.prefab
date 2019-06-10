@@ -42,7 +42,7 @@
         ]
     },
     "Behavior": {
-        "tree": "Behaviors:friendlyCritter"
+        "tree": "MetalRenegades:friendlyGooey"
     },
     "Stand": {
         "animationPool": [
@@ -107,6 +107,8 @@
     },
     "FindNearbyPlayers": {
         "maxDistance": 50
-    }
+    },
+    "TimeSensitive": {},
+    "Home": {}
 }
 

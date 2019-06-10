@@ -1,0 +1,59 @@
+{
+    selector: [
+        {
+            guard: {
+                componentPresent: "MetalRenegades:TimeSensitive",
+                values: [
+                    "V isNight == true"
+                ],
+                child: {
+                    sequence: [
+                        {
+                            sleep: {
+                                time: 0.1f
+                            }
+                        },
+                        set_target_to_home,
+                        {
+                            lookup: {
+                                tree: "Behaviors:follow"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            dynamic: [
+                {
+                    guard: {
+                        componentPresent: "Behaviors:FindNearbyPlayers",
+                        values: [
+                            "N charactersWithinRange nonEmpty"
+                        ],
+                        child: {
+                            sequence: [
+                                {
+                                    sleep: {
+                                        time: 0.1f
+                                    }
+                                },
+                                followCharacter,
+                                {
+                                    lookup: {
+                                        tree: "Behaviors:follow"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    lookup: {
+                        tree: "Behaviors:stray"
+                    }
+                }
+            ]
+        }
+    ]
+}
