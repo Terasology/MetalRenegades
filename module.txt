@@ -7,7 +7,8 @@
     "dependencies" : [
         {"id" : "Core", "minVersion" : "2.0.0"},
         {"id" : "Lakes", "minVersion" : "0.0.2"},
-        {"id" : "DynamicCities", "minVersion" : "0.2.1"}
+        {"id" : "DynamicCities", "minVersion" : "0.2.1"},
+        {"id" : "Behaviors", "minVersion" : "0.2.0"}
     ],
     "serverSideOnly" : false
 }
