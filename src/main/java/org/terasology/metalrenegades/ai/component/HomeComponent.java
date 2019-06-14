@@ -17,5 +17,5 @@ package org.terasology.metalrenegades.ai.component;
 
 import org.terasology.entitySystem.Component;
 
-public class AgentHomeComponent implements Component {
+public class HomeComponent implements Component {
 }
