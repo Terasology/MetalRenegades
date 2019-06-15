@@ -16,6 +16,13 @@
 package org.terasology.metalrenegades.ai.component;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
 
 public class HomeComponent implements Component {
+
+    /**
+     * The building entity of this character's home.
+     */
+    public EntityRef building;
+
 }

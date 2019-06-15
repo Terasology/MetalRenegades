@@ -15,5 +15,11 @@
  */
 package org.terasology.metalrenegades.ai.component;
 
-public class PotentialHomeComponent {
+import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
+
+public class PotentialHomeComponent implements Component {
+
+    public EntityRef character;
+
 }
