@@ -18,6 +18,9 @@ package org.terasology.metalrenegades.ai.component;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 
+/**
+ * A component attached to characters to provide information about their current shelter.
+ */
 public class HomeComponent implements Component {
 
     /**

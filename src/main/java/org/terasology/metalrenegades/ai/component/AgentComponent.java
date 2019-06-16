@@ -17,6 +17,9 @@ package org.terasology.metalrenegades.ai.component;
 
 import org.terasology.entitySystem.Component;
 
+/**
+ * A component added to prefabs containing spawnable AI agents.
+ */
 public class AgentComponent implements Component {
 
 }

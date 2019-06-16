@@ -34,6 +34,9 @@ import org.terasology.registry.In;
 
 import java.util.Collection;
 
+/**
+ * Spawns new agents inside of available buildings with {@link PotentialHomeComponent}.
+ */
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class AgentSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
@@ -54,13 +57,28 @@ public class AgentSpawnSystem extends BaseComponentSystem implements UpdateSubsc
             }
 
             EntityRef agent = spawnAgent(entity);
+            if (agent == null) { // if no entity was generated.
+                continue;
+            }
+
             potentialHomeComponent.residents.add(agent);
 
             entity.saveComponent(potentialHomeComponent);
         }
     }
 
+    /**
+     * Spawns a random agent inside the center of a provided building entity.
+     *
+     * @param homeEntity The building entity to spawn inside.
+     * @return The new agent entity, or null if spawning is not possible.
+     */
     private EntityRef spawnAgent(EntityRef homeEntity) {
+        Prefab agentPrefab = chooseAgentPrefab();
+        if(agentPrefab == null) { // if no prefab is available.
+            return null;
+        }
+
         EntityBuilder entityBuilder = entityManager.newBuilder(chooseAgentPrefab());
 
         LocationComponent homeLocationComponent = homeEntity.getComponent(LocationComponent.class);
@@ -76,6 +94,11 @@ public class AgentSpawnSystem extends BaseComponentSystem implements UpdateSubsc
         return entityBuilder.build();
     }
 
+    /**
+     * Selects a random agent prefab from a collection of prefabs with {@link AgentComponent}.
+     *
+     * @return A random agent prefab, or null if none are available.
+     */
     private Prefab chooseAgentPrefab() {
         Collection<Prefab> agentList = prefabManager.listPrefabs(AgentComponent.class);
 
