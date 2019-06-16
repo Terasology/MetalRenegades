@@ -7,6 +7,8 @@
      "maxSize" : [22, 22],
         "isEntity" : true
     },
-    "PotentialHome": {}
+    "PotentialHome": {
+        "maxResidents": 2
+    }
 }
 

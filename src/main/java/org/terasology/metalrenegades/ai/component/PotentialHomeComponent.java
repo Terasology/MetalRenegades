@@ -15,11 +15,22 @@
  */
 package org.terasology.metalrenegades.ai.component;
 
+import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 
+import java.util.List;
+
 public class PotentialHomeComponent implements Component {
 
-    public EntityRef character;
+    /**
+     * The list of resident characters inside this home.
+     */
+    public List<EntityRef> residents = Lists.newArrayList();
+
+    /**
+     * The maximum number of possible resident characters in this home.
+     */
+    public int maxResidents = 1;
 
 }

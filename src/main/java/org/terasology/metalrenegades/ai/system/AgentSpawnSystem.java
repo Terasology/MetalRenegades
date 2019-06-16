@@ -27,7 +27,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.metalrenegades.ai.component.AgentComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
@@ -37,8 +36,6 @@ import java.util.Collection;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class AgentSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
-
-    private static final float SPAWN_DELAY_MINIMUM = 20;
 
     private static final Logger logger = LoggerFactory.getLogger(AgentSpawnSystem.class);
 
@@ -52,12 +49,12 @@ public class AgentSpawnSystem extends BaseComponentSystem implements UpdateSubsc
     public void update(float delta) {
         for (EntityRef entity : entityManager.getEntitiesWith(PotentialHomeComponent.class)) {
             PotentialHomeComponent potentialHomeComponent = entity.getComponent(PotentialHomeComponent.class);
-            if(potentialHomeComponent.character != null) {
+            if(potentialHomeComponent.residents.size() >= potentialHomeComponent.maxResidents) {
                 continue;
             }
 
             EntityRef agent = spawnAgent(entity);
-            potentialHomeComponent.character = agent;
+            potentialHomeComponent.residents.add(agent);
 
             entity.saveComponent(potentialHomeComponent);
         }
