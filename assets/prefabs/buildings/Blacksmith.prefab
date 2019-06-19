@@ -1,7 +1,7 @@
 {
     "GenericBuilding" : {
      "name" : "blacksmith",
-     "templateNames" : ["TutorialDynamicCity:smithyTemplate"],
+     "templateNames" : ["MetalRenegades:smithyTemplate"],
      "zone" : "COMMERCIAL",
      "minSize" : [14, 14],
      "maxSize" : [17, 17],
