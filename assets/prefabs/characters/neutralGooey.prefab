@@ -105,6 +105,6 @@
             "engine:sensor"
         ]
     },
-    "Agent": {}
+    "Resident": {}
 }
 

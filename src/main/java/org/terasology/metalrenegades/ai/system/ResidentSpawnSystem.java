@@ -15,8 +15,6 @@
  */
 package org.terasology.metalrenegades.ai.system;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -27,7 +25,7 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.metalrenegades.ai.component.AgentComponent;
+import org.terasology.metalrenegades.ai.component.ResidentComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
 import org.terasology.registry.In;
@@ -35,12 +33,10 @@ import org.terasology.registry.In;
 import java.util.Collection;
 
 /**
- * Spawns new agents inside of available buildings with {@link PotentialHomeComponent}.
+ * Spawns new residents inside of available buildings with {@link PotentialHomeComponent}.
  */
 @RegisterSystem(value = RegisterMode.AUTHORITY)
-public class AgentSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
-
-    private static final Logger logger = LoggerFactory.getLogger(AgentSpawnSystem.class);
+public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
     @In
     private EntityManager entityManager;
@@ -56,54 +52,54 @@ public class AgentSpawnSystem extends BaseComponentSystem implements UpdateSubsc
                 continue;
             }
 
-            EntityRef agent = spawnAgent(entity);
-            if (agent == null) { // if no entity was generated.
+            EntityRef resident = spawnResident(entity);
+            if (resident == null) { // if no entity was generated.
                 continue;
             }
 
-            potentialHomeComponent.residents.add(agent);
+            potentialHomeComponent.residents.add(resident);
 
             entity.saveComponent(potentialHomeComponent);
         }
     }
 
     /**
-     * Spawns a random agent inside the center of a provided building entity.
+     * Spawns a random resident inside the center of a provided building entity.
      *
      * @param homeEntity The building entity to spawn inside.
-     * @return The new agent entity, or null if spawning is not possible.
+     * @return The new resident entity, or null if spawning is not possible.
      */
-    private EntityRef spawnAgent(EntityRef homeEntity) {
-        Prefab agentPrefab = chooseAgentPrefab();
-        if(agentPrefab == null) { // if no prefab is available.
+    private EntityRef spawnResident(EntityRef homeEntity) {
+        Prefab residentPrefab = chooseResidentPrefab();
+        if(residentPrefab == null) { // if no prefab is available.
             return null;
         }
 
-        EntityBuilder entityBuilder = entityManager.newBuilder(chooseAgentPrefab());
+        EntityBuilder entityBuilder = entityManager.newBuilder(chooseResidentPrefab());
 
         LocationComponent homeLocationComponent = homeEntity.getComponent(LocationComponent.class);
-        LocationComponent agentLocationComponent = entityBuilder.getComponent(LocationComponent.class);
+        LocationComponent residentLocationComponent = entityBuilder.getComponent(LocationComponent.class);
         HomeComponent homeComponent = new HomeComponent();
 
         homeComponent.building = homeEntity;
-        agentLocationComponent.setWorldPosition(homeLocationComponent.getWorldPosition());
+        residentLocationComponent.setWorldPosition(homeLocationComponent.getWorldPosition());
 
         entityBuilder.addComponent(homeComponent);
-        entityBuilder.saveComponent(agentLocationComponent);
+        entityBuilder.saveComponent(residentLocationComponent);
 
         return entityBuilder.build();
     }
 
     /**
-     * Selects a random agent prefab from a collection of prefabs with {@link AgentComponent}.
+     * Selects a random resident prefab from a collection of prefabs with {@link ResidentComponent}.
      *
-     * @return A random agent prefab, or null if none are available.
+     * @return A random resident prefab, or null if none are available.
      */
-    private Prefab chooseAgentPrefab() {
-        Collection<Prefab> agentList = prefabManager.listPrefabs(AgentComponent.class);
+    private Prefab chooseResidentPrefab() {
+        Collection<Prefab> residentList = prefabManager.listPrefabs(ResidentComponent.class);
 
-        int i = (int) (Math.random() * agentList.size());
-        for (Prefab prefab: agentList) {
+        int i = (int) (Math.random() * residentList.size());
+        for (Prefab prefab: residentList) {
             if(i-- <= 0) {
                 return prefab;
             }

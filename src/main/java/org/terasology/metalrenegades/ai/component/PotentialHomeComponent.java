@@ -22,7 +22,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import java.util.List;
 
 /**
- * A component for buildings with the ability to spawn/provide shelter for agents.
+ * A component for buildings with the ability to spawn/provide shelter for residents.
  */
 public class PotentialHomeComponent implements Component {
 

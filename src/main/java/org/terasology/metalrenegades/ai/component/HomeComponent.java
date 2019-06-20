@@ -19,12 +19,12 @@ import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 
 /**
- * A component attached to characters to provide information about their current shelter.
+ * A component attached to residents to provide information about their current shelter.
  */
 public class HomeComponent implements Component {
 
     /**
-     * The building entity of this character's home.
+     * The building entity of this resident's home.
      */
     public EntityRef building;
 

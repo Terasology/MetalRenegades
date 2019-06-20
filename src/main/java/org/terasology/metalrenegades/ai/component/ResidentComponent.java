@@ -20,6 +20,6 @@ import org.terasology.entitySystem.Component;
 /**
  * A component added to prefabs containing spawnable AI agents.
  */
-public class AgentComponent implements Component {
+public class ResidentComponent implements Component {
 
 }
