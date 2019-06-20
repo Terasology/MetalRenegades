@@ -48,7 +48,7 @@ public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSu
     public void update(float delta) {
         for (EntityRef entity : entityManager.getEntitiesWith(PotentialHomeComponent.class)) {
             PotentialHomeComponent potentialHomeComponent = entity.getComponent(PotentialHomeComponent.class);
-            if(potentialHomeComponent.residents.size() >= potentialHomeComponent.maxResidents) {
+            if (potentialHomeComponent.residents.size() >= potentialHomeComponent.maxResidents) {
                 continue;
             }
 
@@ -71,7 +71,7 @@ public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSu
      */
     private EntityRef spawnResident(EntityRef homeEntity) {
         Prefab residentPrefab = chooseResidentPrefab();
-        if(residentPrefab == null) { // if no prefab is available.
+        if (residentPrefab == null) { // if no prefab is available.
             return null;
         }
 
@@ -100,7 +100,7 @@ public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSu
 
         int i = (int) (Math.random() * residentList.size());
         for (Prefab prefab: residentList) {
-            if(i-- <= 0) {
+            if (i-- <= 0) {
                 return prefab;
             }
         }
