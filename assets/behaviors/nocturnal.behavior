@@ -1,0 +1,35 @@
+{
+    dynamic: [
+        {
+            guard: {
+                componentPresent: "MetalRenegades:TimeSensitive",
+                values: [
+                    "V isNight = true"
+                ],
+                child: {
+                    lookup: {tree: "Behaviors:stray" }
+                }
+            }
+        },
+        {
+            sequence: [
+                {
+                    set_speed : { speedMultiplier: 0 }
+                },
+                {
+                    animation: {
+                        play: "engine:Walk.animationPool",
+                        loop: "engine:Walk.animationPool"
+                    }
+                },
+                {
+                    loop: {
+                        sleep: {
+                            time: 1
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
