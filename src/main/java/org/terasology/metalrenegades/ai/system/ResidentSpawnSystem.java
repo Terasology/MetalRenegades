@@ -38,6 +38,10 @@ import java.util.Collection;
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
+    private static final int SPAWN_CHECK_DELAY = 30;
+
+    private float spawnTimer;
+
     @In
     private EntityManager entityManager;
 
@@ -46,20 +50,26 @@ public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSu
 
     @Override
     public void update(float delta) {
-        for (EntityRef entity : entityManager.getEntitiesWith(PotentialHomeComponent.class)) {
-            PotentialHomeComponent potentialHomeComponent = entity.getComponent(PotentialHomeComponent.class);
-            if (potentialHomeComponent.residents.size() >= potentialHomeComponent.maxResidents) {
-                continue;
+        spawnTimer += delta;
+
+        if (spawnTimer > SPAWN_CHECK_DELAY) {
+            for (EntityRef entity : entityManager.getEntitiesWith(PotentialHomeComponent.class)) {
+                PotentialHomeComponent potentialHomeComponent = entity.getComponent(PotentialHomeComponent.class);
+                if (potentialHomeComponent.residents.size() >= potentialHomeComponent.maxResidents) {
+                    continue;
+                }
+
+                EntityRef resident = spawnResident(entity);
+                if (resident == null) { // if no entity was generated.
+                    continue;
+                }
+
+                potentialHomeComponent.residents.add(resident);
+
+                entity.saveComponent(potentialHomeComponent);
             }
 
-            EntityRef resident = spawnResident(entity);
-            if (resident == null) { // if no entity was generated.
-                continue;
-            }
-
-            potentialHomeComponent.residents.add(resident);
-
-            entity.saveComponent(potentialHomeComponent);
+            spawnTimer = 0;
         }
     }
 
