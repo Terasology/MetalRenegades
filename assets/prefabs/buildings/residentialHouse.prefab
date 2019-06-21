@@ -4,7 +4,11 @@
      "generatorNames" : ["RectHouseGenerator"],
      "zone" : "RESIDENTIAL",
      "minSize" : [14, 14],
-     "maxSize" : [22, 22]
+     "maxSize" : [22, 22],
+        "isEntity" : true
+    },
+    "PotentialHome": {
+        "maxResidents": 2
     }
 }
 

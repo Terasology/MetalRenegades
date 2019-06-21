@@ -104,6 +104,7 @@
             "engine:debris",
             "engine:sensor"
         ]
-    }
+    },
+    "Resident": {}
 }
 

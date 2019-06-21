@@ -107,6 +107,7 @@
     },
     "FindNearbyPlayers": {
         "maxDistance": 50
-    }
+    },
+    "Resident": {}
 }
 
