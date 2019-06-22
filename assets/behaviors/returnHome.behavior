@@ -1,0 +1,17 @@
+{
+    sequence: [
+        {
+            animation: {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            set_speed: {
+                speedMultiplier: 0.4
+            }
+        },
+        set_target_to_home,
+        move_to
+    ]
+}
