@@ -13,9 +13,6 @@
     },
     "InfiniteStorage" : {
      "inventory" : {}
-    },
-    "PotentialHome": {
-        "maxResidents": 1
     }
 }
 
