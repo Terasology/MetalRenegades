@@ -28,6 +28,10 @@ import org.terasology.world.time.WorldTimeEvent;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class TimeSensitiveSystem extends BaseComponentSystem {
 
+    private static final float NIGHT_END = 0.250f;
+
+    private static final float NIGHT_BEGIN = 0.720f;
+
     @In
     private EntityManager entityManager;
 
@@ -37,7 +41,7 @@ public class TimeSensitiveSystem extends BaseComponentSystem {
             TimeSensitiveComponent timeSensitiveComponent = entity.getComponent(TimeSensitiveComponent.class);
             timeSensitiveComponent.worldTime = worldTimeEvent.getWorldTime();
             timeSensitiveComponent.dayTime = timeSensitiveComponent.worldTime % 1;
-            timeSensitiveComponent.isNight = (timeSensitiveComponent.worldTime % 1) < 0.2 || (timeSensitiveComponent.worldTime % 1) > 0.8;
+            timeSensitiveComponent.isNight = (timeSensitiveComponent.worldTime % 1) < NIGHT_END || (timeSensitiveComponent.worldTime % 1) > NIGHT_BEGIN;
             entity.saveComponent(timeSensitiveComponent);
         }
     }
