@@ -42,7 +42,7 @@
         ]
     },
     "Behavior": {
-        "tree": "MetalRenegades:nocturnal"
+        "tree": "MetalRenegades:nocturnalCitizen"
     },
     "Stand": {
         "animationPool": [
