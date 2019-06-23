@@ -26,8 +26,14 @@
               componentPresent: "MetalRenegades:TimeSensitive",
               values: ["V isNight = true"],
               child: {
-                  lookup: {
-                      tree: "MetalRenegades:returnHome"
+                  guard: {
+                      componentPresent: "MetalRenegades:Home",
+                      values: ["N building exists"],
+                      child: {
+                          lookup: {
+                              tree: "MetalRenegades:returnHome"
+                          }
+                      }
                   }
               }
           }

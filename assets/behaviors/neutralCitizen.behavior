@@ -1,0 +1,26 @@
+{
+    dynamic: [
+        {
+            guard: {
+                componentPresent: "MetalRenegades:TimeSensitive",
+                values: ["V isNight = true"],
+                child: {
+                    guard: {
+                        componentPresent: "MetalRenegades:Home",
+                        values: ["N building exists"],
+                        child: {
+                            lookup: {
+                                tree: "MetalRenegades:returnHome"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            lookup: {
+                tree: "Behaviors:stray"
+            }
+        }
+    ]
+}

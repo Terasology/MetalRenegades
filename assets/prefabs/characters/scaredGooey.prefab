@@ -42,7 +42,7 @@
         ]
     },
     "Behavior": {
-        "tree": "Behaviors:scaredCritter"
+        "tree": "MetalRenegades:scaredCitizen"
     },
     "Stand": {
         "animationPool": [
@@ -108,6 +108,7 @@
     "FindNearbyPlayers": {
         "maxDistance": 50
     },
-    "Resident": {}
+    "Resident": {},
+    "TimeSensitive": {}
 }
 
