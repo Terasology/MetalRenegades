@@ -38,7 +38,7 @@ import java.util.Collection;
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
-    private static final int SPAWN_CHECK_DELAY = 30;
+    private static final int SPAWN_CHECK_DELAY = 90;
 
     private float spawnTimer;
 
