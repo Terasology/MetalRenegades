@@ -3,33 +3,24 @@
         {
             guard: {
                 componentPresent: "MetalRenegades:TimeSensitive",
-                values: [
-                    "V isNight = true"
-                ],
+                values: ["V isNight = false"],
                 child: {
-                    lookup: {tree: "Behaviors:stray" }
+                    guard: {
+                        componentPresent: "MetalRenegades:Home",
+                        values: ["N building exists"],
+                        child: {
+                            lookup: {
+                                tree: "MetalRenegades:returnHome"
+                            }
+                        }
+                    }
                 }
             }
         },
         {
-            sequence: [
-                {
-                    set_speed : { speedMultiplier: 0 }
-                },
-                {
-                    animation: {
-                        play: "engine:Walk.animationPool",
-                        loop: "engine:Walk.animationPool"
-                    }
-                },
-                {
-                    loop: {
-                        sleep: {
-                            time: 1
-                        }
-                    }
-                }
-            ]
+            lookup: {
+                tree: "Behaviors:stray"
+            }
         }
     ]
 }
