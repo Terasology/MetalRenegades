@@ -17,12 +17,24 @@ package org.terasology.metalrenegades.ai.component;
 
 import org.terasology.entitySystem.Component;
 
+/**
+ * A component which gives time-detection capabilities to a character's behavior.
+ */
 public class TimeSensitiveComponent implements Component{
 
-    public float worldTime = 0;
+    /**
+     * The current world game time, where a change of 1 is equal to one day.
+     */
+    public float worldTime;
 
-    public float dayTime = 0;
+    /**
+     * The current world game time, relative to the start of the day.
+     */
+    public float dayTime;
 
-    public boolean isNight = false;
+    /**
+     * Current day/night status defined by the time range in {@link org.terasology.metalrenegades.ai.system.TimeSensitiveSystem}.
+     */
+    public boolean isNight;
 
 }

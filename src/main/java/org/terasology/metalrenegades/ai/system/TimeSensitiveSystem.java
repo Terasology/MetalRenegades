@@ -25,11 +25,20 @@ import org.terasology.metalrenegades.ai.component.TimeSensitiveComponent;
 import org.terasology.registry.In;
 import org.terasology.world.time.WorldTimeEvent;
 
+/**
+ * Provides current world time information to entities with {@link TimeSensitiveComponent}.
+ */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class TimeSensitiveSystem extends BaseComponentSystem {
 
+    /**
+     * Time of in-game sunrise
+     */
     private static final float NIGHT_END = 0.250f;
 
+    /**
+     * Time of in-game sunset
+     */
     private static final float NIGHT_BEGIN = 0.720f;
 
     @In
