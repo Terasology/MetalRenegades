@@ -41,6 +41,7 @@ public class TimeSensitiveSystem extends BaseComponentSystem {
             TimeSensitiveComponent timeSensitiveComponent = entity.getComponent(TimeSensitiveComponent.class);
             timeSensitiveComponent.worldTime = worldTimeEvent.getWorldTime();
             timeSensitiveComponent.dayTime = timeSensitiveComponent.worldTime % 1;
+
             timeSensitiveComponent.isNight = (timeSensitiveComponent.worldTime % 1) < NIGHT_END || (timeSensitiveComponent.worldTime % 1) > NIGHT_BEGIN;
             entity.saveComponent(timeSensitiveComponent);
         }
