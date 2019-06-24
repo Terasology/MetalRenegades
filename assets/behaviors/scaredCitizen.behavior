@@ -11,7 +11,7 @@
                                 time: 0.1f
                             }
                         },
-                        followCharacter,
+                        flee_from_character,
                         {
                             lookup: {
                                 tree: "Behaviors:flee"
