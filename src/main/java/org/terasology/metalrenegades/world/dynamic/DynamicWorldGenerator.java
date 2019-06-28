@@ -31,6 +31,7 @@ import org.terasology.dynamicCities.world.SolidRasterizer;
 import org.terasology.dynamicCities.world.TreeRasterizer;
 import org.terasology.dynamicCities.world.trees.DefaultTreeProvider;
 import org.terasology.engine.SimpleUri;
+import org.terasology.oreGeneration.generation.OreRasterizer;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
@@ -72,6 +73,7 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addRasterizer(new FloraRasterizer())
                 .addRasterizer(new TreeRasterizer())
                 .addRasterizer(new LakeRasterizer())
+                .addRasterizer(new OreRasterizer())
                 .addPlugins();
     }
 }
