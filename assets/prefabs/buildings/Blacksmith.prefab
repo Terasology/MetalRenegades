@@ -12,9 +12,6 @@
      "productionInterval" : 500,
      "consumption" : {"Core:plank" : 16},
      "consumptionInterval" : 100
-    },
-    "PotentialHome": {
-        "maxResidents": 1
     }
 }
 

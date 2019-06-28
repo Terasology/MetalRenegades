@@ -6,9 +6,6 @@
      "minSize" : [25, 25],
      "maxSize" : [30, 30],
         "isEntity" : true
-    },
-    "PotentialHome": {
-        "maxResidents": 3
     }
 }
 
