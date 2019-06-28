@@ -1,7 +1,7 @@
 {
     "GenericBuilding" : {
      "name" : "blacksmith",
-     "templateNames" : ["TutorialDynamicCity:smithyTemplate"],
+     "templateNames" : ["MetalRenegades:smithyTemplate"],
      "zone" : "COMMERCIAL",
      "minSize" : [14, 14],
      "maxSize" : [17, 17],
@@ -12,6 +12,9 @@
      "productionInterval" : 500,
      "consumption" : {"Core:plank" : 16},
      "consumptionInterval" : 100
+    },
+    "PotentialHome": {
+        "maxResidents": 1
     }
 }
 

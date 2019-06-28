@@ -4,7 +4,11 @@
      "generatorNames" : ["SimpleChurchGenerator"],
      "zone" : "CLERICAL",
      "minSize" : [20, 20],
-     "maxSize" : [30, 30]
+     "maxSize" : [30, 30],
+        "isEntity" : true
+    },
+    "PotentialHome": {
+        "maxResidents": 5
     }
 }
 
