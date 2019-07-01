@@ -15,17 +15,12 @@
  */
 package org.terasology.metalrenegades.world.dynamic.roads;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.terasology.cities.DefaultBlockType;
 import org.terasology.cities.raster.RasterTarget;
 import org.terasology.commonworld.heightmap.HeightMap;
 import org.terasology.dynamicCities.parcels.RoadParcel;
 import org.terasology.dynamicCities.rasterizer.RoadRasterizer;
 import org.terasology.dynamicCities.roads.RoadSegment;
-import org.terasology.math.Region3i;
 import org.terasology.math.Side;
-import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.ImmutableVector2f;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3i;
@@ -36,10 +31,11 @@ import org.terasology.world.block.family.BlockFamily;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The rasterizer which calculates the path of the rail and places blocks accordingly.
+ */
 public class RailRasterizer extends RoadRasterizer {
     private WorldProvider worldProvider;
-
-    private Logger logger = LoggerFactory.getLogger(RailRasterizer.class);
 
     public RailRasterizer(WorldProvider worldProvider) {
         this.worldProvider = worldProvider;
@@ -47,23 +43,6 @@ public class RailRasterizer extends RoadRasterizer {
 
     @Override
     public void raster(RasterTarget rasterTarget, RoadSegment roadSegment, HeightMap heightMap) {
-        int upperHeight = 255;  // Height to which the region above the segment would be cleared
-
-        // Clean the region above the rect
-        Vector2i rectMin = roadSegment.rect.min();
-        Region3i upper = Region3i.createFromMinAndSize(
-                new Vector3i(rectMin.x(), heightMap.apply(rectMin) + 1, rectMin.y()),
-                new Vector3i(roadSegment.rect.sizeX(), upperHeight, roadSegment.rect.sizeY())
-        );
-
-        for (Vector3i pos : upper) {
-            rasterTarget.setBlock(pos, DefaultBlockType.AIR);
-        }
-
-        for (BaseVector2i pos : roadSegment.rect.contents()) {
-            logger.info("Drawing dirt block at {}...", pos);
-            rasterTarget.setBlock(new Vector3i(pos.x(), heightMap.apply(pos), pos.y()), RailBlockType.BASE);
-        }
 
         // Draw rails from start to end
         ImmutableVector2f direction = roadSegment.getRoadDirection();
@@ -74,22 +53,25 @@ public class RailRasterizer extends RoadRasterizer {
         do {
             Vector3i pos = new Vector3i(i.getX(), heightMap.apply(i) + 1, i.getY());
             placeRail(rasterTarget, pos);
-            i.addX(sign(direction.x())); // increment X to get to the next horizontal block
+            i.addX(sgn(direction.x())); // increment X to get to the next horizontal block
         } while (roadSegment.rect.contains(i) && direction.x() != 0f);
 
-        i.subX(sign(direction.x())); // decrement to get back into the rect
-        i.addY(sign(direction.y())); // increment Y now
+        i.subX(sgn(direction.x())); // decrement to get back into the rect
+        i.addY(sgn(direction.y())); // increment Y now
 
         do {
             Vector3i pos = new Vector3i(i.getX(), heightMap.apply(i) + 1, i.getY());
             placeRail(rasterTarget, pos);
-            i.addY(sign(direction.y()));
+            i.addY(sgn(direction.y()));
         } while (roadSegment.rect.contains(i) && direction.y() != 0f);
     }
 
+    /**
+     * Check for connections and place the appropriate rail block
+     * @param target RasterTarget being processed
+     * @param pos    Position to place the block
+     */
     private void placeRail(RasterTarget target, Vector3i pos) {
-        // this function would check for connections and place a rail at the specified pos
-
         Set<Side> connections = new HashSet<>();
         for (Side side : Side.getAllSides()) {
             BlockFamily family = worldProvider.getBlock(side.getAdjacentPos(pos)).getBlockFamily();
@@ -97,13 +79,15 @@ public class RailRasterizer extends RoadRasterizer {
                 connections.add(side);
             }
         }
-
-        logger.info("Placing rail block at {} with {} connections", pos, connections.size());
-
         target.setBlock(pos, RailBlockType.RAIL, connections);
     }
 
-    private int sign(float a) {
+    /**
+     * The signum function
+     * @param a value to be evaluated
+     * @return 1 if a > 0; 0 if a == 0; -1 if a < 0
+     */
+    private int sgn(float a) {
         if (a > 0) {
             return 1;
         } else if (a == 0) {

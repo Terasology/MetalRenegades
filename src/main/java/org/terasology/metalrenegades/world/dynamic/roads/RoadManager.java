@@ -26,6 +26,9 @@ import org.terasology.registry.Share;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.BlockManager;
 
+/**
+ * Sets up custom rasterizers for the construction system.
+ */
 @Share(value = RoadManager.class)
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class RoadManager extends BaseComponentSystem {
