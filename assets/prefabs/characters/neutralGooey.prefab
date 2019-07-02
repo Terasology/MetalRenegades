@@ -105,7 +105,6 @@
             "engine:sensor"
         ]
     },
-    "Resident": {},
-    "TimeSensitive": {}
+    "Resident": {}
 }
 

@@ -22,21 +22,18 @@
           }
       },
       {
-          guard: {
-              componentPresent: "MetalRenegades:TimeSensitive",
-              values: ["V isNight = true"],
-              child: {
-                  guard: {
-                      componentPresent: "MetalRenegades:Home",
-                      values: ["N building exists"],
-                      child: {
-                          lookup: {
-                              tree: "MetalRenegades:returnHome"
-                          }
-                      }
+          sequence: [
+              {
+                  invert: {
+                      child: check_daytime
+                  }
+              },
+              {
+                  lookup: {
+                      tree: "MetalRenegades:returnHome"
                   }
               }
-          }
+          ]
       },
       {
         lookup: {

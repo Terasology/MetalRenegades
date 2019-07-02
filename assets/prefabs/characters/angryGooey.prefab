@@ -108,7 +108,6 @@
     "FindNearbyPlayers": {
         "maxDistance": 50
     },
-    "Resident": {},
-    "TimeSensitive": {}
+    "Resident": {}
 }
 

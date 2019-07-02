@@ -1,21 +1,14 @@
 {
     dynamic: [
         {
-            guard: {
-                componentPresent: "MetalRenegades:TimeSensitive",
-                values: ["V isNight = false"],
-                child: {
-                    guard: {
-                        componentPresent: "MetalRenegades:Home",
-                        values: ["N building exists"],
-                        child: {
-                            lookup: {
-                                tree: "MetalRenegades:returnHome"
-                            }
-                        }
+            sequence: [
+                check_daytime,
+                {
+                    lookup: {
+                        tree: "MetalRenegades:returnHome"
                     }
                 }
-            }
+            ]
         },
         {
             lookup: {
