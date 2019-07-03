@@ -105,5 +105,6 @@
             "engine:sensor"
         ]
     },
-    "Citizen": {}
+    "Citizen": {},
+    "Needs": {}
 }

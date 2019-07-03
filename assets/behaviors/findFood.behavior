@@ -1,0 +1,17 @@
+{
+    sequence: [
+        {
+            animation: {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            sequence: [
+                set_target_food_source,
+                move_to,
+                replenish_food
+            ]
+        }
+    ]
+}

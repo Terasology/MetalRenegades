@@ -13,6 +13,7 @@
     },
     "InfiniteStorage" : {
      "inventory" : {}
-    }
+    },
+    "FoodSource": {}
 }
 
