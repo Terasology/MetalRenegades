@@ -19,28 +19,28 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.metalrenegades.ai.system.DaylightTrackerSystem;
+import org.terasology.metalrenegades.ai.system.NightTrackerSystem;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 
 /**
- * Behavior node that checks the current daytime status, succeeds at daytime and fails at nighttime.
+ * Behavior node that checks the current night status, succeeds at nighttime and fails at daytime.
  */
-@BehaviorAction(name = "check_daytime")
-public class CheckDaytimeAction extends BaseAction {
+@BehaviorAction(name = "check_nighttime")
+public class CheckNightAction extends BaseAction {
 
     @In
-    private DaylightTrackerSystem daylightTrackerSystem;
+    private NightTrackerSystem nightTrackerSystem;
 
     @Override
     public void construct(Actor actor) {
         // TODO: Temporary fix for injection malfunction in actions, ideally remove this in the future.
-        daylightTrackerSystem = CoreRegistry.get(DaylightTrackerSystem.class);
+        nightTrackerSystem = CoreRegistry.get(NightTrackerSystem.class);
     }
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        if (daylightTrackerSystem.isDaytime()) {
+        if (nightTrackerSystem.isNight()) {
             return BehaviorState.SUCCESS;
         }
         return BehaviorState.FAILURE;

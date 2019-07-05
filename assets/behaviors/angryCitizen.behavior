@@ -23,11 +23,7 @@
         },
         {
             sequence: [
-                {
-                    invert: {
-                        child: check_daytime
-                    }
-                },
+                check_nighttime,
                 {
                     lookup: {
                         tree: "MetalRenegades:returnHome"

@@ -2,7 +2,11 @@
     dynamic: [
         {
             sequence: [
-                check_daytime,
+                {
+                    invert: {
+                        child: check_nighttime
+                    }
+                },
                 {
                     lookup: {
                         tree: "MetalRenegades:returnHome"

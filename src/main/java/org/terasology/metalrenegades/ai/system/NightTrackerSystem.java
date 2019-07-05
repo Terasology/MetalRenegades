@@ -25,11 +25,11 @@ import org.terasology.world.sun.OnDawnEvent;
 import org.terasology.world.sun.OnDuskEvent;
 
 /**
- * Tracks the current daylight status for time-based behavior trees.
+ * Tracks the current night status for time-based behavior trees.
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
-@Share(value = DaylightTrackerSystem.class)
-public class DaylightTrackerSystem extends BaseComponentSystem {
+@Share(value = NightTrackerSystem.class)
+public class NightTrackerSystem extends BaseComponentSystem {
 
     // TODO: The assumption is made that this system is started with daylight, replace with a proper check on start.
     private boolean isSunUp = true;
@@ -45,12 +45,12 @@ public class DaylightTrackerSystem extends BaseComponentSystem {
     }
 
     /**
-     * Returns current daylight status, true if the sun is up, false otherwise.
+     * Returns current night status, true if the sun is down, false otherwise.
      *
-     * @return The current daylight status of the world.
+     * @return The current night status of the world.
      */
-    public boolean isDaytime() {
-        return isSunUp;
+    public boolean isNight() {
+        return !isSunUp;
     }
 
 }
