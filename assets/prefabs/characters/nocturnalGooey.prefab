@@ -7,7 +7,7 @@
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",
         "heightOffset": -2.0,
-        "material": "MetalRenegades:scaredGooey",
+        "material": "MetalRenegades:nocturnalGooey",
         "animationPool": [
             "gooeyIdleBreathing",
             "gooeyIdleBreathing",
@@ -42,7 +42,7 @@
         ]
     },
     "Behavior": {
-        "tree": "MetalRenegades:scaredCitizen"
+        "tree": "MetalRenegades:nocturnalCitizen"
     },
     "Stand": {
         "animationPool": [
