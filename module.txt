@@ -6,10 +6,10 @@
     "description" : "",
     "dependencies" : [
         {"id" : "Core", "minVersion" : "2.0.0"},
-        {"id" : "Lakes", "minVersion" : "0.0.2"},
         {"id" : "OreGeneration", "minVersion" : "1.0.0"},
         {"id" : "DynamicCities", "minVersion" : "0.2.1"},
-        {"id" : "Behaviors", "minVersion" : "0.2.0"}
+        {"id" : "Behaviors", "minVersion" : "0.2.0"},
+        {"id" : "Rails", "minVersion" : "0.4.0"}
     ],
     "serverSideOnly" : false
 }

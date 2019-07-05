@@ -15,8 +15,6 @@
  */
 package org.terasology.metalrenegades.world.dynamic;
 
-import org.terasology.Lakes.LakeProvider;
-import org.terasology.Lakes.LakeRasterizer;
 import org.terasology.core.world.generator.facetProviders.BiomeProvider;
 import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
 import org.terasology.core.world.generator.facetProviders.PerlinHillsAndMountainsProvider;
@@ -50,19 +48,15 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
     @Override
     protected WorldBuilder createWorld() {
         int seaLevel = 0;
+
         return new WorldBuilder(worldGeneratorPluginLibrary)
                 .addProvider(new SeaLevelProvider(seaLevel))
-//                .addProvider(new FlatSurfaceHeightProvider(2))
                 .addProvider(new SurfaceProvider())
-//                .addProvider(new PerlinHumidityProvider())
                 .addProvider(new HumidityProvider())
-//                .addProvider(new PerlinHumidityProvider())
                 .addProvider(new TemperatureProvider())
                 .addProvider(new SurfaceToDensityProvider())
                 .addProvider(new PerlinHillsAndMountainsProvider())
-//                .addProvider(new PerlinRiverProvider())
                 .addProvider(new BiomeProvider())
-                .addProvider(new LakeProvider())
                 .addProvider(new DefaultFloraProvider())
                 .addProvider(new DefaultTreeProvider())
                 .addProvider(new ResourceProvider())
@@ -72,7 +66,6 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())
                 .addRasterizer(new TreeRasterizer())
-                .addRasterizer(new LakeRasterizer())
                 .addRasterizer(new OreRasterizer())
                 .addPlugins();
     }
