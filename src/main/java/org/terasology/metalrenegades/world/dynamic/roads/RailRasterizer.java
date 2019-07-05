@@ -83,17 +83,11 @@ public class RailRasterizer extends RoadRasterizer {
     }
 
     /**
-     * The signum function
+     * A function which casts the signum into an int before returning
      * @param a value to be evaluated
-     * @return 1 if a > 0; 0 if a == 0; -1 if a < 0
+     * @return sign casted into an int
      */
     private int sgn(float a) {
-        if (a > 0) {
-            return 1;
-        } else if (a == 0) {
-            return 0;
-        } else {
-            return -1;
-        }
+        return (int) Math.signum(a);
     }
 }
