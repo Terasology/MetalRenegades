@@ -1,0 +1,19 @@
+{
+    "parent": "MetalRenegades:weapon",
+	"DisplayName": {
+		"name": "Pistol"
+	},
+	"Item": {
+		"icon": "MetalRenegades:pistol",
+		"usage": "IN_DIRECTION",
+		"cooldownTime": 400
+	},
+	"LaunchEntity": {
+
+    },
+	"Inventory": {
+		"itemSlots" : [0]
+	},
+	"RenderItemIconMesh": {}
+}
+

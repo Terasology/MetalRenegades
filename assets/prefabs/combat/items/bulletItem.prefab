@@ -1,0 +1,15 @@
+{
+    "parent": "engine:itemBase",
+    "DisplayName": {
+        "name": "Bullet"
+    },
+    "Item": {
+        "icon" : "MetalRenegades:bulletIcon",
+        "usage": "IN_DIRECTION",
+        "stackId": "MetalRenegades:bulletItem",
+        "cooldownTime": 0
+    },
+    "WorldAvatar": {
+        "worldAvatarPrefab":"MetalRenegades:bullet"
+    }
+}

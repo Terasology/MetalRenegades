@@ -1,0 +1,17 @@
+{
+    "parent": "engine:itemBase",
+	"DisplayName": {
+		"name": "Weapon"
+	},
+	"Attacker" : {
+		
+	},
+	"Hurting": {
+		
+	},
+	"BoxShape": {
+        "extents": [2, 2, 0.2]
+    },
+	"PrimaryAttack": {}
+}
+
