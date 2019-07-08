@@ -16,5 +16,15 @@
     "Gravity" : {
         "gravityAccel" : [0, 0, 0]
     },
+    "Hurting" : {
+        "amount" : 20
+    },
+    "CritDamage" : {
+        "critChance" : 2,
+        "critFactor" : 2
+    },
+    "Stick" :  {
+        "totalStickingTime" : 0
+    },
     "Arrow" : {}
 }

@@ -49,7 +49,10 @@ public class AnimalSpawnSystem extends BaseComponentSystem {
         spawnSystem.setSpawnCondition(this::isValidSpawnPosition);
 
         WildAnimalsSpawnSystem.Configuration configuration = new WildAnimalsSpawnSystem.Configuration();
-        configuration.SPAWN_CHANCE_IN_PERCENT = 10;
+        configuration.SPAWN_CHANCE_IN_PERCENT = 2;
+        configuration.MAX_DEER_GROUP_SIZE = 5;
+        configuration.MIN_DEER_GROUP_SIZE = 2;
+        configuration.MIN_GROUND_PER_DEER = 10;
 
         spawnSystem.setConfig(configuration);
 
