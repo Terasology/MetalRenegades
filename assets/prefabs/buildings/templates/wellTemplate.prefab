@@ -1,0 +1,31 @@
+{
+    "StructureTemplate" : {
+        "type": "DynamicCities:building",
+        "front": "FRONT"
+    },
+    "SpawnBlockRegions": {
+        "regionsToFill": [
+            { "blockType": "Core:cobblestone", "region": { "min": [-1, 0, -3], "size": [3, 1, 1]}},
+            { "blockType": "Core:cobblestone", "region": { "min": [-1, 0, -2], "size": [1, 1, 1]}},
+            { "blockType": "Core:cobblestone", "region": { "min": [1, 0, -2], "size": [1, 1, 1]}},
+            { "blockType": "Core:cobblestone", "region": { "min": [-1, 0, -1], "size": [3, 1, 1]}},
+            { "blockType": "Core:cobblestone:engine:stair.BACK", "region": { "min": [0, 1, -1], "size": [1, 1, 1]}},
+            { "blockType": "Core:cobblestone:engine:stair.FRONT", "region": { "min": [0, 1, -3], "size": [1, 1, 1]}},
+            { "blockType": "Core:cobblestone:engine:stair.LEFT", "region": { "min": [-1, 1, -2], "size": [1, 1, 1]}},
+            { "blockType": "Core:cobblestone:engine:stair.RIGHT", "region": { "min": [1, 1, -2], "size": [1, 1, 1]}},
+            { "blockType": "Fences:Fence.0", "region": { "min": [-1, 1, -3], "size": [1, 3, 1]}},
+            { "blockType": "Fences:Fence.0", "region": { "min": [1, 1, -3], "size": [1, 3, 1]}},
+            { "blockType": "Fences:Fence.0", "region": { "min": [-1, 1, -1], "size": [1, 3, 1]}},
+            { "blockType": "Fences:Fence.0", "region": { "min": [1, 1, -1], "size": [1, 3, 1]}},
+            { "blockType": "core:Plank", "region": { "min": [0, 4, -2], "size": [1, 1, 1]}},
+            { "blockType": "core:Plank:engine:stair.BACK", "region": { "min": [-1, 4, -1], "size": [3, 1, 1]}},
+            { "blockType": "core:Plank:engine:stair.FRONT", "region": { "min": [-1, 4, -3], "size": [3, 1, 1]}},
+            { "blockType": "core:Plank:engine:stair.LEFT", "region": { "min": [-1, 4, -2], "size": [1, 1, 1]}},
+            { "blockType": "core:Plank:engine:stair.RIGHT", "region": { "min": [1, 4, -2], "size": [1, 1, 1]}},
+            { "blockType": "core:water", "region": { "min": [0, 0, -2], "size": [1, 2, 1]}},
+            { "blockType": "engine:air", "region": { "min": [0, 2, -3], "size": [1, 2, 1]}},
+            { "blockType": "engine:air", "region": { "min": [-1, 2, -2], "size": [3, 2, 1]}},
+            { "blockType": "engine:air", "region": { "min": [0, 2, -1], "size": [1, 2, 1]}}
+        ]
+    }
+}

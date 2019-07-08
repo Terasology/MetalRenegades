@@ -1,0 +1,10 @@
+{
+    "GenericBuilding": {
+        "name": "Well",
+        "templateNames" : ["MetalRenegades:wellTemplate"],
+        "zone": "UTILITY",
+        "minSize": [5, 5],
+        "maxSize": [7, 7],
+        "isEntity": true
+    }
+}
