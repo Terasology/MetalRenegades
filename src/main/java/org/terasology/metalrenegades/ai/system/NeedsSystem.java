@@ -52,6 +52,7 @@ public class NeedsSystem extends BaseComponentSystem implements UpdateSubscriber
                 NeedsComponent needsComponent = entity.getComponent(NeedsComponent.class);
 
                 needsComponent.foodValue -= needsComponent.foodReductionRate;
+                needsComponent.thirstValue -= needsComponent.thirstReductionRate;
                 entity.saveComponent(needsComponent);
             }
 

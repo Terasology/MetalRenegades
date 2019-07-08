@@ -1,16 +1,32 @@
 {
     dynamic: [
         {
-            guard: {
-                componentPresent: "MetalRenegades:Needs",
-                values: ["F foodValue < foodGoal"],
-                child: {
-                    lookup: {
-                        tree: "MetalRenegades:findFood"
+            selector: [
+                {
+                    guard: {
+                        componentPresent: "MetalRenegades:Needs",
+                        values: ["F foodValue < foodGoal"],
+                        child: {
+                            lookup: {
+                                tree: "MetalRenegades:findFood"
+                            }
+                        }
+                    }
+                },
+                {
+                    guard: {
+                        componentPresent: "MetalRenegades:Needs",
+                        values: ["F thirstValue < thirstGoal"],
+                        child: {
+                            lookup: {
+                                tree: "MetalRenegades:findWater"
+                            }
+                        }
                     }
                 }
-            }
+            ]
         },
+
         {
             lookup: {
                 tree: "Behaviors:stray"

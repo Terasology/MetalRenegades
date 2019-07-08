@@ -40,6 +40,26 @@ public class NeedsComponent implements Component {
     /**
      * The current food value of this citizen.
      */
-    public float foodValue = 10;
+    public float foodValue = 15;
+
+    /**
+     * The maximum thirst value that this character can have.
+     */
+    public float maxThirstCapacity = 20;
+
+    /**
+     * The rate of reduction of thirst value, in thirst unit per second.
+     */
+    public float thirstReductionRate = 2f;
+
+    /**
+     * The thirst minimum, when thirstValue slips below this value a particular behavior is initiated.
+     */
+    public float thirstGoal = 8;
+
+    /**
+     * The current thirst value of this citizen.
+     */
+    public float thirstValue = 20;
 
 }

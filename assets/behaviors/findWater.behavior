@@ -1,0 +1,17 @@
+{
+    sequence: [
+        {
+            animation: {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            sequence: [
+                set_target_water_source,
+                move_to,
+                quench_thirst
+            ]
+        }
+    ]
+}
