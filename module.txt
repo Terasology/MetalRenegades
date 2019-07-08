@@ -14,5 +14,7 @@
         {"id" : "CombatSystem", "minVersion" : "0.1.1"},
         {"id" : "WildAnimals", "minVersion" : "0.2.0"}
     ],
-    "serverSideOnly" : false
+    "serverSideOnly" : false,
+    "isGameplay" : true,
+    "defaultWorldGenerator" : "MetalRenegades:dynamicWorld"
 }
