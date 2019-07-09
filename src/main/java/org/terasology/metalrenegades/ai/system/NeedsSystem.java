@@ -33,7 +33,7 @@ public class NeedsSystem extends BaseComponentSystem implements UpdateSubscriber
     /**
      * Time in seconds required between need checks.
      */
-    private static final int NEEDS_CHECK_DELAY = 60;
+    private static final int NEEDS_CHECK_DELAY = 30;
 
     /**
      * The time since last need check.
@@ -53,6 +53,7 @@ public class NeedsSystem extends BaseComponentSystem implements UpdateSubscriber
 
                 needsComponent.foodValue -= needsComponent.foodReductionRate;
                 needsComponent.thirstValue -= needsComponent.thirstReductionRate;
+                needsComponent.socialValue -= needsComponent.socialReductionRate;
                 entity.saveComponent(needsComponent);
             }
 

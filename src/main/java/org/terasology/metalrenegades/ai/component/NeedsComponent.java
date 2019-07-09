@@ -62,4 +62,23 @@ public class NeedsComponent implements Component {
      */
     public float thirstValue = 20;
 
+    /**
+     * The maximum social value that this character can have.
+     */
+    public float maxSocialCapacity = 30f;
+
+    /**
+     * The rate of reduction of social value, in social unit per second.
+     */
+    public float socialReductionRate = 2f;
+
+    /**
+     * The social minimum, when socialValue slips below this value a particular behavior is initiated.
+     */
+    public float socialGoal = 15f;
+
+    /**
+     * The current social value of this citizen.
+     */
+    public float socialValue = 30f;
 }

@@ -1,0 +1,17 @@
+{
+    sequence: [
+        {
+            animation: {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            sequence: [
+                search_social_partner,
+                { lookup: {tree: "Behaviors:follow" }},
+                social_fulfillment
+            ]
+        }
+    ]
+}

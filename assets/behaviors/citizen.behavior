@@ -23,6 +23,17 @@
                             }
                         }
                     }
+                },
+                {
+                    guard: {
+                        componentPresent: "MetalRenegades:Needs",
+                        values: ["F socialValue < socialGoal"],
+                        child: {
+                            lookup: {
+                                tree: "MetalRenegades:findSocial"
+                            }
+                        }
+                    }
                 }
             ]
         },
