@@ -28,7 +28,7 @@ public class NeedsComponent implements Component {
     public float maxFoodCapacity = 20;
 
     /**
-     * The rate of reduction of food value, in food unit per second.
+     * The rate of reduction of food value, in food unit per needs check.
      */
     public float foodReductionRate = 1f;
 
@@ -48,7 +48,7 @@ public class NeedsComponent implements Component {
     public float maxThirstCapacity = 20;
 
     /**
-     * The rate of reduction of thirst value, in thirst unit per second.
+     * The rate of reduction of thirst value, in thirst unit per needs check.
      */
     public float thirstReductionRate = 2f;
 
@@ -63,12 +63,32 @@ public class NeedsComponent implements Component {
     public float thirstValue = 20;
 
     /**
+     * The maximum rest value that this character can have.
+     */
+    public float maxRestCapacity = 50f;
+
+    /**
+     * The rate of reduction of rest value, in rest unit per needs check.
+     */
+    public float restReductionRate = 1f;
+
+    /**
+     * The rest minimum, when restValue slips below this value a particular behavior is initiated.
+     */
+    public float restGoal = 20f;
+
+    /**
+     * The current rest value of this citizen.
+     */
+    public float restValue = 50f;
+
+    /**
      * The maximum social value that this character can have.
      */
     public float maxSocialCapacity = 30f;
 
     /**
-     * The rate of reduction of social value, in social unit per second.
+     * The rate of reduction of social value, in social unit per needs check.
      */
     public float socialReductionRate = 2f;
 

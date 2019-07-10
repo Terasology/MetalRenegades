@@ -9,6 +9,7 @@
     },
     "PotentialHome": {
         "maxCitizens": 2
-    }
+    },
+    "RestSource": {}
 }
 

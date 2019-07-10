@@ -1,0 +1,18 @@
+{
+    sequence: [
+        {
+            animation: {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            sequence: [
+                set_target_rest_source,
+                move_to,
+                {sleep:  {time:  60}},
+                citizen_rested
+            ]
+        }
+    ]
+}
