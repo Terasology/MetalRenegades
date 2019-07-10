@@ -42,7 +42,7 @@
         ]
     },
     "Behavior": {
-        "tree": "Behaviors:stray"
+        "tree": "MetalRenegades:neutralCitizen"
     },
     "Stand": {
         "animationPool": [

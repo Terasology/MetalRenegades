@@ -42,7 +42,7 @@
         ]
     },
     "Behavior": {
-        "tree": "Behaviors:scaredCritter"
+        "tree": "MetalRenegades:scaredCitizen"
     },
     "Stand": {
         "animationPool": [
