@@ -22,6 +22,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
+import org.terasology.wildAnimals.AnimalSpawnConfig;
 import org.terasology.wildAnimals.system.WildAnimalsSpawnSystem;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
@@ -48,7 +49,7 @@ public class AnimalSpawnSystem extends BaseComponentSystem {
     public void initialise() {
         spawnSystem.setSpawnCondition(this::isValidSpawnPosition);
 
-        WildAnimalsSpawnSystem.Configuration configuration = new WildAnimalsSpawnSystem.Configuration();
+        AnimalSpawnConfig configuration = new AnimalSpawnConfig();
         configuration.SPAWN_CHANCE_IN_PERCENT = 2;
         configuration.MAX_DEER_GROUP_SIZE = 5;
         configuration.MIN_DEER_GROUP_SIZE = 2;
