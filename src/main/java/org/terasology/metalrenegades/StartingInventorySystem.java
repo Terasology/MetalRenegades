@@ -43,11 +43,11 @@ public class StartingInventorySystem extends BaseComponentSystem {
     @In
     private CombatStartingInventory combatStartingInventory;
 
+    private final int numBullets = 32;
+    private final int numTorches = 99;
+
     @Override
     public void postBegin() {
-        int numTorches = 99;
-        int numBullets = 32;
-
         BlockItemFactory blockItemFactory = new BlockItemFactory(entityManager);
         Set<EntityRef> items = new HashSet<>();
 
