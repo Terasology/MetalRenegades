@@ -38,7 +38,8 @@ import java.util.Collection;
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
-    private static final int SPAWN_CHECK_DELAY = 90;
+    private static final int SPAWN_CHECK_DELAY = 30;
+    private static final int VERTICAL_SPAWN_OFFSET = 2;
 
     private float spawnTimer;
 
@@ -92,7 +93,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
         HomeComponent homeComponent = new HomeComponent();
 
         homeComponent.building = homeEntity;
-        citizenLocationComponent.setWorldPosition(homeLocationComponent.getWorldPosition());
+        citizenLocationComponent.setWorldPosition(homeLocationComponent.getWorldPosition().addY(VERTICAL_SPAWN_OFFSET));
 
         entityBuilder.addComponent(homeComponent);
         entityBuilder.saveComponent(citizenLocationComponent);

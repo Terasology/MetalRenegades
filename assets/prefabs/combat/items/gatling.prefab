@@ -1,0 +1,18 @@
+{
+    "parent": "MetalRenegades:weapon",
+    "DisplayName": {
+        "name": "Gatling Gun"
+    },
+    "Item": {
+        "icon": "MetalRenegades:gatling",
+        "usage": "IN_DIRECTION",
+        "cooldownTime": 100
+    },
+    "LaunchEntity": {
+
+    },
+    "Inventory": {
+        "itemSlots" : [0]
+    },
+    "RenderItemIconMesh": {}
+}

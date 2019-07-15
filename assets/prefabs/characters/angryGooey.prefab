@@ -42,7 +42,7 @@
         ]
     },
     "Behavior": {
-        "tree": "Behaviors:hostileCritter"
+        "tree": "MetalRenegades:angryCitizen"
     },
     "Stand": {
         "animationPool": [
