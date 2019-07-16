@@ -8,9 +8,17 @@
         },
         {
             sequence: [
-                set_target_water_source,
+                {
+                    set_target_component: {
+                        needType: "WATER"
+                    }
+                },
                 move_to,
-                quench_thirst
+                {
+                    fulfill_need: {
+                        needType: "WATER"
+                    }
+                }
             ]
         }
     ]

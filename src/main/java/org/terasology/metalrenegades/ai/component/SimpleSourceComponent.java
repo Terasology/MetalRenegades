@@ -16,7 +16,13 @@
 package org.terasology.metalrenegades.ai.component;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.metalrenegades.ai.CitizenNeed;
 
-public class WaterSourceComponent implements Component {
+/**
+ * Inidicates an entity that can act as a simple need source.
+ */
+public class SimpleSourceComponent implements Component {
+
+    public CitizenNeed.Type needType;
 
 }

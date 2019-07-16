@@ -10,7 +10,11 @@
             sequence: [
                 search_social_partner,
                 { lookup: {tree: "Behaviors:follow" }},
-                social_fulfillment
+                {
+                    fulfill_need: {
+                        needType: "SOCIAL"
+                    }
+                }
             ]
         }
     ]

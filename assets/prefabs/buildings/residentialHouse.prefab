@@ -10,6 +10,7 @@
     "PotentialHome": {
         "maxCitizens": 2
     },
-    "RestSource": {}
+    "SimpleSource": {
+        "needType": "REST"
+    }
 }
-

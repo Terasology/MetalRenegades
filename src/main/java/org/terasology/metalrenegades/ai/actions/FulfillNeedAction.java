@@ -19,15 +19,23 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 
-@BehaviorAction(name = "quench_thirst")
-public class QuenchThirstAction extends BaseAction {
+/**
+ * Restores the need value of a provided need type.
+ */
+@BehaviorAction(name = "fulfill_need")
+public class FulfillNeedAction extends BaseAction {
+
+    private String needType;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
+        CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
+
         NeedsComponent needsComponent = actor.getComponent(NeedsComponent.class);
-        needsComponent.thirstValue = needsComponent.maxThirstCapacity;
+        needsComponent.needs.get(needTypeValue).restoreNeed();
 
         actor.save(needsComponent);
 

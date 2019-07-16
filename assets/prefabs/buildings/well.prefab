@@ -7,5 +7,7 @@
         "maxSize": [7, 7],
         "isEntity": true
     },
-    "WaterSource": {}
+    "SimpleSource": {
+        "needType": "WATER"
+    }
 }

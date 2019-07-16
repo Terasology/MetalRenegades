@@ -21,6 +21,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.registry.In;
 
@@ -51,10 +52,8 @@ public class NeedsSystem extends BaseComponentSystem implements UpdateSubscriber
             for (EntityRef entity : entityManager.getEntitiesWith(NeedsComponent.class)) {
                 NeedsComponent needsComponent = entity.getComponent(NeedsComponent.class);
 
-                needsComponent.foodValue -= needsComponent.foodReductionRate;
-                needsComponent.thirstValue -= needsComponent.thirstReductionRate;
-                needsComponent.socialValue -= needsComponent.socialReductionRate;
-                needsComponent.restValue -= needsComponent.restReductionRate;
+                needsComponent.needs.forEach((k, v) -> v.runNeedCycle());
+
                 entity.saveComponent(needsComponent);
             }
 

@@ -19,22 +19,25 @@ import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 
 /**
- * Restores the rest value of a citizen to maximum.
+ * Checks the current status of a provided need type. Succeeds if action is needed to relieve this need, fails otherwise.
  */
-@BehaviorAction(name = "citizen_rested")
-public class RestedAction extends BaseAction {
+@BehaviorAction(name = "check_need")
+public class CheckNeedAction extends BaseAction {
+
+    private String needType;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
+        CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
+
         NeedsComponent needsComponent = actor.getComponent(NeedsComponent.class);
-        needsComponent.restValue = needsComponent.maxRestCapacity;
+        CitizenNeed currentNeed = needsComponent.needs.get(needTypeValue);
 
-        actor.save(needsComponent);
-
-        return BehaviorState.SUCCESS;
+        return currentNeed.isBelowGoal() ? BehaviorState.SUCCESS : BehaviorState.FAILURE;
     }
 
 }

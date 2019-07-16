@@ -8,10 +8,18 @@
         },
         {
             sequence: [
-                set_target_rest_source,
+                {
+                    set_target_component: {
+                        needType: "REST"
+                    }
+                },
                 move_to,
                 {sleep:  {time:  60}},
-                citizen_rested
+                {
+                    fulfill_need: {
+                        needType: "REST"
+                    }
+                }
             ]
         }
     ]

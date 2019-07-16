@@ -23,27 +23,32 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.metalrenegades.ai.component.RestSourceComponent;
+import org.terasology.metalrenegades.ai.CitizenNeed;
+import org.terasology.metalrenegades.ai.component.SimpleSourceComponent;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.registry.In;
 
 /**
- * Sets this citizen's target to the nearest rest source, defined with a {@link RestSourceComponent}.
+ * Sets the character's target to a source which fulfills the specified need type.
  */
-@BehaviorAction(name = "set_target_rest_source")
-public class RestTargetAction extends BaseAction {
+@BehaviorAction(name = "set_target_source")
+public class SimpleComponentTargetAction extends BaseAction {
 
     @In
     private EntityManager entityManager;
 
+    private String needType;
+
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        Vector3f closestLocation = new Vector3f(300, 300, 300);
+        CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
+
+        Vector3f closestLocation = new Vector3f(1000, 1000, 1000);
         Vector3f characterLocation = actor.getComponent(LocationComponent.class).getWorldPosition();
 
-        for (EntityRef source : entityManager.getEntitiesWith(RestSourceComponent.class)) {
+        for (EntityRef source : entityManager.getEntitiesWith(SimpleSourceComponent.class)) {
             LocationComponent sourceLocationComponent = source.getComponent(LocationComponent.class);
-            if (sourceLocationComponent == null) {
+            if (sourceLocationComponent == null || !source.getComponent(SimpleSourceComponent.class).needType.equals(needTypeValue)) {
                 continue;
             }
 
@@ -52,7 +57,7 @@ public class RestTargetAction extends BaseAction {
             }
         }
 
-        if(closestLocation.equals(new Vector3f(300, 300, 300))) {
+        if(closestLocation.equals(new Vector3f(1000, 1000, 1000))) {
             return BehaviorState.FAILURE;
         }
 

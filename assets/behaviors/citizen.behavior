@@ -3,58 +3,60 @@
         {
             selector: [
                 {
-                    guard: {
-                        componentPresent: "MetalRenegades:Needs",
-                        values: ["F foodValue < foodGoal"],
-                        child: {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "FOOD"
+                            }
+                        },
+                        {
                             lookup: {
                                 tree: "MetalRenegades:findFood"
                             }
                         }
-                    }
+                    ]
                 },
                 {
-                    guard: {
-                        componentPresent: "MetalRenegades:Needs",
-                        values: ["F thirstValue < thirstGoal"],
-                        child: {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "WATER"
+                            }
+                        },
+                        {
                             lookup: {
                                 tree: "MetalRenegades:findWater"
                             }
                         }
-                    }
+                    ]
                 },
                 {
-                    guard: {
-                        componentPresent: "MetalRenegades:Needs",
-                        values: ["F socialValue < socialGoal"],
-                        child: {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "SOCIAL"
+                            }
+                        },
+                        {
                             lookup: {
                                 tree: "MetalRenegades:findSocial"
                             }
                         }
-                    }
+                    ]
                 },
                 {
-                    guard: {
-                        componentPresent: "MetalRenegades:Needs",
-                        values: ["F restValue < restGoal"],
-                        child: {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "REST"
+                            }
+                        },
+                        {
                             lookup: {
                                 tree: "MetalRenegades:findRest"
                             }
                         }
-                    }
-                }
-            ]
-        },
-        {
-            sequence: [
-                check_nighttime,
-                {
-                    lookup: {
-                        tree: "MetalRenegades:returnHome"
-                    }
+                    ]
                 }
             ]
         },

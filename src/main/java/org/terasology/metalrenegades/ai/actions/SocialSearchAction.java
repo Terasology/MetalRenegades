@@ -24,6 +24,7 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.registry.In;
 
@@ -50,7 +51,7 @@ public class SocialSearchAction extends BaseAction {
             NeedsComponent otherNeedsComponent = other.getComponent(NeedsComponent.class);
             LocationComponent otherLocationComponent = other.getComponent(LocationComponent.class);
 
-            if (otherLocationComponent == null || otherNeedsComponent.socialValue > otherNeedsComponent.socialGoal || other.hasComponent(FollowComponent.class)) {
+            if (otherLocationComponent == null || otherNeedsComponent.needs.get(CitizenNeed.Type.SOCIAL).isBelowGoal() || other.hasComponent(FollowComponent.class)) {
                 continue;
             }
 

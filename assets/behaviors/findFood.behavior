@@ -8,9 +8,17 @@
         },
         {
             sequence: [
-                set_target_food_source,
+                {
+                    set_target_component: {
+                        needType: "FOOD"
+                    }
+                },
                 move_to,
-                replenish_food
+                {
+                    fulfill_need: {
+                        needType: "FOOD"
+                    }
+                }
             ]
         }
     ]
