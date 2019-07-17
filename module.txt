@@ -1,9 +1,9 @@
 {
     "id" : "MetalRenegades",
     "version" : "0.1.0-SNAPSHOT",
-    "author" : "",
+    "author" : "Wabadump & AndyTechGuy",
     "displayName" : "MetalRenegades",
-    "description" : "",
+    "description" : "A harsh western world with a robotic twist. This is currently a work-in-progress GSOC project for 2019.",
     "dependencies" : [
         {"id" : "Core", "minVersion" : "2.0.0"},
         {"id" : "OreGeneration", "minVersion" : "1.0.0"},
