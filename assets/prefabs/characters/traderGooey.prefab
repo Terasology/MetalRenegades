@@ -1,0 +1,46 @@
+{
+    "displayName": {
+        "name": "trader"
+    },
+    "persisted": true,
+    "skeletalmesh" : {
+        "mesh" : "MetalRenegades:gooey",
+        "heightOffset" : -0.8,
+        "material" : "MetalRenegades:traderGooey",
+        "animation" : "gooeyIdleBreathing",
+        "loop" : true,
+        "scale": [
+            0.25,
+            0.25,
+            0.25
+        ]
+    },
+    "Behavior" : {
+        "tree" : "Behaviors:stray"
+    },
+    "Stand" :{
+        "animationPool": ["gooeyIdleBreathing"]
+    },
+    "Walk" :{
+        "animationPool": ["gooeyIdleBreathing"]
+    },
+    "location": {},
+    "Character": {},
+    "AliveCharacter": {},
+    "Network": {},
+    "MinionMove": {},
+    "BoxShape": {
+        "extents": [
+            1.0,
+            1.0,
+            1.0
+        ]
+    },
+    "Trigger": {
+        "detectGroups": [
+            "engine:debris",
+            "engine:sensor"
+        ]
+    },
+    "Resident": {}
+}
