@@ -19,8 +19,6 @@ package org.terasology.metalrenegades.economy.systems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
-import org.terasology.dialogs.components.DialogComponent;
-import org.terasology.dialogs.components.DialogPage;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
 import org.terasology.dynamicCities.playerTracking.PlayerTracker;
@@ -39,17 +37,10 @@ import org.terasology.economy.systems.MarketLogisticSystem;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.common.DisplayNameComponent;
-import org.terasology.metalrenegades.economy.events.MarketScreenRequestEvent;
 import org.terasology.registry.In;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @RegisterSystem
 public class MarketManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -91,38 +82,10 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
         entityRef.send(new SubscriberRegistrationEvent());
     }
 
-    @ReceiveEvent
-    public void onMarketScreenAction(MarketScreenRequestEvent event, EntityRef entityRef) {
-        EntityRef market = entityManager.getEntity(event.market);
-        DialogComponent dialogComponent = entityRef.getComponent(DialogComponent.class);
-        ResourceInfoRequestEvent resourceInfoRequestEvent = new ResourceInfoRequestEvent();
-        Map<String, Integer> resources;
-        market.send(resourceInfoRequestEvent);
-
-        if (resourceInfoRequestEvent.isHandled) {
-            resources = resourceInfoRequestEvent.resources;
-        } else {
-            logger.error("Could not retrieve resource information.");
-            return;
-        }
-        List<String> paragraphText = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : resources.entrySet()) {
-            Prefab itemPrefab = entityManager.getPrefabManager().getPrefab(entry.getKey());
-            if (itemPrefab != null && itemPrefab.hasComponent(DisplayNameComponent.class)) {
-                DisplayNameComponent displayNameComponent = itemPrefab.getComponent(DisplayNameComponent.class);
-                paragraphText.add(displayNameComponent.name + ": " + entry.getValue() + "x");
-            } else {
-                paragraphText.add(entry.getKey() + ": " + entry.getValue() + "x");
-            }
-        }
-        DialogPage dialogPage = dialogComponent.getPage("WARES");
-        dialogPage.paragraphText = paragraphText;
-    }
-
     @Override
     public void update(float delta) {
         if (counter != 0) {
-            counter --;
+            counter--;
             return;
         }
 

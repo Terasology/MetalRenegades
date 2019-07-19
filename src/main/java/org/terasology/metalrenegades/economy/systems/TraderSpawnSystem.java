@@ -36,7 +36,6 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.metalrenegades.economy.actions.ShowDialogAction;
 import org.terasology.metalrenegades.economy.actions.ShowMarketScreenAction;
 import org.terasology.registry.In;
 import org.terasology.utilities.Assets;
@@ -71,40 +70,34 @@ public class TraderSpawnSystem extends BaseComponentSystem {
                 DialogComponent dialogComponent = new DialogComponent();
                 dialogComponent.pages = new ArrayList<>();
 
-                DialogPage dialogPage1 = new DialogPage();
-                dialogPage1.paragraphText = new ArrayList<>();
-                dialogPage1.responses = new ArrayList<>();
+                DialogPage mainPage = new DialogPage();
+                mainPage.paragraphText = new ArrayList<>();
+                mainPage.responses = new ArrayList<>();
 
-                DialogPage dialogPage2 = new DialogPage();
-                dialogPage2.responses = new ArrayList<>();
+                DialogResponse buyResponse = new DialogResponse();
+                buyResponse.action = new ArrayList<>();
+                buyResponse.action.add(new ShowMarketScreenAction(marketComponent.market.getId()));
+                buyResponse.text = "Buy";
 
-                DialogResponse dialogResponse1 = new DialogResponse();
-                dialogResponse1.action = new ArrayList<>();
+                DialogResponse sellResponse = new DialogResponse();
+                sellResponse.action = new ArrayList<>();
+                sellResponse.action.add(new ShowMarketScreenAction(marketComponent.market.getId()));
+                sellResponse.text = "Sell";
 
-                DialogResponse dialogResponse2 = new DialogResponse();
-                dialogResponse2.action = new ArrayList<>();
+                DialogResponse closeResponse = new DialogResponse();
+                closeResponse.action = new ArrayList<>();
+                closeResponse.action.add(new CloseDialogAction());
+                closeResponse.text = "Close";
 
+                mainPage.id = "MainPage";
+                mainPage.paragraphText.add("Need anything?");
+                mainPage.title = "Welcome to the market";
+                mainPage.responses.add(buyResponse);
+                mainPage.responses.add(sellResponse);
+                mainPage.responses.add(closeResponse);
 
-
-                dialogPage1.id = "MainScreen";
-                dialogPage1.paragraphText.add("What would you like to talk about?");
-                dialogPage1.title = "Welcome to the market";
-                dialogPage1.responses.add(dialogResponse1);
-
-                dialogPage2.title = "Wares";
-                dialogPage2.id = "WARES";
-                dialogPage2.responses.add(dialogResponse2);
-
-                dialogResponse1.action.add(new ShowMarketScreenAction(marketComponent.market.getId()));
-                dialogResponse1.action.add(new ShowDialogAction(dialogPage2.id));
-                dialogResponse1.text = "Show me what you got!";
-
-                dialogResponse2.action.add(new CloseDialogAction());
-                dialogResponse2.text = "Goodbye";
-
-                dialogComponent.pages.add(dialogPage1);
-                dialogComponent.pages.add(dialogPage2);
-                dialogComponent.firstPage = dialogPage1.id;
+                dialogComponent.pages.add(mainPage);
+                dialogComponent.firstPage = mainPage.id;
                 trader.addComponent(dialogComponent);
             }
         }

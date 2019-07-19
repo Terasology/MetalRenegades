@@ -15,33 +15,60 @@
  */
 package org.terasology.metalrenegades.economy.ui;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
-import org.terasology.rendering.nui.NUIManager;
-import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
-import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
+import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
+import org.terasology.rendering.nui.widgets.UIList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MarketScreen extends CoreScreenLayer {
 
     @In
     private LocalPlayer localPlayer;
 
+    private UIList<String> items;
+
+    private Logger logger = LoggerFactory.getLogger(MarketScreen.class);
+
     @Override
     public void initialise() {
-        InventoryGrid inventory = find("inventory", InventoryGrid.class);
-        inventory.bindTargetEntity(new ReadOnlyBinding<EntityRef>() {
-            @Override
-            public EntityRef get() {
-                return localPlayer.getCharacterEntity();
-            }
-        });
-        inventory.setCellOffset(10);
+        items = find("itemList", UIList.class);
+        if (items != null) {
+            items.setList(new ArrayList<>());
+
+            items.setItemRenderer(new StringTextRenderer<String>() {
+                @Override
+                public String getString(String value) {
+                    return value;
+                }
+            });
+
+            items.subscribeSelection(((widget, item) -> handleItemSelection(item)));
+        }
     }
 
     @Override
     public boolean isModal() {
         return true;
+    }
+
+    public void setItemList(Map<String, Integer> resources) {
+        List<String> itemList = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> entry : resources.entrySet()) {
+            itemList.add(entry.getKey());
+        }
+
+        items.setList(itemList);
+    }
+
+    private void handleItemSelection(String a) {
+        logger.info("Selected item: {}", a);
     }
 }

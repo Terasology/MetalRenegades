@@ -15,42 +15,26 @@
  */
 package org.terasology.metalrenegades.economy.systems;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.economy.events.UpdateWalletEvent;
 import org.terasology.economy.systems.WalletSystem;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.delay.DelayManager;
 import org.terasology.registry.In;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class CurrencyManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
-    private final int COOLDOWN = 100;
-    private final String UPDATE_WALLET = "update_wallet";
+    private final int COOLDOWN = 500;
 
     private int counter = COOLDOWN;
 
     @In
     private WalletSystem walletSystem;
 
-//    @In
-//    private DelayManager delayManager;
-//
-//    @Override
-//    public void initialise() {
-//        delayManager.addPeriodicAction(walletSystem.wallet, UPDATE_WALLET, 1000, 3000);
-//    }
-
-//    private Logger logger = LoggerFactory.getLogger(CurrencyManagementSystem.class);
-
     @Override
     public void update(float delta) {
-//        logger.info("Adding money to wallet ...");
         if (counter == 0) {
-//            logger.info("\n\n ADDING MONEY TO WALLET\n\n");
             walletSystem.wallet.send(new UpdateWalletEvent(20));
             counter = COOLDOWN;
         } else {
