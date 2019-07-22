@@ -24,6 +24,7 @@ import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.dynamicCities.region.RegionEntityProvider;
 import org.terasology.dynamicCities.region.ResourceProvider;
 import org.terasology.dynamicCities.region.RoughnessProvider;
+import org.terasology.dynamicCities.settlements.SettlementFacetProvider;
 import org.terasology.dynamicCities.sites.SiteFacetProvider;
 import org.terasology.dynamicCities.world.SolidRasterizer;
 import org.terasology.dynamicCities.world.TreeRasterizer;
@@ -62,6 +63,7 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new ResourceProvider())
                 .addProvider(new RoughnessProvider())
                 .addProvider(new SiteFacetProvider())
+                .addProvider(new SettlementFacetProvider())
                 .addEntities(new RegionEntityProvider())
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())

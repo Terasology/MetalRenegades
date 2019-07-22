@@ -31,7 +31,7 @@ import org.terasology.registry.In;
 /**
  * Sets the character's target to a source which fulfills the specified need type.
  */
-@BehaviorAction(name = "set_target_source")
+@BehaviorAction(name = "set_target_component")
 public class SimpleComponentTargetAction extends BaseAction {
 
     @In

@@ -1,0 +1,30 @@
+{
+    "Location" : {},
+    "Mass" : {
+        "velocity" : [0, 0, 0]
+    },
+    "BoxShape" : {
+        "extents" : [0.5, 0.5, 1]
+    },
+    "Mesh" : {
+        "mesh" : "MetalRenegades:bullet",
+        "material" : "MetalRenegades:bullet"
+    },
+    "Network" : {
+        "replicateMode" : "RELEVANT"
+    },
+    "Gravity" : {
+        "gravityAccel" : [0, 0, 0]
+    },
+    "Hurting" : {
+        "amount" : 20
+    },
+    "CritDamage" : {
+        "critChance" : 2,
+        "critFactor" : 2
+    },
+    "Stick" :  {
+        "totalStickingTime" : 0
+    },
+    "Arrow" : {}
+}

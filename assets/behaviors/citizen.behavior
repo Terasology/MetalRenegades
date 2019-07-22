@@ -61,6 +61,16 @@
             ]
         },
         {
+            sequence: [
+                check_nighttime,
+                {
+                    lookup: {
+                        tree: "MetalRenegades:returnHome"
+                    }
+                }
+            ]
+        },
+        {
             lookup: {
                 tree: "Behaviors:stray"
             }

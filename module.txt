@@ -11,7 +11,11 @@
         {"id" : "Behaviors", "minVersion" : "0.2.0"},
         {"id" : "Fences", "minVersion" : "0.1.1" },
         {"id" : "Rails", "minVersion" : "0.4.0"},
-        {"id" : "AdvancedRails", "minVersion" : "0.1.0"}
+        {"id" : "AdvancedRails", "minVersion" : "0.1.0"},
+        {"id" : "CombatSystem", "minVersion" : "0.1.1"},
+        {"id" : "WildAnimals", "minVersion" : "0.2.0"}
     ],
-    "serverSideOnly" : false
+    "serverSideOnly" : false,
+    "isGameplay" : true,
+    "defaultWorldGenerator" : "MetalRenegades:dynamicWorld"
 }
