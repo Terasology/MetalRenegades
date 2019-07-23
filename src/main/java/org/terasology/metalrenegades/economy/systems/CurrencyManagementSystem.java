@@ -22,7 +22,9 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.registry.In;
+import org.terasology.registry.Share;
 
+@Share(CurrencyManagementSystem.class)
 @RegisterSystem(RegisterMode.CLIENT)
 public class CurrencyManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
     private final int COOLDOWN = 500;
@@ -40,5 +42,13 @@ public class CurrencyManagementSystem extends BaseComponentSystem implements Upd
         } else {
             counter--;
         }
+    }
+
+    public void changeWallet(int delta) {
+        walletSystem.wallet.send(new UpdateWalletEvent(delta));
+    }
+
+    public boolean isValidTransaction(int delta) {
+        return walletSystem.isValidTransaction(delta);
     }
 }

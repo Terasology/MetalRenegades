@@ -26,12 +26,21 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.interactions.InteractionUtil;
+import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.metalrenegades.economy.events.MarketScreenRequestEvent;
+import org.terasology.metalrenegades.economy.events.TransactionType;
+import org.terasology.metalrenegades.economy.systems.CurrencyManagementSystem;
 import org.terasology.registry.In;
+import org.terasology.registry.Share;
 import org.terasology.rendering.nui.NUIManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@Share(MarketUISystem.class)
 @RegisterSystem(RegisterMode.CLIENT)
 public class MarketUISystem extends BaseComponentSystem {
 
@@ -40,6 +49,15 @@ public class MarketUISystem extends BaseComponentSystem {
 
     @In
     private EntityManager entityManager;
+
+    @In
+    private CurrencyManagementSystem currencySystem;
+
+    @In
+    private InventoryManager inventoryManager;
+
+    @In
+    private LocalPlayer localPlayer;
 
     private Logger logger = LoggerFactory.getLogger(MarketUISystem.class);
 
@@ -62,18 +80,41 @@ public class MarketUISystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onMarketScreenAction(MarketScreenRequestEvent event, EntityRef entityRef) {
-        EntityRef market = entityManager.getEntity(event.market);
-        ResourceInfoRequestEvent resourceInfoRequestEvent = new ResourceInfoRequestEvent();
-        Map<String, Integer> resources;
-        market.send(resourceInfoRequestEvent);
+        List<MarketItem> marketItemList = new ArrayList<>();
 
-        if (resourceInfoRequestEvent.isHandled) {
-            resources = resourceInfoRequestEvent.resources;
+        if (event.type == TransactionType.BUYING) {
+            EntityRef market = entityManager.getEntity(event.market);
+            ResourceInfoRequestEvent resourceInfoRequestEvent = new ResourceInfoRequestEvent();
+            Map<String, Integer> resources;
+            market.send(resourceInfoRequestEvent);
+
+            if (resourceInfoRequestEvent.isHandled) {
+                resources = resourceInfoRequestEvent.resources;
+            } else {
+                logger.error("Could not retrieve resource information.");
+                return;
+            }
+
+            for (Map.Entry<String, Integer> entry : resources.entrySet()) {
+                MarketItem item = MarketItemBuilder.get(entry.getKey(), entry.getValue());
+                marketItemList.add(item);
+            }
+        } else if (event.type == TransactionType.SELLING){
+            EntityRef player = localPlayer.getCharacterEntity();
+            int slots = inventoryManager.getNumSlots(player);
+
+            for (int i = 0; i < slots; i++) {
+                EntityRef entity = inventoryManager.getItemInSlot(player, i);
+                if (entity.getParentPrefab() != null) {
+                    MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1); // TODO: 1?
+                    marketItemList.add(item);
+                }
+            }
         } else {
-            logger.error("Could not retrieve resource information.");
-            return;
+            logger.warn("TransactionType not recognised.");
         }
 
-        marketScreen.setItemList(resources);
+        marketScreen.setType(event.type);
+        marketScreen.setItemList(marketItemList);
     }
 }

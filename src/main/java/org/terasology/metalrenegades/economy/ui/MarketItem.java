@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.metalrenegades.economy.events;
+package org.terasology.metalrenegades.economy.ui;
 
+public class MarketItem {
+    public String name;
+    public String description;
+    public int cost;
+    public int quantity;
+    public boolean buyable;
+    public boolean sellable;
 
-
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.Event;
-
-public class MarketScreenRequestEvent implements Event{
-    public long market;
-    public EntityRef talkTo;
-    public TransactionType type;
-
-    public MarketScreenRequestEvent(long market, EntityRef talkTo, TransactionType type) {
-        this.market = market;
-        this.talkTo = talkTo;
-        this.type = type;
+    public MarketItem(String name, String description, int cost) {
+        this.name = name;
+        this.description = description;
+        this.cost = cost;
     }
 
-    public MarketScreenRequestEvent() {}
+    public MarketItem() {
+    }
+
 }

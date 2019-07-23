@@ -15,21 +15,7 @@
  */
 package org.terasology.metalrenegades.economy.events;
 
-
-
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.Event;
-
-public class MarketScreenRequestEvent implements Event{
-    public long market;
-    public EntityRef talkTo;
-    public TransactionType type;
-
-    public MarketScreenRequestEvent(long market, EntityRef talkTo, TransactionType type) {
-        this.market = market;
-        this.talkTo = talkTo;
-        this.type = type;
-    }
-
-    public MarketScreenRequestEvent() {}
+public enum TransactionType {
+    BUYING,
+    SELLING
 }

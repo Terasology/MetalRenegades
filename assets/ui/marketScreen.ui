@@ -56,6 +56,36 @@
                             }
                         },
                         {
+                            "type": "UILabel",
+                            "id": "cost",
+                            "text": "Cost",
+                            "layoutInfo": {
+                                "position-vertical-center": {
+                                    "offset": 175
+                                },
+                                "position-left": {},
+                                "use-content-width": true,
+                                "use-content-height": true
+                            }
+                        },
+                        {
+                            "type": "UILabel",
+                            "id": "quantity",
+                            "text": "In Stock",
+                            "layoutInfo": {
+                                "position-top": {
+                                    "target": "TOP",
+                                    "offset": 25
+                                },
+                                "position-vertical-center": {
+                                    "offset": 200
+                                },
+                                "position-left": {},
+                                "use-content-width": true,
+                                "use-content-height": true
+                            }
+                        },
+                        {
                             "type": "UIButton",
                             "id": "confirm",
                             "text": "Confirm",

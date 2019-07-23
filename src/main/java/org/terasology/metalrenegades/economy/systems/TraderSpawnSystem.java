@@ -37,6 +37,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.metalrenegades.economy.actions.ShowMarketScreenAction;
+import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.registry.In;
 import org.terasology.utilities.Assets;
 
@@ -76,12 +77,12 @@ public class TraderSpawnSystem extends BaseComponentSystem {
 
                 DialogResponse buyResponse = new DialogResponse();
                 buyResponse.action = new ArrayList<>();
-                buyResponse.action.add(new ShowMarketScreenAction(marketComponent.market.getId()));
+                buyResponse.action.add(new ShowMarketScreenAction(marketComponent.market.getId(), TransactionType.BUYING));
                 buyResponse.text = "Buy";
 
                 DialogResponse sellResponse = new DialogResponse();
                 sellResponse.action = new ArrayList<>();
-                sellResponse.action.add(new ShowMarketScreenAction(marketComponent.market.getId()));
+                sellResponse.action.add(new ShowMarketScreenAction(marketComponent.market.getId(), TransactionType.SELLING));
                 sellResponse.text = "Sell";
 
                 DialogResponse closeResponse = new DialogResponse();
