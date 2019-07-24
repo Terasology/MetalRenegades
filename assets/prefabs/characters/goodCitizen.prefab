@@ -1,13 +1,13 @@
 {
     "alwaysRelevant": true,
     "displayName": {
-        "name": "gooey"
+        "name": "goodCitizen"
     },
     "persisted": true,
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",
         "heightOffset": -2.0,
-        "material": "MetalRenegades:friendlyGooey",
+        "material": "MetalRenegades:goodCitizen",
         "animationPool": [
             "gooeyIdleBreathing",
             "gooeyIdleBreathing",
@@ -42,7 +42,7 @@
         ]
     },
     "Behavior": {
-        "tree": "MetalRenegades:friendlyCitizen"
+        "tree": "MetalRenegades:citizen"
     },
     "Stand": {
         "animationPool": [
@@ -77,10 +77,10 @@
             "gooeyIdleBreathing"
         ]
     },
-    "location": {},
+    "Location": {},
     "Character": {},
     "AliveCharacter": {},
-    "CharacterMovement": {
+    "CharacterMovement" : {
         "groundFriction": 16,
         "speedMultiplier": 0.3,
         "distanceBetweenFootsteps": 0.2,
@@ -105,8 +105,5 @@
             "engine:sensor"
         ]
     },
-    "FindNearbyPlayers": {
-        "maxDistance": 50
-    }
+    "Citizen": {}
 }
-

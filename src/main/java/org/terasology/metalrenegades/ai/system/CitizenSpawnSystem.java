@@ -25,7 +25,7 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.metalrenegades.ai.component.ResidentComponent;
+import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
 import org.terasology.registry.In;
@@ -33,10 +33,10 @@ import org.terasology.registry.In;
 import java.util.Collection;
 
 /**
- * Spawns new residents inside of available buildings with {@link PotentialHomeComponent}.
+ * Spawns new citizens inside of available buildings with {@link PotentialHomeComponent}.
  */
 @RegisterSystem(value = RegisterMode.AUTHORITY)
-public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
     private static final int SPAWN_CHECK_DELAY = 30;
     private static final int VERTICAL_SPAWN_OFFSET = 2;
@@ -56,16 +56,16 @@ public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSu
         if (spawnTimer > SPAWN_CHECK_DELAY) {
             for (EntityRef entity : entityManager.getEntitiesWith(PotentialHomeComponent.class)) {
                 PotentialHomeComponent potentialHomeComponent = entity.getComponent(PotentialHomeComponent.class);
-                if (potentialHomeComponent.residents.size() >= potentialHomeComponent.maxResidents) {
+                if (potentialHomeComponent.citizens.size() >= potentialHomeComponent.maxCitizens) {
                     continue;
                 }
 
-                EntityRef resident = spawnResident(entity);
-                if (resident == null) { // if no entity was generated.
+                EntityRef citizen = spawnCitizen(entity);
+                if (citizen == null) { // if no entity was generated.
                     continue;
                 }
 
-                potentialHomeComponent.residents.add(resident);
+                potentialHomeComponent.citizens.add(citizen);
 
                 entity.saveComponent(potentialHomeComponent);
             }
@@ -75,42 +75,42 @@ public class ResidentSpawnSystem extends BaseComponentSystem implements UpdateSu
     }
 
     /**
-     * Spawns a random resident inside the center of a provided building entity.
+     * Spawns a random citizen inside the center of a provided building entity.
      *
      * @param homeEntity The building entity to spawn inside.
-     * @return The new resident entity, or null if spawning is not possible.
+     * @return The new citizen entity, or null if spawning is not possible.
      */
-    private EntityRef spawnResident(EntityRef homeEntity) {
-        Prefab residentPrefab = chooseResidentPrefab();
-        if (residentPrefab == null) { // if no prefab is available.
+    private EntityRef spawnCitizen(EntityRef homeEntity) {
+        Prefab citizenPrefab = chooseCitizenPrefab();
+        if (citizenPrefab == null) { // if no prefab is available.
             return null;
         }
 
-        EntityBuilder entityBuilder = entityManager.newBuilder(chooseResidentPrefab());
+        EntityBuilder entityBuilder = entityManager.newBuilder(chooseCitizenPrefab());
 
         LocationComponent homeLocationComponent = homeEntity.getComponent(LocationComponent.class);
-        LocationComponent residentLocationComponent = entityBuilder.getComponent(LocationComponent.class);
+        LocationComponent citizenLocationComponent = entityBuilder.getComponent(LocationComponent.class);
         HomeComponent homeComponent = new HomeComponent();
 
         homeComponent.building = homeEntity;
-        residentLocationComponent.setWorldPosition(homeLocationComponent.getWorldPosition().addY(VERTICAL_SPAWN_OFFSET));
+        citizenLocationComponent.setWorldPosition(homeLocationComponent.getWorldPosition().addY(VERTICAL_SPAWN_OFFSET));
 
         entityBuilder.addComponent(homeComponent);
-        entityBuilder.saveComponent(residentLocationComponent);
+        entityBuilder.saveComponent(citizenLocationComponent);
 
         return entityBuilder.build();
     }
 
     /**
-     * Selects a random resident prefab from a collection of prefabs with {@link ResidentComponent}.
+     * Selects a random citizen prefab from a collection of prefabs with {@link CitizenComponent}.
      *
-     * @return A random resident prefab, or null if none are available.
+     * @return A random citizen prefab, or null if none are available.
      */
-    private Prefab chooseResidentPrefab() {
-        Collection<Prefab> residentList = prefabManager.listPrefabs(ResidentComponent.class);
+    private Prefab chooseCitizenPrefab() {
+        Collection<Prefab> citizenList = prefabManager.listPrefabs(CitizenComponent.class);
 
-        int i = (int) (Math.random() * residentList.size());
-        for (Prefab prefab: residentList) {
+        int i = (int) (Math.random() * citizenList.size());
+        for (Prefab prefab: citizenList) {
             if (i-- <= 0) {
                 return prefab;
             }
