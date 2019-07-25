@@ -31,12 +31,10 @@ import org.terasology.dynamicCities.settlements.events.SettlementRegisterEvent;
 import org.terasology.economy.components.InfiniteStorageComponent;
 import org.terasology.economy.components.MarketSubscriberComponent;
 import org.terasology.economy.components.MultiInvStorageComponent;
-import org.terasology.economy.events.ResourceDestructionEvent;
 import org.terasology.economy.events.ResourceDrawEvent;
 import org.terasology.economy.events.ResourceInfoRequestEvent;
 import org.terasology.economy.events.ResourceStoreEvent;
 import org.terasology.economy.events.SubscriberRegistrationEvent;
-import org.terasology.economy.handler.InfiniteStorageHandler;
 import org.terasology.economy.handler.MultiInvStorageHandler;
 import org.terasology.economy.systems.MarketLogisticSystem;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -176,7 +174,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
             return item;
         } else {
 
-            if (!tryItem(item.name)) {
+            if (!createItemOrBlock(item.name)) {
                 logger.warn("Failed to create entity");
                 return item;
             }
@@ -206,7 +204,10 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
     private MarketItem sell(MarketItem item) {
-        currencySystem.changeWallet(item.cost);
+        if (item.quantity <=0 || !destroyItemOrBlock(item.name)) {
+            logger.warn("Failed to create entity");
+            return item;
+        }
 
         Iterable<EntityRef> storageBuildings = entityManager.getEntitiesWith(MultiInvStorageComponent.class, SettlementRefComponent.class);
         for (EntityRef bldg : storageBuildings) {
@@ -216,25 +217,16 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
 
             SettlementRefComponent settlementRefComponent = bldg.getComponent(SettlementRefComponent.class);
             bldg.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
-            item.quantity++;
+            item.quantity--;
             break;
         }
 
-        try {
-            EntityRef entity = entityManager.create(item.name);
-            if (entity == EntityRef.NULL) {
-                entity = entityManager.create("core:coal");
-            }
-            inventoryManager.removeItem(localPlayer.getCharacterEntity(), EntityRef.NULL, entity, true, 1);
-        } catch (Exception e) {
-            logger.error("Could not create entity from {}. Exception: {}", item.name, e.getMessage());
-        }
-
+        currencySystem.changeWallet(item.cost);
         return item;
     }
 
 
-    private boolean tryItem(String name) {
+    private boolean createItemOrBlock(String name) {
         Set<ResourceUrn> matches = assetManager.resolve(name, Prefab.class);
 
         if (matches.size() == 1) {
@@ -255,5 +247,24 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
         }
 
         return false;
+    }
+
+    private boolean destroyItemOrBlock(String name) {
+        EntityRef player = localPlayer.getCharacterEntity();
+        EntityRef item = EntityRef.NULL;
+        try {
+            for (int i = 0; i < inventoryManager.getNumSlots(player); i++) {
+                EntityRef current = inventoryManager.getItemInSlot(player, i);
+                if (!EntityRef.NULL.equals(current) && name.equalsIgnoreCase(current.getParentPrefab().getName())) {
+                    item = current;
+                    break;
+                }
+            }
+            inventoryManager.removeItem(localPlayer.getCharacterEntity(), EntityRef.NULL, item, true, 1);
+        } catch (Exception e) {
+            logger.error("Could not create entity from {}. Exception: {}", name, e.getMessage());
+            return false;
+        }
+        return true;
     }
 }
