@@ -22,18 +22,18 @@ import org.terasology.entitySystem.entity.EntityRef;
 import java.util.List;
 
 /**
- * A component for buildings with the ability to spawn/provide shelter for residents.
+ * A component for buildings with the ability to spawn/provide shelter for citizens.
  */
 public class PotentialHomeComponent implements Component {
 
     /**
-     * The list of resident characters inside this home.
+     * The list of citizen characters inside this home.
      */
-    public List<EntityRef> residents = Lists.newArrayList();
+    public List<EntityRef> citizens = Lists.newArrayList();
 
     /**
-     * The maximum number of possible resident characters in this home.
+     * The maximum number of possible citizen characters in this home.
      */
-    public int maxResidents = 1;
+    public int maxCitizens;
 
 }
