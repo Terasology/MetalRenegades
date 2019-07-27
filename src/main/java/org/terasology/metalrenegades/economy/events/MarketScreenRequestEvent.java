@@ -15,11 +15,12 @@
  */
 package org.terasology.metalrenegades.economy.events;
 
-
-
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
 
+/**
+ * Fired when the market screen needs to be shown
+ */
 public class MarketScreenRequestEvent implements Event{
     public long market;
     public EntityRef talkTo;

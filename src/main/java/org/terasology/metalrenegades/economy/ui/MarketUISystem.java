@@ -40,6 +40,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Populates the market screen
+ */
 @Share(MarketUISystem.class)
 @RegisterSystem(RegisterMode.CLIENT)
 public class MarketUISystem extends BaseComponentSystem {

@@ -15,6 +15,9 @@
  */
 package org.terasology.metalrenegades.economy.events;
 
+/**
+ * Useful to separate the two marketplace UIs for buying and selling
+ */
 public enum TransactionType {
     BUYING,
     SELLING

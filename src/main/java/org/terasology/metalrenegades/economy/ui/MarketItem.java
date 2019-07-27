@@ -15,6 +15,9 @@
  */
 package org.terasology.metalrenegades.economy.ui;
 
+/**
+ * Data class holding all information about items bought or sold in the market
+ */
 public class MarketItem {
     public String name;
     public String description;

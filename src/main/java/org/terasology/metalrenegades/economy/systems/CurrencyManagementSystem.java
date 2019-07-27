@@ -24,6 +24,9 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 
+/**
+ * Handles modifications to the player's wallet. Gives the player some cash at regular intervals for now
+ */
 @Share(CurrencyManagementSystem.class)
 @RegisterSystem(RegisterMode.CLIENT)
 public class CurrencyManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -44,10 +47,19 @@ public class CurrencyManagementSystem extends BaseComponentSystem implements Upd
         }
     }
 
+    /**
+     * Change the amount in the wallet
+     * @param delta change in cash
+     */
     public void changeWallet(int delta) {
         walletSystem.wallet.send(new UpdateWalletEvent(delta));
     }
 
+    /**
+     * Checks if the player has enough money for the transaction
+     * @param delta cost of the item to be bought
+     * @return true if valid, false if not
+     */
     public boolean isValidTransaction(int delta) {
         return walletSystem.isValidTransaction(delta);
     }

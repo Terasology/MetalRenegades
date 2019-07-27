@@ -23,7 +23,7 @@ import org.terasology.metalrenegades.economy.events.TransactionType;
 
 
 /**
- *
+ * Fires up an event which brings up the market UI
  */
 public class ShowMarketScreenAction implements PlayerAction {
 

@@ -15,7 +15,6 @@
  */
 package org.terasology.metalrenegades.economy.systems;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.dialogs.action.CloseDialogAction;
@@ -44,6 +43,9 @@ import org.terasology.utilities.Assets;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * Spawns a trader in all markets
+ */
 @RegisterSystem
 public class TraderSpawnSystem extends BaseComponentSystem {
 

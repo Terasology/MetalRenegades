@@ -21,7 +21,7 @@ import org.terasology.dialogs.action.PlayerAction;
 import org.terasology.entitySystem.entity.EntityRef;
 
 /**
- *
+ * Calls an event which would bring up a specified dialog page
  */
 public class ShowDialogAction implements PlayerAction {
 

@@ -32,6 +32,9 @@ import org.terasology.rendering.nui.widgets.UIText;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UI for the marketplace
+ */
 public class MarketScreen extends CoreScreenLayer {
 
     @In

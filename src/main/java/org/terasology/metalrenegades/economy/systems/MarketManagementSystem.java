@@ -57,6 +57,9 @@ import org.terasology.world.block.entity.BlockCommands;
 
 import java.util.Set;
 
+/**
+ * Handles most core market features
+ */
 @Share(MarketManagementSystem.class)
 @RegisterSystem
 public class MarketManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -157,6 +160,13 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
 //
 //    }
 
+    /**
+     * Initiate a transaction and delegate to an appropriate method depending
+     * on the nature of the transaction
+     * @param item MarketItem to be bought/sold
+     * @param type TransactionType
+     * @return updated MarketItem
+     */
     public MarketItem handleTransaction(MarketItem item, TransactionType type) {
         if (type == TransactionType.BUYING) {
             return buy(item);
@@ -226,6 +236,11 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
 
+    /**
+     * Handles creating of actual inventory entity/block from the item bought
+     * @param name Name of the item bought
+     * @return Boolean indication whether the creating was a success or a failure
+     */
     private boolean createItemOrBlock(String name) {
         Set<ResourceUrn> matches = assetManager.resolve(name, Prefab.class);
 
@@ -249,6 +264,11 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
         return false;
     }
 
+    /**
+     * Handles removing entities/blocks from inventory when an item is sold
+     * @param name Name of the item sold
+     * @return Boolean indication whether the removal was a success or a failure
+     */
     private boolean destroyItemOrBlock(String name) {
         EntityRef player = localPlayer.getCharacterEntity();
         EntityRef item = EntityRef.NULL;

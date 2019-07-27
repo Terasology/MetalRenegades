@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Creates a MarketItem object based on the provided data
+ */
 public final class MarketItemBuilder {
 
     private static final String DEFAULT_ITEM = "default";
