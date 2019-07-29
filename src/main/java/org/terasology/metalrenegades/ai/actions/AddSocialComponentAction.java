@@ -15,31 +15,28 @@
  */
 package org.terasology.metalrenegades.ai.actions;
 
-import org.terasology.behaviors.components.FollowComponent;
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.metalrenegades.ai.CitizenNeed;
-import org.terasology.metalrenegades.ai.component.NeedsComponent;
+import org.terasology.metalrenegades.ai.component.SimpleSourceComponent;
+import org.terasology.registry.In;
 
 /**
- * Restores the need value of a provided need type.
+ * Adds a social component to this citizen, indicating that it is ready for a social meeting.
  */
-@BehaviorAction(name = "fulfill_need")
-public class FulfillNeedAction extends BaseAction {
+@BehaviorAction(name = "add_social_component")
+public class AddSocialComponentAction extends BaseAction {
 
-    private String needType;
+    @In
+    private EntityManager entityManager;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
-
-        NeedsComponent needsComponent = actor.getComponent(NeedsComponent.class);
-        needsComponent.needs.get(needTypeValue).restoreNeed();
-
-        actor.save(needsComponent);
-        actor.getEntity().removeComponent(FollowComponent.class);
+        SimpleSourceComponent socialSourceComponent = new SimpleSourceComponent(CitizenNeed.Type.SOCIAL);
+        actor.getEntity().addComponent(socialSourceComponent);
 
         return BehaviorState.SUCCESS;
     }

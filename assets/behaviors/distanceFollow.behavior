@@ -1,0 +1,30 @@
+{
+  sequence:[
+    {
+      animation : {
+        play: "engine:Walk.animationPool",
+        loop: "engine:Walk.animationPool"
+      }
+    },
+    {
+      set_speed : {
+        speedMultiplier: 0.4
+      }
+    },
+    {
+      parallel: [
+        {
+          loop: {
+            child: {
+              sequence: [
+                set_target_to_followed_entity,
+                { sleep: {time: 1}}
+              ]
+            }
+          }
+        },
+        move_to
+      ]
+    }
+  ]
+}

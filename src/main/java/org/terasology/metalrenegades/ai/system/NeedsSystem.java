@@ -17,6 +17,7 @@ package org.terasology.metalrenegades.ai.system;
 
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -24,40 +25,25 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.registry.In;
+import org.terasology.world.time.WorldTimeEvent;
 
 /**
  * Manages needs for all citizens with {@link NeedsComponent}.
  */
 @RegisterSystem(value = RegisterMode.AUTHORITY)
-public class NeedsSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
-
-    /**
-     * Time in seconds required between need checks.
-     */
-    private static final int NEEDS_CHECK_DELAY = 30;
-
-    /**
-     * The time since last need check.
-     */
-    private float checkTimer;
+public class NeedsSystem extends BaseComponentSystem {
 
     @In
     private EntityManager entityManager;
 
-    @Override
-    public void update(float delta) {
-        checkTimer += delta;
+    @ReceiveEvent
+    public void onWorldTimeEvent(WorldTimeEvent worldTimeEvent, EntityRef entityRef) {
+        for (EntityRef entity : entityManager.getEntitiesWith(NeedsComponent.class)) {
+            NeedsComponent needsComponent = entity.getComponent(NeedsComponent.class);
 
-        if (checkTimer > NEEDS_CHECK_DELAY) {
-            for (EntityRef entity : entityManager.getEntitiesWith(NeedsComponent.class)) {
-                NeedsComponent needsComponent = entity.getComponent(NeedsComponent.class);
+            needsComponent.needs.forEach((k, v) -> v.runNeedCycle());
 
-                needsComponent.needs.forEach((k, v) -> v.runNeedCycle());
-
-                entity.saveComponent(needsComponent);
-            }
-
-            checkTimer = 0;
+            entity.saveComponent(needsComponent);
         }
     }
 }

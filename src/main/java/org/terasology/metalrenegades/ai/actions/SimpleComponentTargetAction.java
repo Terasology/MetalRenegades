@@ -15,6 +15,9 @@
  */
 package org.terasology.metalrenegades.ai.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.behavior.BehaviorAction;
@@ -29,7 +32,7 @@ import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.registry.In;
 
 /**
- * Sets the character's target to a source which fulfills the specified need type.
+ * Sets the character's follow target to a source which fulfills the specified need type.
  */
 @BehaviorAction(name = "set_target_component")
 public class SimpleComponentTargetAction extends BaseAction {
@@ -37,33 +40,44 @@ public class SimpleComponentTargetAction extends BaseAction {
     @In
     private EntityManager entityManager;
 
+    /**
+     * The type of source that must be found, value set in the behavior tree.
+     */
     private String needType;
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
+        if(actor.getComponent(FollowComponent.class) != null) {
+            return BehaviorState.SUCCESS;
+        }
         CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
 
-        Vector3f closestLocation = new Vector3f(1000, 1000, 1000);
+        float maxDistanceSquared = Float.MAX_VALUE;
+        EntityRef closestSource = null;
         Vector3f characterLocation = actor.getComponent(LocationComponent.class).getWorldPosition();
 
         for (EntityRef source : entityManager.getEntitiesWith(SimpleSourceComponent.class)) {
             LocationComponent sourceLocationComponent = source.getComponent(LocationComponent.class);
-            if (sourceLocationComponent == null || !source.getComponent(SimpleSourceComponent.class).needType.equals(needTypeValue)) {
+            if (sourceLocationComponent == null ||
+                    source.equals(actor.getEntity()) || // needed for cases where this actor can itself be a source for other actors (social)
+                    !source.getComponent(SimpleSourceComponent.class).needType.equals(needTypeValue)) {
                 continue;
             }
 
-            if (sourceLocationComponent.getWorldPosition().distanceSquared(characterLocation) < closestLocation.distanceSquared(characterLocation)) {
-                closestLocation = sourceLocationComponent.getWorldPosition();
+            float sourceDistanceSquared = sourceLocationComponent.getWorldPosition().distanceSquared(characterLocation);
+            if (sourceDistanceSquared < maxDistanceSquared) {
+                maxDistanceSquared = sourceDistanceSquared;
+                closestSource = source;
             }
         }
 
-        if(closestLocation.equals(new Vector3f(1000, 1000, 1000))) {
-            return BehaviorState.FAILURE;
+        if (closestSource == null) {
+            return BehaviorState.RUNNING;
         }
 
-        MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
-        minionMoveComponent.target = closestLocation;
-        actor.save(minionMoveComponent);
+        FollowComponent followComponent = new FollowComponent();
+        followComponent.entityToFollow = closestSource;
+        actor.getEntity().addComponent(followComponent);
 
         return BehaviorState.SUCCESS;
     }

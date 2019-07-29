@@ -13,7 +13,7 @@
                         needType: "FOOD"
                     }
                 },
-                move_to,
+                { lookup: {tree: "MetalRenegades:distanceFollow" }},
                 {
                     fulfill_need: {
                         needType: "FOOD"

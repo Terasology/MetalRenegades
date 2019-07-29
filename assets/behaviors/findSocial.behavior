@@ -8,8 +8,22 @@
         },
         {
             sequence: [
-                search_social_partner,
-                { lookup: {tree: "Behaviors:follow" }},
+                {
+                    add_social_component: {}
+                },
+                {
+                    set_target_component: {
+                        needType: "SOCIAL"
+                    }
+                },
+                {
+                    prepare_meetup: {}
+                },
+                {
+                    lookup: {
+                        tree: "MetalRenegades:distanceFollow"
+                    }
+                },
                 {
                     fulfill_need: {
                         needType: "SOCIAL"
