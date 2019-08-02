@@ -17,7 +17,6 @@ package org.terasology.metalrenegades.economy.ui;
 
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
-import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
 import org.terasology.rendering.nui.widgets.UIButton;
@@ -105,7 +104,7 @@ public class TradingScreen extends CoreScreenLayer {
                     message = "Trade completed.";
                     tradingUISystem.refreshLists();
                 } else {
-                    message = "Trade failed. Try again";
+                    message = "Trade failed.";
                 }
             } else {
                 message = "Offer declined.";

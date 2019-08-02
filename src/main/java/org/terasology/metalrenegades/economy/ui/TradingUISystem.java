@@ -15,28 +15,31 @@
  */
 package org.terasology.metalrenegades.economy.ui;
 
-import net.logstash.logback.encoder.org.apache.commons.lang.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.assets.ResourceUrn;
+import org.terasology.assets.management.AssetManager;
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.interactions.InteractionUtil;
-import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.ItemComponent;
+import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.metalrenegades.economy.events.MarketScreenRequestEvent;
 import org.terasology.metalrenegades.economy.events.TradeScreenRequestEvent;
-import org.terasology.metalrenegades.economy.events.TransactionType;
-import org.terasology.protobuf.EntityData;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.rendering.nui.NUIManager;
-import org.terasology.segmentedpaths.controllers.SegmentMapping;
+import org.terasology.world.block.entity.BlockCommands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Share(TradingUISystem.class)
 @RegisterSystem(RegisterMode.CLIENT)
@@ -51,8 +54,19 @@ public class TradingUISystem extends BaseComponentSystem {
     @In
     private LocalPlayer localPlayer;
 
+    @In
+    private AssetManager assetManager;
+
+    @In
+    private EntityManager entityManager;
+
+    @In
+    private BlockCommands blockCommands;
+
     private TradingScreen tradingScreen;
     private EntityRef targetCitizen = EntityRef.NULL;
+
+    private Logger logger = LoggerFactory.getLogger(TradingUISystem.class);
 
     @Override
     public void initialise() {
@@ -75,7 +89,28 @@ public class TradingUISystem extends BaseComponentSystem {
         refreshLists();
     }
 
-    public boolean trade(MarketItem player, MarketItem citizen) {
+    public boolean trade(MarketItem pItem, MarketItem cItem) {
+        if (targetCitizen == EntityRef.NULL) {
+            return false;
+        }
+
+        try {
+            // remove item from citizen's inventory
+            remove(cItem, targetCitizen);
+
+            // add item to player's inventory
+            add(cItem, localPlayer.getCharacterEntity());
+
+            // remove item from player's inventory
+            remove(pItem, localPlayer.getCharacterEntity());
+
+            // add item to citizen's inventory
+            add(pItem, targetCitizen);
+        } catch (Exception e) {
+            logger.error("Trade failed. Exception: {}", e.getMessage());
+            return false;
+        }
+
         return true;
     }
 
@@ -117,5 +152,39 @@ public class TradingUISystem extends BaseComponentSystem {
         }
 
         tradingScreen.setPlayerItems(items);
+    }
+
+    private void remove(MarketItem item, EntityRef entity) {
+        EntityRef itemEntity = EntityRef.NULL;
+        for (int i = 0; i < inventoryManager.getNumSlots(entity); i++) {
+            EntityRef current = inventoryManager.getItemInSlot(entity, i);
+            if (current != EntityRef.NULL
+                    && item.name.equalsIgnoreCase(current.getParentPrefab().getName())) {
+                itemEntity = current;
+                break;
+            }
+        }
+        inventoryManager.removeItem(entity, EntityRef.NULL, itemEntity, true, 1);
+    }
+
+    private void add(MarketItem item, EntityRef entity) throws Exception {
+        Set<ResourceUrn> matches = assetManager.resolve(item.name, Prefab.class);
+
+        if (matches.size() == 1) {
+            Prefab prefab = assetManager.getAsset(matches.iterator().next(), Prefab.class).orElse(null);
+            if (prefab != null && prefab.getComponent(ItemComponent.class) != null) {
+                EntityRef itemEntity = entityManager.create(prefab);
+                if (itemEntity != EntityRef.NULL) {
+                    itemEntity.send(new GiveItemEvent(entity));
+                    return;
+                }
+            }
+        }
+
+        String message = blockCommands.giveBlock(entity, item.name, 1, null);
+        if (message == null) {
+            String error = "Could not add block " + item.name + " to inventory " + entity;
+            throw new Exception(error);
+        }
     }
 }
