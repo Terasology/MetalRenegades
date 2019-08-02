@@ -60,7 +60,7 @@ public class TraderSpawnSystem extends BaseComponentSystem {
         if (genericBuildingComponent.name.equals("marketplace")) {
             DynParcel dynParcel = entityRef.getComponent(DynParcelRefComponent.class).dynParcel;
 
-            Optional<Prefab> traderGooeyOptional = Assets.getPrefab("MetalRenegades:neutralGooey");
+            Optional<Prefab> traderGooeyOptional = Assets.getPrefab("MetalRenegades:goodCitizen");
             if (traderGooeyOptional.isPresent()) {
                 Rect2i rect2i = dynParcel.shape;
                 Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 1, rect2i.minY() + rect2i.sizeY() / 2);

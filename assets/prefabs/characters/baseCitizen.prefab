@@ -63,9 +63,5 @@
         ]
     },
     "Citizen": {},
-    "Inventory": {},
-    "InteractionTarget": {},
-    "InteractionScreen": {
-        "screen": "tradingScreen"
-    }
+    "Inventory": {}
 }
