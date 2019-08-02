@@ -1,0 +1,35 @@
+{
+    sequence: [
+        {
+            animation: {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            sequence: [
+                {
+                    add_social_component: {}
+                },
+                {
+                    set_target_component: {
+                        needType: "SOCIAL"
+                    }
+                },
+                {
+                    prepare_meetup: {}
+                },
+                {
+                    lookup: {
+                        tree: "MetalRenegades:distanceFollow"
+                    }
+                },
+                {
+                    fulfill_need: {
+                        needType: "SOCIAL"
+                    }
+                }
+            ]
+        }
+    ]
+}

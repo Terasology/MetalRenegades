@@ -9,6 +9,7 @@
         {"id" : "OreGeneration", "minVersion" : "1.0.0"},
         {"id" : "DynamicCities", "minVersion" : "0.2.1"},
         {"id" : "Behaviors", "minVersion" : "0.2.0"},
+        {"id" : "Fences", "minVersion" : "0.1.1" },
         {"id" : "Rails", "minVersion" : "0.4.0"},
         {"id" : "AdvancedRails", "minVersion" : "0.1.0"},
         {"id" : "CombatSystem", "minVersion" : "0.1.1"},

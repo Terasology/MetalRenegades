@@ -1,6 +1,76 @@
 {
     dynamic: [
         {
+            selector: [
+                {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "FOOD"
+                            }
+                        },
+                        {
+                            lookup: {
+                                tree: "MetalRenegades:findFood"
+                            }
+                        }
+                    ]
+                },
+                {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "WATER"
+                            }
+                        },
+                        {
+                            lookup: {
+                                tree: "MetalRenegades:findWater"
+                            }
+                        }
+                    ]
+                },
+                {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "SOCIAL"
+                            }
+                        },
+                        {
+                            lookup: {
+                                tree: "MetalRenegades:findSocial"
+                            }
+                        }
+                    ]
+                },
+                {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "REST"
+                            }
+                        },
+                        {
+                            lookup: {
+                                tree: "MetalRenegades:findRest"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            sequence: [
+                check_nighttime,
+                {
+                    lookup: {
+                        tree: "MetalRenegades:returnHome"
+                    }
+                }
+            ]
+        },
+        {
             lookup: {
                 tree: "Behaviors:stray"
             }
