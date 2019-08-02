@@ -3,8 +3,8 @@
      "name" : "blacksmith",
      "templateNames" : ["MetalRenegades:smithyTemplate"],
      "zone" : "COMMERCIAL",
-     "minSize" : [14, 14],
-     "maxSize" : [17, 17],
+     "minSize" : [15, 15],
+     "maxSize" : [15, 15],
      "isEntity" : true
     },
     "MarketSubscriber" : {
