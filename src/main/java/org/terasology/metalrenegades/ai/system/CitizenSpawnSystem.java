@@ -28,6 +28,8 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
@@ -54,6 +56,9 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
     @In
     private PrefabManager prefabManager;
+
+    @In
+    private InventoryManager inventoryManager;
 
     @Override
     public void update(float delta) {
@@ -105,7 +110,10 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
         entityBuilder.saveComponent(citizenLocationComponent);
         entityBuilder.addComponent(createTradeDialogComponent());
 
-        return entityBuilder.build();
+        EntityRef entityRef = entityBuilder.build();
+        setupStartInventory(entityRef);
+
+        return entityRef;
     }
 
     /**
@@ -123,6 +131,12 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
             }
         }
         return null;
+    }
+
+    private void setupStartInventory(EntityRef citizen) {
+        Prefab railgun = prefabManager.getPrefab("Core:railgunTool");
+        EntityRef item = entityManager.create(railgun);
+        item.send(new GiveItemEvent(citizen));
     }
 
     private DialogComponent createTradeDialogComponent() {

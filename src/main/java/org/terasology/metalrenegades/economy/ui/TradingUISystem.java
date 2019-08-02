@@ -52,6 +52,7 @@ public class TradingUISystem extends BaseComponentSystem {
     private LocalPlayer localPlayer;
 
     private TradingScreen tradingScreen;
+    private EntityRef targetCitizen = EntityRef.NULL;
 
     @Override
     public void initialise() {
@@ -70,27 +71,8 @@ public class TradingUISystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onTradingScreenAction(TradeScreenRequestEvent event, EntityRef citizen) {
-        List<MarketItem> citizenItems = new ArrayList<>();
-        for (int i = 0; i < inventoryManager.getNumSlots(citizen); i++) {
-            EntityRef entity = inventoryManager.getItemInSlot(citizen, i);
-            if (entity.getParentPrefab() != null) {
-                MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
-                citizenItems.add(item);
-            }
-        }
-
-        List<MarketItem> playerItems = new ArrayList<>();
-        EntityRef player = localPlayer.getCharacterEntity();
-        for (int i = 0; i < inventoryManager.getNumSlots(player); i++) {
-            EntityRef entity = inventoryManager.getItemInSlot(player, i);
-            if (entity.getParentPrefab() != null) {
-                MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
-                playerItems.add(item);
-            }
-        }
-
-        tradingScreen.setCitizenItems(citizenItems);
-        tradingScreen.setPlayerItems(playerItems);
+        targetCitizen = citizen;
+        refreshLists();
     }
 
     public boolean trade(MarketItem player, MarketItem citizen) {
@@ -99,5 +81,41 @@ public class TradingUISystem extends BaseComponentSystem {
 
     public boolean isAcceptable(MarketItem player, MarketItem citizen) {
         return true;
+    }
+
+    public void refreshLists() {
+        refreshCitizenList();
+        refreshPlayerList();
+    }
+
+    private void refreshCitizenList() {
+        if (targetCitizen == EntityRef.NULL) {
+            return;
+        }
+
+        List<MarketItem> items = new ArrayList<>();
+        for (int i = 0; i < inventoryManager.getNumSlots(targetCitizen); i++) {
+            EntityRef entity = inventoryManager.getItemInSlot(targetCitizen, i);
+            if (entity.getParentPrefab() != null) {
+                MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
+                items.add(item);
+            }
+        }
+
+        tradingScreen.setCitizenItems(items);
+    }
+
+    private void refreshPlayerList() {
+        List<MarketItem> items = new ArrayList<>();
+        EntityRef player = localPlayer.getCharacterEntity();
+        for (int i = 0; i < inventoryManager.getNumSlots(player); i++) {
+            EntityRef entity = inventoryManager.getItemInSlot(player, i);
+            if (entity.getParentPrefab() != null) {
+                MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
+                items.add(item);
+            }
+        }
+
+        tradingScreen.setPlayerItems(items);
     }
 }

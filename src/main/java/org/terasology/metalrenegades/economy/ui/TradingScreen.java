@@ -103,6 +103,7 @@ public class TradingScreen extends CoreScreenLayer {
             if (tradingUISystem.isAcceptable(player.getSelection(), citizen.getSelection())) {
                 if (tradingUISystem.trade(player.getSelection(), citizen.getSelection())) {
                     message = "Trade completed.";
+                    tradingUISystem.refreshLists();
                 } else {
                     message = "Trade failed. Try again";
                 }
