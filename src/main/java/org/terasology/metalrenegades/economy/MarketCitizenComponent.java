@@ -17,5 +17,8 @@ package org.terasology.metalrenegades.economy;
 
 import org.terasology.entitySystem.Component;
 
+/**
+ * Marks a citizen which will only spawn in markets
+ */
 public class MarketCitizenComponent implements Component {
 }

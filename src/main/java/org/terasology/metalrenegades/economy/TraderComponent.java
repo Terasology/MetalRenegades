@@ -17,5 +17,8 @@ package org.terasology.metalrenegades.economy;
 
 import org.terasology.entitySystem.Component;
 
+/**
+ * Marks a citizen with which the player can trade
+ */
 public class TraderComponent implements Component {
 }

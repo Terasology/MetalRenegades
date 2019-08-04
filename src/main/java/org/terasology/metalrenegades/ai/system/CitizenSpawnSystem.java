@@ -41,7 +41,6 @@ import org.terasology.registry.In;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Predicate;
 
 /**
  * Spawns new citizens inside of available buildings with {@link PotentialHomeComponent}.
@@ -132,7 +131,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
         citizenList.removeIf(prefab -> prefab.hasComponent(MarketCitizenComponent.class));
 
         int i = (int) (Math.random() * citizenList.size());
-        for (Prefab prefab: citizenList) {
+        for (Prefab prefab : citizenList) {
             if (i-- <= 0) {
                 return prefab;
             }

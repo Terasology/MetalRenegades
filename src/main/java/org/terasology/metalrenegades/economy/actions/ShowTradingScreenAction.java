@@ -19,6 +19,9 @@ import org.terasology.dialogs.action.PlayerAction;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.metalrenegades.economy.events.TradeScreenRequestEvent;
 
+/**
+ * Calls an event which would bring up the trading UI
+ */
 public class ShowTradingScreenAction implements PlayerAction {
 
     public ShowTradingScreenAction() {

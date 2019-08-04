@@ -43,6 +43,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * System which handles the data presented to the TradingScreen
+ */
 @Share(TradingUISystem.class)
 @RegisterSystem(RegisterMode.CLIENT)
 public class TradingUISystem extends BaseComponentSystem {
@@ -94,6 +97,12 @@ public class TradingUISystem extends BaseComponentSystem {
         refreshLists();
     }
 
+    /**
+     * Start the trading process for the specified items
+     * @param pItem: MarketItem for the player's item
+     * @param cItem: MarketItem for the citizen's item
+     * @return boolean indicating successful or failed trade attempt
+     */
     public boolean trade(MarketItem pItem, MarketItem cItem) {
         if (targetCitizen == EntityRef.NULL) {
             return false;
@@ -119,21 +128,39 @@ public class TradingUISystem extends BaseComponentSystem {
         return true;
     }
 
+    /**
+     * Calculates if the trade will be acceptable to the citizen based on market costs
+     * @param pItem: MarketItem for the player's item
+     * @param cItem: MarketItem for the citizen's item
+     * @return boolean indicating if the trade is acceptable or not
+     */
     public boolean isAcceptable(MarketItem pItem, MarketItem cItem) {
         Random rnd = new Random();
         return isAboutEqual(pItem.cost, cItem.cost) && (rnd.nextInt(100) < PROBABILITY);
     }
 
+    /**
+     * Calls appropriate functions to update player and citizen's inventories in the UI
+     */
     public void refreshLists() {
         refreshCitizenList();
         refreshPlayerList();
     }
 
+    /**
+     * Determines if two costs are about equal, depending on MARGIN_PERCENTAGE
+     * @param pCost: Integer cost of the player's item
+     * @param cCost: Integer cost of the citizen's item
+     * @return boolean indicating if the two costs are about equal
+     */
     private boolean isAboutEqual(int pCost, int cCost) {
         int delta = TeraMath.fastAbs(pCost - cCost);
         return ((float)(delta / cCost) * 100) < MARGIN_PERCENTAGE;
     }
 
+    /**
+     * Update the content in the citizen's inventory UIList
+     */
     private void refreshCitizenList() {
         if (targetCitizen == EntityRef.NULL) {
             return;
@@ -151,6 +178,9 @@ public class TradingUISystem extends BaseComponentSystem {
         tradingScreen.setCitizenItems(items);
     }
 
+    /**
+     * Update the content in the player's inventory UIList
+     */
     private void refreshPlayerList() {
         List<MarketItem> items = new ArrayList<>();
         EntityRef player = localPlayer.getCharacterEntity();
@@ -165,6 +195,11 @@ public class TradingUISystem extends BaseComponentSystem {
         tradingScreen.setPlayerItems(items);
     }
 
+    /**
+     * Remove an item from the specified entity's inventory
+     * @param item: MarketItem to be removed
+     * @param entity: Entity to be removed from
+     */
     private void remove(MarketItem item, EntityRef entity) {
         EntityRef itemEntity = EntityRef.NULL;
         for (int i = 0; i < inventoryManager.getNumSlots(entity); i++) {
@@ -178,6 +213,12 @@ public class TradingUISystem extends BaseComponentSystem {
         inventoryManager.removeItem(entity, EntityRef.NULL, itemEntity, true, 1);
     }
 
+    /**
+     * Add an item to the specified entity's inventory
+     * @param item: MarketItem to be added
+     * @param entity: Entity to be added to
+     * @throws Exception if addition of block to inventory fails
+     */
     private void add(MarketItem item, EntityRef entity) throws Exception {
         Set<ResourceUrn> matches = assetManager.resolve(item.name, Prefab.class);
 

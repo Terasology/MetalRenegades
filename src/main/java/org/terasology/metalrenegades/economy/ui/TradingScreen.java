@@ -38,16 +38,16 @@ public class TradingScreen extends CoreScreenLayer {
     @In
     private NUIManager nuiManager;
 
-    private UIList<MarketItem> player;
-    private UIList<MarketItem> citizen;
+    private UIList<MarketItem> pList;
+    private UIList<MarketItem> cList;
     private UIButton confirm;
     private UIButton cancel;
     private UILabel result;
     private UILabel pCost;
     private UILabel cCost;
 
-    private List<MarketItem> playerItems = new ArrayList<>();
-    private List<MarketItem> citizenItems = new ArrayList<>();
+    private List<MarketItem> pItems = new ArrayList<>();
+    private List<MarketItem> cItems = new ArrayList<>();
 
     private MarketItem pSelected = MarketItemBuilder.getEmpty();
     private MarketItem cSelected = MarketItemBuilder.getEmpty();
@@ -56,46 +56,42 @@ public class TradingScreen extends CoreScreenLayer {
 
     @Override
     public void initialise() {
-        List<MarketItem> items = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            items.add(MarketItemBuilder.getDefault());
-        }
 
-        playerItems = items;
-        citizenItems = items;
-
-        player = find("playerList", UIList.class);
-        player.setList(new ArrayList<>());
-        player.setItemRenderer(new StringTextRenderer<MarketItem>() {
+        // Initialize player inventory list
+        pList = find("playerList", UIList.class);
+        pList.setList(new ArrayList<>());
+        pList.setItemRenderer(new StringTextRenderer<MarketItem>() {
             @Override
             public String getString(MarketItem value) {
                 return value.name;
             }
         });
-        player.subscribeSelection(((widget, item) -> pSelected = item));
-        player.bindList(new ReadOnlyBinding<List<MarketItem>>() {
+        pList.subscribeSelection(((widget, item) -> pSelected = item));
+        pList.bindList(new ReadOnlyBinding<List<MarketItem>>() {
             @Override
             public List<MarketItem> get() {
-                return playerItems;
+                return pItems;
             }
         });
 
-        citizen = find("citizenList", UIList.class);
-        citizen.setList(new ArrayList<>());
-        citizen.setItemRenderer(new StringTextRenderer<MarketItem>() {
+        // Initialize citizen inventory list
+        cList = find("citizenList", UIList.class);
+        cList.setList(new ArrayList<>());
+        cList.setItemRenderer(new StringTextRenderer<MarketItem>() {
             @Override
             public String getString(MarketItem value) {
                 return value.name;
             }
         });
-        citizen.subscribeSelection(((widget, item) -> cSelected = item));
-        citizen.bindList(new ReadOnlyBinding<List<MarketItem>>() {
+        cList.subscribeSelection(((widget, item) -> cSelected = item));
+        cList.bindList(new ReadOnlyBinding<List<MarketItem>>() {
             @Override
             public List<MarketItem> get() {
-                return citizenItems;
+                return cItems;
             }
         });
 
+        // Initialize result message label
         result = find("message", UILabel.class);
         result.bindText(new ReadOnlyBinding<String>() {
             @Override
@@ -104,10 +100,11 @@ public class TradingScreen extends CoreScreenLayer {
             }
         });
 
+        // Initialize confirm trade button
         confirm = find("tradeButton", UIButton.class);
         confirm.subscribe(widget -> {
-            if (tradingUISystem.isAcceptable(player.getSelection(), citizen.getSelection())) {
-                if (tradingUISystem.trade(player.getSelection(), citizen.getSelection())) {
+            if (tradingUISystem.isAcceptable(pList.getSelection(), cList.getSelection())) {
+                if (tradingUISystem.trade(pList.getSelection(), cList.getSelection())) {
                     message = "Trade completed.";
                     tradingUISystem.refreshLists();
                 } else {
@@ -118,12 +115,13 @@ public class TradingScreen extends CoreScreenLayer {
             }
         });
 
+        // Initialize close dialogue button
         cancel = find("cancelButton", UIButton.class);
         cancel.subscribe(widget -> {
             nuiManager.closeScreen("MetalRenegades:tradingScreen");
         });
 
-
+        // Initialize player item cost label
         pCost = find("playerCost", UILabel.class);
         pCost.bindText(new ReadOnlyBinding<String>() {
             @Override
@@ -133,6 +131,7 @@ public class TradingScreen extends CoreScreenLayer {
             }
         });
 
+        // Initialize citizen item cost label
         cCost = find("citizenCost", UILabel.class);
         cCost.bindText(new ReadOnlyBinding<String>() {
             @Override
@@ -143,19 +142,27 @@ public class TradingScreen extends CoreScreenLayer {
         });
     }
 
+    /**
+     * Set the player's inventory items
+     * @param list: Content for the player's UIList
+     */
     public void setPlayerItems(List<MarketItem> list) {
-        playerItems = list;
+        pItems = list;
     }
 
+    /**
+     * Set the citizen's inventory items
+     * @param list: Content for the citizen's UIList
+     */
     public void setCitizenItems(List<MarketItem> list) {
-        this.citizenItems = list;
+        this.cItems = list;
     }
 
     @Override
     public void onClosed() {
         super.onClosed();
         message = "";
-        player.setSelection(null);
-        citizen.setSelection(null);
+        pList.setSelection(null);
+        cList.setSelection(null);
     }
 }

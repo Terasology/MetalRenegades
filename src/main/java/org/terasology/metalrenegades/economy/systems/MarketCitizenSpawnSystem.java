@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
- * Spawns a trader in all markets
+ * Spawns a market citizen in all markets
  */
 @RegisterSystem
 public class MarketCitizenSpawnSystem extends BaseComponentSystem {
