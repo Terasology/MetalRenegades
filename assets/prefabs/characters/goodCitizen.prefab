@@ -42,5 +42,6 @@
     },
     "Behavior": {
         "tree": "MetalRenegades:citizen"
-    }
+    },
+    "Trader": {}
 }

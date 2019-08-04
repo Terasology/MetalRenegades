@@ -34,11 +34,14 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
+import org.terasology.metalrenegades.economy.MarketCitizenComponent;
+import org.terasology.metalrenegades.economy.TraderComponent;
 import org.terasology.metalrenegades.economy.actions.ShowTradingScreenAction;
 import org.terasology.registry.In;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Predicate;
 
 /**
  * Spawns new citizens inside of available buildings with {@link PotentialHomeComponent}.
@@ -108,10 +111,13 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
         entityBuilder.addComponent(homeComponent);
         entityBuilder.saveComponent(citizenLocationComponent);
-        entityBuilder.addComponent(createTradeDialogComponent());
 
         EntityRef entityRef = entityBuilder.build();
-        setupStartInventory(entityRef);
+
+        if (entityRef.hasComponent(TraderComponent.class)) {
+            entityRef.addComponent(createTradeDialogComponent());
+            setupStartInventory(entityRef);
+        }
 
         return entityRef;
     }
@@ -123,6 +129,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
      */
     private Prefab chooseCitizenPrefab() {
         Collection<Prefab> citizenList = prefabManager.listPrefabs(CitizenComponent.class);
+        citizenList.removeIf(prefab -> prefab.hasComponent(MarketCitizenComponent.class));
 
         int i = (int) (Math.random() * citizenList.size());
         for (Prefab prefab: citizenList) {

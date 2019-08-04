@@ -128,7 +128,8 @@ public class TradingScreen extends CoreScreenLayer {
         pCost.bindText(new ReadOnlyBinding<String>() {
             @Override
             public String get() {
-                return "Cost: " + pSelected.cost;
+                int cost = (pSelected != null) ? (pSelected.cost) : 0;
+                return "Cost: " + cost;
             }
         });
 
@@ -136,7 +137,8 @@ public class TradingScreen extends CoreScreenLayer {
         cCost.bindText(new ReadOnlyBinding<String>() {
             @Override
             public String get() {
-                return "Cost: " + cSelected.cost;
+                int cost = (cSelected != null) ? (cSelected.cost) : 0;
+                return "Cost: " + cost;
             }
         });
     }
