@@ -31,6 +31,7 @@ import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.players.LocalPlayer;
+import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.economy.events.TradeScreenRequestEvent;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
@@ -39,6 +40,7 @@ import org.terasology.world.block.entity.BlockCommands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @Share(TradingUISystem.class)
@@ -62,6 +64,9 @@ public class TradingUISystem extends BaseComponentSystem {
 
     @In
     private BlockCommands blockCommands;
+
+    private final int PROBABILITY = 50;
+    private final int MARGIN_PERCENTAGE = 20;
 
     private TradingScreen tradingScreen;
     private EntityRef targetCitizen = EntityRef.NULL;
@@ -114,13 +119,19 @@ public class TradingUISystem extends BaseComponentSystem {
         return true;
     }
 
-    public boolean isAcceptable(MarketItem player, MarketItem citizen) {
-        return true;
+    public boolean isAcceptable(MarketItem pItem, MarketItem cItem) {
+        Random rnd = new Random();
+        return isAboutEqual(pItem.cost, cItem.cost) && (rnd.nextInt(100) < PROBABILITY);
     }
 
     public void refreshLists() {
         refreshCitizenList();
         refreshPlayerList();
+    }
+
+    private boolean isAboutEqual(int pCost, int cCost) {
+        int delta = TeraMath.fastAbs(pCost - cCost);
+        return ((float)(delta / cCost) * 100) < MARGIN_PERCENTAGE;
     }
 
     private void refreshCitizenList() {

@@ -18,10 +18,8 @@ package org.terasology.metalrenegades.economy.ui;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.NUIManager;
-import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
-import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIList;
@@ -45,12 +43,14 @@ public class TradingScreen extends CoreScreenLayer {
     private UIButton confirm;
     private UIButton cancel;
     private UILabel result;
+    private UILabel pCost;
+    private UILabel cCost;
 
     private List<MarketItem> playerItems = new ArrayList<>();
     private List<MarketItem> citizenItems = new ArrayList<>();
 
-    private MarketItem pSelected;
-    private MarketItem cSeleted;
+    private MarketItem pSelected = MarketItemBuilder.getEmpty();
+    private MarketItem cSelected = MarketItemBuilder.getEmpty();
 
     private String message;
 
@@ -88,7 +88,7 @@ public class TradingScreen extends CoreScreenLayer {
                 return value.name;
             }
         });
-        citizen.subscribeSelection(((widget, item) -> cSeleted = item));
+        citizen.subscribeSelection(((widget, item) -> cSelected = item));
         citizen.bindList(new ReadOnlyBinding<List<MarketItem>>() {
             @Override
             public List<MarketItem> get() {
@@ -121,6 +121,23 @@ public class TradingScreen extends CoreScreenLayer {
         cancel = find("cancelButton", UIButton.class);
         cancel.subscribe(widget -> {
             nuiManager.closeScreen("MetalRenegades:tradingScreen");
+        });
+
+
+        pCost = find("playerCost", UILabel.class);
+        pCost.bindText(new ReadOnlyBinding<String>() {
+            @Override
+            public String get() {
+                return "Cost: " + pSelected.cost;
+            }
+        });
+
+        cCost = find("citizenCost", UILabel.class);
+        cCost.bindText(new ReadOnlyBinding<String>() {
+            @Override
+            public String get() {
+                return "Cost: " + cSelected.cost;
+            }
         });
     }
 

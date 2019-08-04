@@ -41,6 +41,19 @@
                         },
                         {
                             "type": "UILabel",
+                            "id": "citizenCost",
+                            "text": "Cost",
+                            "layoutInfo": {
+                                "use-content-width": true,
+                                "use-content-height": true,
+                                "position-left": {},
+                                "position-bottom": {
+                                    "offset": 10
+                                }
+                            }
+                        },
+                        {
+                            "type": "UILabel",
                             "text": "Player",
                             "layoutInfo": {
                                 "use-content-width": true,
@@ -60,6 +73,19 @@
                                 "position-right": {},
                                 "position-top": {
                                     "offset": 50
+                                }
+                            }
+                        },
+                        {
+                            "type": "UILabel",
+                            "id": "playerCost",
+                            "text": "Cost",
+                            "layoutInfo": {
+                                "use-content-width": true,
+                                "use-content-height": true,
+                                "position-right": {},
+                                "position-bottom": {
+                                    "offset": 10
                                 }
                             }
                         },
