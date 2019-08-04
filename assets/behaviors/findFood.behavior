@@ -1,0 +1,25 @@
+{
+    sequence: [
+        {
+            animation: {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            sequence: [
+                {
+                    set_target_component: {
+                        needType: "FOOD"
+                    }
+                },
+                { lookup: {tree: "MetalRenegades:distanceFollow" }},
+                {
+                    fulfill_need: {
+                        needType: "FOOD"
+                    }
+                }
+            ]
+        }
+    ]
+}

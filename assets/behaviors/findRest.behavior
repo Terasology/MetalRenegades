@@ -1,0 +1,26 @@
+{
+    sequence: [
+        {
+            animation: {
+                play: "engine:Walk.animationPool",
+                loop: "engine:Walk.animationPool"
+            }
+        },
+        {
+            sequence: [
+                {
+                    set_target_component: {
+                        needType: "REST"
+                    }
+                },
+                { lookup: {tree: "MetalRenegades:distanceFollow" }},
+                {sleep:  {time:  60}},
+                {
+                    fulfill_need: {
+                        needType: "REST"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -31,8 +31,10 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
+import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
 import org.terasology.metalrenegades.economy.MarketCitizenComponent;
 import org.terasology.metalrenegades.economy.TraderComponent;
@@ -110,6 +112,15 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
         entityBuilder.addComponent(homeComponent);
         entityBuilder.saveComponent(citizenLocationComponent);
+
+        NeedsComponent needsComponent = new NeedsComponent();
+
+        needsComponent.needs.put(CitizenNeed.Type.FOOD, new CitizenNeed(20, 0.5f, 5, 15));
+        needsComponent.needs.put(CitizenNeed.Type.WATER, new CitizenNeed(20, 1, 8, 20));
+        needsComponent.needs.put(CitizenNeed.Type.SOCIAL, new CitizenNeed(30, 1, 15, 30));
+        needsComponent.needs.put(CitizenNeed.Type.REST, new CitizenNeed(50, 0.5f, 20, 50));
+
+        entityBuilder.saveComponent(needsComponent);
 
         EntityRef entityRef = entityBuilder.build();
 

@@ -13,6 +13,8 @@
     },
     "InfiniteStorage" : {
      "inventory" : {}
+    },
+    "SimpleSource": {
+        "needType": "FOOD"
     }
 }
-
