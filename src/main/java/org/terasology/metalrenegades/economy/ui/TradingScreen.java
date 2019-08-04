@@ -17,8 +17,11 @@ package org.terasology.metalrenegades.economy.ui;
 
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
+import org.terasology.rendering.nui.NUIManager;
+import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
+import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIList;
@@ -34,9 +37,13 @@ public class TradingScreen extends CoreScreenLayer {
     @In
     private TradingUISystem tradingUISystem;
 
+    @In
+    private NUIManager nuiManager;
+
     private UIList<MarketItem> player;
     private UIList<MarketItem> citizen;
     private UIButton confirm;
+    private UIButton cancel;
     private UILabel result;
 
     private List<MarketItem> playerItems = new ArrayList<>();
@@ -110,6 +117,11 @@ public class TradingScreen extends CoreScreenLayer {
                 message = "Offer declined.";
             }
         });
+
+        cancel = find("cancelButton", UIButton.class);
+        cancel.subscribe(widget -> {
+            nuiManager.closeScreen("MetalRenegades:tradingScreen");
+        });
     }
 
     public void setPlayerItems(List<MarketItem> list) {
@@ -118,5 +130,13 @@ public class TradingScreen extends CoreScreenLayer {
 
     public void setCitizenItems(List<MarketItem> list) {
         this.citizenItems = list;
+    }
+
+    @Override
+    public void onClosed() {
+        super.onClosed();
+        message = "";
+        player.setSelection(null);
+        citizen.setSelection(null);
     }
 }

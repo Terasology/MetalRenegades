@@ -83,7 +83,24 @@
                             "layoutInfo": {
                                 "width": 90,
                                 "use-content-height": true,
-                                "position-horizontal-center": {},
+                                "position-horizontal-center": {
+                                    "offset": -50
+                                },
+                                "position-bottom": {
+                                    "offset": 20
+                                }
+                            }
+                        },
+                        {
+                            "type": "UIButton",
+                            "id": "cancelButton",
+                            "text": "Cancel",
+                            "layoutInfo": {
+                                "width": 90,
+                                "use-content-height": true,
+                                "position-horizontal-center": {
+                                    "offset": 50
+                                },
                                 "position-bottom": {
                                     "offset": 20
                                 }
