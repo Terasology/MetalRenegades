@@ -105,5 +105,7 @@
             "engine:sensor"
         ]
     },
-    "Citizen": {}
+    "Citizen": {
+        "name": "Bad Citizen"
+    }
 }

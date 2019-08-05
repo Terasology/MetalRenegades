@@ -15,7 +15,8 @@
         {"id" : "CombatSystem", "minVersion" : "0.1.1"},
         {"id" : "WildAnimals", "minVersion" : "0.2.0"},
         {"id" : "Dialogs", "minVersion" : "0.1.0"},
-        {"id":  "Hunger", "minVersion":  "1.0.1"}
+        {"id":  "Hunger", "minVersion":  "1.0.1"},
+        {"id" : "WorldlyTooltip", "minVersion" : "1.1.1"}
     ],
     "serverSideOnly" : false,
     "isGameplay" : true,

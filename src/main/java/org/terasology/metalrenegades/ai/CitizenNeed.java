@@ -85,4 +85,9 @@ public class CitizenNeed {
         this.value = this.capacity;
     }
 
+    @Override
+    public String toString() {
+        return this.value + "/" + this.capacity;
+    }
+
 }
