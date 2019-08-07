@@ -13,7 +13,7 @@
                         needType: "REST"
                     }
                 },
-                { lookup: {tree: "MetalRenegades:distanceFollow" }},
+                { lookup: {tree: "MetalRenegades:pathfindingFollow" }},
                 {sleep:  {time:  60}},
                 {
                     fulfill_need: {

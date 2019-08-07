@@ -13,7 +13,7 @@
                         needType: "WATER"
                     }
                 },
-                { lookup: {tree: "MetalRenegades:distanceFollow" }},
+                { lookup: {tree: "MetalRenegades:pathfindingFollow" }},
                 {
                     fulfill_need: {
                         needType: "WATER"

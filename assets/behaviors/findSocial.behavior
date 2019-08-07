@@ -21,7 +21,7 @@
                 },
                 {
                     lookup: {
-                        tree: "MetalRenegades:distanceFollow"
+                        tree: "MetalRenegades:pathfindingFollow"
                     }
                 },
                 {
