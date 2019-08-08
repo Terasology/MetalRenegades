@@ -79,15 +79,15 @@ public class FetchQuestSystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent(components = GenericBuildingComponent.class)
-    public void onMarketPlaceSpawn(BuildingEntitySpawnedEvent event, EntityRef entityRef) {
+    public void onChurchSpawn(BuildingEntitySpawnedEvent event, EntityRef entityRef) {
         GenericBuildingComponent genericBuildingComponent = entityRef.getComponent(GenericBuildingComponent.class);
-        if (genericBuildingComponent.name.equals("marketplace")) {
+        if (genericBuildingComponent.name.equals("simplechurch")) {
             DynParcel dynParcel = entityRef.getComponent(DynParcelRefComponent.class).dynParcel;
 
             Optional<Prefab> questPointOptional = Assets.getPrefab("Tasks:QuestPoint");
             if (questPointOptional.isPresent()) {
                 Rect2i rect2i = dynParcel.shape;
-                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 10, rect2i.minY() + rect2i.sizeY() / 2);
+                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 3, rect2i.minY() + rect2i.sizeY() / 2);
                 EntityRef questPoint = entityManager.create(questPointOptional.get(), spawnPosition);
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 questPoint.addComponent(settlementRefComponent);
@@ -149,7 +149,7 @@ public class FetchQuestSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onQuestComplete(QuestCompleteEvent event, EntityRef client) {
         if (event.isSuccess()) {
-            // Remove items from inventory
+            // TODO: Remove items from inventory when quest is complete
 //            removeItems(client);
 
             // Destroy the beacon
