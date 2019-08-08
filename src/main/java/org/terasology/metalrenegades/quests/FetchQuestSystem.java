@@ -45,11 +45,14 @@ import org.terasology.tasks.components.QuestSourceComponent;
 import org.terasology.tasks.events.BeforeQuestEvent;
 import org.terasology.tasks.events.QuestCompleteEvent;
 import org.terasology.tasks.events.StartTaskEvent;
+import org.terasology.tasks.systems.QuestSystem;
 import org.terasology.utilities.Assets;
 import sun.text.resources.et.FormatData_et;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,11 +69,15 @@ public class FetchQuestSystem extends BaseComponentSystem {
     @In
     private InventoryManager inventoryManager;
 
+    @In
+    private QuestSystem questSystem;
+
     private EntityRef activeQuestEntity;
-    private List<FetchedItem> fetchedItems = new ArrayList<>();
+    private Map<String, Integer> amounts = new HashMap<>();
 
     private final String HOME_TASK_ID = "returnHome";
     private final String FETCH_QUEST_ID = "FetchQuest";
+    private final String ITEM_ID = "WildAnimals:Meat";
     private final int REWARD = 50;
 
     @Override
@@ -87,7 +94,7 @@ public class FetchQuestSystem extends BaseComponentSystem {
             Optional<Prefab> questPointOptional = Assets.getPrefab("Tasks:QuestPoint");
             if (questPointOptional.isPresent()) {
                 Rect2i rect2i = dynParcel.shape;
-                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 3, rect2i.minY() + rect2i.sizeY() / 2);
+                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 2, rect2i.minY() + rect2i.sizeY() / 2);
                 EntityRef questPoint = entityManager.create(questPointOptional.get(), spawnPosition);
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 questPoint.addComponent(settlementRefComponent);
@@ -122,12 +129,11 @@ public class FetchQuestSystem extends BaseComponentSystem {
 
         QuestComponent questComponent = questItem.getComponent(QuestComponent.class);
         List<Task> tasks = questComponent.tasks;
-        fetchedItems = tasks.stream()
-                .filter(task -> task instanceof CollectBlocksTask)
-                .map(task -> new FetchedItem(
-                        ((CollectBlocksTask) task).getItemId(),
-                        ((CollectBlocksTask) task).getTargetAmount()
-                )).collect(Collectors.toList());
+        for (Task t : tasks) {
+            if (t instanceof CollectBlocksTask) {
+                amounts.put(((CollectBlocksTask) t).getItemId(), ((CollectBlocksTask) t).getTargetAmount());
+            }
+        }
     }
 
     @ReceiveEvent
@@ -149,46 +155,28 @@ public class FetchQuestSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onQuestComplete(QuestCompleteEvent event, EntityRef client) {
         if (event.isSuccess()) {
-            // TODO: Remove items from inventory when quest is complete
-//            removeItems(client);
+            // Remove items from inventory
+            ClientComponent component = client.getComponent(ClientComponent.class);
+            EntityRef character = component.character;
+            EntityRef item = EntityRef.NULL;
+
+            for (int i = 0; i < inventoryManager.getNumSlots(character); i++) {
+                EntityRef current = inventoryManager.getItemInSlot(character, i);
+                if (!EntityRef.NULL.equals(current) && ITEM_ID.equalsIgnoreCase(current.getParentPrefab().getName())) {
+                    item = current;
+                    break;
+                }
+            }
+            inventoryManager.removeItem(character, EntityRef.NULL, item, true, amounts.getOrDefault(ITEM_ID, 0));
 
             // Destroy the beacon
             activeQuestEntity.destroy();
 
             // Pay the player
             currencyManagementSystem.changeWallet(REWARD);
-        }
-    }
 
-    private void removeItems(EntityRef client) {
-//        ClientComponent component = client.getComponent(ClientComponent.class);
-//        EntityRef character = component.character;
-//        EntityRef item = EntityRef.NULL;
-//
-//        try {
-//            for (int i = 0; i < inventoryManager.getNumSlots(character); i++) {
-//                EntityRef current = inventoryManager.getItemInSlot(character, i);
-//                if (!EntityRef.NULL.equals(current)) {
-//                    item = current;
-//                    break;
-//                }
-//            }
-//            inventoryManager.removeItem(localPlayer.getCharacterEntity(), EntityRef.NULL, item, true, 1);
-//        } catch (Exception e) {
-////            logger.error("Could not create entity from {}. Exception: {}", name, e.getMessage());
-//        }
-    }
-
-    class FetchedItem {
-        public String itemId;
-        public int amount;
-
-        public FetchedItem(String itemId, int amount) {
-            this.itemId = itemId;
-            this.amount = amount;
-        }
-
-        public FetchedItem() {
+            // remove the quest
+            questSystem.removeQuest(event.getQuest(), true);
         }
     }
 }
