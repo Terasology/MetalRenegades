@@ -15,8 +15,8 @@
                 "id" : "collectMeat",
                 "type" : "CollectBlocksTask",
                 "data" : {
-                    "itemId" : "block:core:Dirt",
-                    "amount" : 3
+                    "itemId" : "WildAnimals:Meat",
+                    "amount" : 2
                 }
             },
             {
