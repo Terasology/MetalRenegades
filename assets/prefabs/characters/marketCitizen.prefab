@@ -1,12 +1,12 @@
 {
     "parent": "baseCitizen",
     "displayName": {
-        "name": "badCitizen"
+        "name": "shopkeeper"
     },
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",
         "heightOffset": -2.0,
-        "material": "MetalRenegades:badCitizen",
+        "material": "MetalRenegades:marketGooey",
         "animationPool": [
             "gooeyIdleBreathing",
             "gooeyIdleBreathing",
@@ -40,8 +40,8 @@
             0.25
         ]
     },
-    "Behavior": {
-        "tree": "MetalRenegades:citizen"
+    "Behavior" : {
+        "tree" : "Behaviors:stray"
     },
-    "Trader": {}
+    "MarketCitizen": {}
 }

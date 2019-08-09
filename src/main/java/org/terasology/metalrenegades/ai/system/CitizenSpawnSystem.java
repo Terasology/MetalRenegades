@@ -15,6 +15,10 @@
  */
 package org.terasology.metalrenegades.ai.system;
 
+import org.terasology.dialogs.action.CloseDialogAction;
+import org.terasology.dialogs.components.DialogComponent;
+import org.terasology.dialogs.components.DialogPage;
+import org.terasology.dialogs.components.DialogResponse;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -24,14 +28,20 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
+import org.terasology.metalrenegades.economy.MarketCitizenComponent;
+import org.terasology.metalrenegades.economy.TraderComponent;
+import org.terasology.metalrenegades.economy.actions.ShowTradingScreenAction;
 import org.terasology.registry.In;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -50,6 +60,9 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
     @In
     private PrefabManager prefabManager;
+
+    @In
+    private InventoryManager inventoryManager;
 
     @Override
     public void update(float delta) {
@@ -109,7 +122,14 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
         entityBuilder.saveComponent(needsComponent);
 
-        return entityBuilder.build();
+        EntityRef entityRef = entityBuilder.build();
+
+        if (entityRef.hasComponent(TraderComponent.class)) {
+            entityRef.addComponent(createTradeDialogComponent());
+            setupStartInventory(entityRef);
+        }
+
+        return entityRef;
     }
 
     /**
@@ -119,13 +139,51 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
      */
     private Prefab chooseCitizenPrefab() {
         Collection<Prefab> citizenList = prefabManager.listPrefabs(CitizenComponent.class);
+        citizenList.removeIf(prefab -> prefab.hasComponent(MarketCitizenComponent.class));
 
         int i = (int) (Math.random() * citizenList.size());
-        for (Prefab prefab: citizenList) {
+        for (Prefab prefab : citizenList) {
             if (i-- <= 0) {
                 return prefab;
             }
         }
         return null;
+    }
+
+    private void setupStartInventory(EntityRef citizen) {
+        Prefab railgun = prefabManager.getPrefab("Core:railgunTool");
+        EntityRef item = entityManager.create(railgun);
+        item.send(new GiveItemEvent(citizen));
+    }
+
+    private DialogComponent createTradeDialogComponent() {
+        DialogComponent component = new DialogComponent();
+        component.pages = new ArrayList<>();
+
+        DialogPage page = new DialogPage();
+        page.id = "main";
+        page.title = "Wanna trade?";
+        page.paragraphText = new ArrayList<>();
+        page.responses = new ArrayList<>();
+
+        page.paragraphText.add("I've got wares");
+
+        DialogResponse tradeResponse = new DialogResponse();
+        tradeResponse.text = "Show me what you got";
+        tradeResponse.action = new ArrayList<>();
+        tradeResponse.action.add(new ShowTradingScreenAction());
+
+        DialogResponse closeResponse = new DialogResponse();
+        closeResponse.text = "Later";
+        closeResponse.action = new ArrayList<>();
+        closeResponse.action.add(new CloseDialogAction());
+
+        page.responses.add(tradeResponse);
+        page.responses.add(closeResponse);
+
+        component.pages.add(page);
+        component.firstPage = page.id;
+
+        return component;
     }
 }
