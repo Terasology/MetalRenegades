@@ -68,12 +68,22 @@ public class TradingUISystem extends BaseComponentSystem {
     @In
     private BlockCommands blockCommands;
 
-    private final int PROBABILITY = 50;
+    /**
+     * Maximum percentage difference between two values for them to be considered about equal
+     */
     private final int MARGIN_PERCENTAGE = 20;
 
-    private TradingScreen tradingScreen;
+    /**
+     * Probability that a trade will be accepted, provided the costs are about equal
+     */
+    private final int PROBABILITY = 50;
+
+    /**
+     * Citizen entity that the player is trading with
+     */
     private EntityRef targetCitizen = EntityRef.NULL;
 
+    private TradingScreen tradingScreen;
     private Logger logger = LoggerFactory.getLogger(TradingUISystem.class);
 
     @Override

@@ -38,6 +38,9 @@ public class TradingScreen extends CoreScreenLayer {
     @In
     private NUIManager nuiManager;
 
+    /**
+     * UI Elements
+     */
     private UIList<MarketItem> pList;
     private UIList<MarketItem> cList;
     private UIButton confirm;
@@ -46,12 +49,21 @@ public class TradingScreen extends CoreScreenLayer {
     private UILabel pCost;
     private UILabel cCost;
 
+    /**
+     * Information for UILists
+     */
     private List<MarketItem> pItems = new ArrayList<>();
     private List<MarketItem> cItems = new ArrayList<>();
 
+    /**
+     * Selected items
+     */
     private MarketItem pSelected = MarketItemBuilder.getEmpty();
     private MarketItem cSelected = MarketItemBuilder.getEmpty();
 
+    /**
+     * Trade result message
+     */
     private String message;
 
     @Override
