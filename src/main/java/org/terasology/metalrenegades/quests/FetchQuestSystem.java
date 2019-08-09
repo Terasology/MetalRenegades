@@ -30,11 +30,11 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.nameTags.NameTagComponent;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.metalrenegades.economy.systems.CurrencyManagementSystem;
 import org.terasology.network.ClientComponent;
-import org.terasology.protobuf.EntityData;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.Color;
 import org.terasology.tasks.CollectBlocksTask;
@@ -47,7 +47,6 @@ import org.terasology.tasks.events.QuestCompleteEvent;
 import org.terasology.tasks.events.StartTaskEvent;
 import org.terasology.tasks.systems.QuestSystem;
 import org.terasology.utilities.Assets;
-import sun.text.resources.et.FormatData_et;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +54,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+/**
+ * Manages the fetch meat quest
+ */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class FetchQuestSystem extends BaseComponentSystem {
 
@@ -71,6 +72,9 @@ public class FetchQuestSystem extends BaseComponentSystem {
 
     @In
     private QuestSystem questSystem;
+
+    @In
+    private LocalPlayer localPlayer;
 
     private EntityRef activeQuestEntity;
     private Map<String, Integer> amounts = new HashMap<>();
@@ -150,6 +154,8 @@ public class FetchQuestSystem extends BaseComponentSystem {
             activeQuestEntity.destroy();
             activeQuestEntity = beacon;
         }
+
+        localPlayer.getCharacterEntity().send(new AddBeaconOverlayEvent(activeQuestEntity));
     }
 
     @ReceiveEvent
@@ -169,14 +175,21 @@ public class FetchQuestSystem extends BaseComponentSystem {
             }
             inventoryManager.removeItem(character, EntityRef.NULL, item, true, amounts.getOrDefault(ITEM_ID, 0));
 
-            // Destroy the beacon
-            activeQuestEntity.destroy();
-
             // Pay the player
             currencyManagementSystem.changeWallet(REWARD);
 
+            // Remove the minmap overlay
+            localPlayer.getCharacterEntity().send(new RemoveBeaconOverlayEvent(activeQuestEntity));
+
             // remove the quest
             questSystem.removeQuest(event.getQuest(), true);
+
+//            activeQuestEntity.destroy();
         }
+    }
+
+    @ReceiveEvent
+    public void onDestroyActiveEntityEvent(DestroyActiveEntityEvent event, EntityRef character) {
+        activeQuestEntity.destroy();
     }
 }
