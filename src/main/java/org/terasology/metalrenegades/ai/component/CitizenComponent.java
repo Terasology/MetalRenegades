@@ -22,9 +22,4 @@ import org.terasology.entitySystem.Component;
  */
 public class CitizenComponent implements Component {
 
-    /**
-     * The name of this citizen.
-     */
-    public String name = "";
-
 }

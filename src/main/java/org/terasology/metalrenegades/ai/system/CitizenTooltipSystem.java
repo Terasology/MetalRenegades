@@ -21,6 +21,7 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.registry.In;
@@ -40,7 +41,8 @@ public class CitizenTooltipSystem extends BaseComponentSystem {
 
     @ReceiveEvent(components = CitizenComponent.class)
     public void getTooltipName(GetTooltipNameEvent event, EntityRef entity, CitizenComponent citizenComponent) {
-        event.setName(citizenComponent.name);
+        DisplayNameComponent displayNameComponent = entity.getComponent(DisplayNameComponent.class);
+        event.setName(displayNameComponent.name);
     }
 
     @ReceiveEvent(components = NeedsComponent.class)
