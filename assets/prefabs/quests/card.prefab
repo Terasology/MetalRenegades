@@ -13,18 +13,18 @@
         "tasks" : [
             {
                 "id" : "collectMeat",
-                "type" : "CollectBlocksTask",
+                "class" : "CollectBlocksTask",
                 "data" : {
                     "itemId" : "WildAnimals:Meat",
-                    "amount" : 2
+                    "targetAmount" : 2
                 }
             },
             {
                 "id" : "returnHome",
-                "type" : "GoToBeaconTask",
+                "class" : "GoToBeaconTask",
                 "dependsOn" : "collectMeat",
                 "data" : {
-                    "beaconId" : "homeBeacon"
+                    "targetBeaconId" : "homeBeacon"
                 }
             }
         ]

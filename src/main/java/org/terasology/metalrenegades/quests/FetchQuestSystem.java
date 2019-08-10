@@ -39,6 +39,7 @@ import org.terasology.registry.In;
 import org.terasology.rendering.nui.Color;
 import org.terasology.tasks.CollectBlocksTask;
 import org.terasology.tasks.Task;
+import org.terasology.tasks.TaskGraph;
 import org.terasology.tasks.components.QuestComponent;
 import org.terasology.tasks.components.QuestListComponent;
 import org.terasology.tasks.components.QuestSourceComponent;
@@ -50,7 +51,6 @@ import org.terasology.utilities.Assets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -132,7 +132,7 @@ public class FetchQuestSystem extends BaseComponentSystem {
         activeQuestEntity = questItem.getComponent(QuestSourceComponent.class).source;
 
         QuestComponent questComponent = questItem.getComponent(QuestComponent.class);
-        List<Task> tasks = questComponent.tasks;
+        TaskGraph tasks = questComponent.tasks;
         for (Task t : tasks) {
             if (t instanceof CollectBlocksTask) {
                 amounts.put(((CollectBlocksTask) t).getItemId(), ((CollectBlocksTask) t).getTargetAmount());
