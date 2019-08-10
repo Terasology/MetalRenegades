@@ -13,7 +13,7 @@
                         needType: "FOOD"
                     }
                 },
-                { lookup: {tree: "MetalRenegades:pathfindingFollow" }},
+                { lookup: {tree: "Behaviors:staticPathfindingFollow" }},
                 {
                     fulfill_need: {
                         needType: "FOOD"
