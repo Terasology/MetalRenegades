@@ -58,18 +58,14 @@ public class MarketScreen extends CoreScreenLayer {
     private UIButton confirm;
     private UIButton back;
 
-    private List<MarketItem> list;
-    private MarketItem selected;
+    private List<MarketItem> list = new ArrayList<>();
+    private MarketItem selected = MarketItemBuilder.getEmpty();
     private TransactionType type;
 
     private Logger logger = LoggerFactory.getLogger(MarketScreen.class);
 
     @Override
     public void initialise() {
-        // Initialise fields
-        list = new ArrayList<>();
-        selected = MarketItemBuilder.getEmpty();
-
 
         // Initialise name label
         name = find("itemName", UILabel.class);
@@ -159,7 +155,7 @@ public class MarketScreen extends CoreScreenLayer {
     public void onClosed() {
         super.onClosed();
         selected = MarketItemBuilder.getEmpty();
-        items.setSelection(null);
+        items.setSelection(selected);
     }
 
     public void setItemList(List<MarketItem> resources) {
