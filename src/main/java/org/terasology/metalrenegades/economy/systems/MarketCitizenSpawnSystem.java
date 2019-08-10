@@ -44,15 +44,15 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
- * Spawns a trader in all markets
+ * Spawns a market citizen in all markets
  */
 @RegisterSystem
-public class TraderSpawnSystem extends BaseComponentSystem {
+public class MarketCitizenSpawnSystem extends BaseComponentSystem {
 
     @In
     private EntityManager entityManager;
 
-    private Logger logger = LoggerFactory.getLogger(TraderSpawnSystem.class);
+    private Logger logger = LoggerFactory.getLogger(MarketCitizenSpawnSystem.class);
 
     @ReceiveEvent(components = GenericBuildingComponent.class)
     public void onMarketPlaceSpawn(BuildingEntitySpawnedEvent event, EntityRef entityRef) {
@@ -60,7 +60,7 @@ public class TraderSpawnSystem extends BaseComponentSystem {
         if (genericBuildingComponent.name.equals("marketplace")) {
             DynParcel dynParcel = entityRef.getComponent(DynParcelRefComponent.class).dynParcel;
 
-            Optional<Prefab> traderGooeyOptional = Assets.getPrefab("MetalRenegades:neutralGooey");
+            Optional<Prefab> traderGooeyOptional = Assets.getPrefab("MetalRenegades:marketCitizen");
             if (traderGooeyOptional.isPresent()) {
                 Rect2i rect2i = dynParcel.shape;
                 Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 1, rect2i.minY() + rect2i.sizeY() / 2);

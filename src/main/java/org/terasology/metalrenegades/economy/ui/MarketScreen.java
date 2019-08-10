@@ -22,6 +22,7 @@ import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.economy.systems.MarketManagementSystem;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
+import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
 import org.terasology.rendering.nui.widgets.UIButton;
@@ -42,6 +43,9 @@ public class MarketScreen extends CoreScreenLayer {
 
     @In
     private MarketManagementSystem marketManagementSystem;
+
+    @In
+    private NUIManager nuiManager;
 
     private UIList<MarketItem> items;
 
@@ -142,15 +146,20 @@ public class MarketScreen extends CoreScreenLayer {
         // Initialise back button
         back = find("back", UIButton.class);
         back.subscribe(widget -> {
-            // TODO: Close the window when back is pressed
-            selected = MarketItemBuilder.getEmpty();
-            logger.info("Closing the UI...");
+            nuiManager.closeScreen("MetalRenegades:marketScreen");
         });
     }
 
     @Override
     public boolean isModal() {
         return true;
+    }
+
+    @Override
+    public void onClosed() {
+        super.onClosed();
+        selected = MarketItemBuilder.getEmpty();
+        items.setSelection(null);
     }
 
     public void setItemList(List<MarketItem> resources) {
