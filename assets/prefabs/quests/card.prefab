@@ -1,0 +1,32 @@
+{
+    "DisplayName" : {
+        "name" : "Quest Card"
+    },
+    "Item" : {
+        "icon" : "Tasks:icons#Questing",
+        "usage" : "ON_USER",
+        "consumedOnUse" : true
+    },
+    "Quest" : {
+        "shortName" : "FetchQuest",
+        "description" : "Bring me some meat!",
+        "tasks" : [
+            {
+                "id" : "collectMeat",
+                "class" : "CollectBlocksTask",
+                "data" : {
+                    "itemId" : "WildAnimals:Meat",
+                    "targetAmount" : 2
+                }
+            },
+            {
+                "id" : "returnHome",
+                "class" : "GoToBeaconTask",
+                "dependsOn" : "collectMeat",
+                "data" : {
+                    "targetBeaconId" : "homeBeacon"
+                }
+            }
+        ]
+    }
+}
