@@ -19,6 +19,7 @@ import org.terasology.dialogs.action.CloseDialogAction;
 import org.terasology.dialogs.components.DialogComponent;
 import org.terasology.dialogs.components.DialogPage;
 import org.terasology.dialogs.components.DialogResponse;
+import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -28,17 +29,21 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
+import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
+import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.metalrenegades.economy.MarketCitizenComponent;
 import org.terasology.metalrenegades.economy.TraderComponent;
 import org.terasology.metalrenegades.economy.actions.ShowTradingScreenAction;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 
 import java.util.ArrayList;
@@ -59,10 +64,19 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
     private EntityManager entityManager;
 
     @In
-    private PrefabManager prefabManager;
+    private InventoryManager inventoryManager;
 
     @In
-    private InventoryManager inventoryManager;
+    private CitizenAlignmentSystem citizenAlignmentSystem;
+
+    @In
+    private PrefabManager prefabManager;
+
+    @Override
+    public void initialise() {
+        // TODO: Temporary fix for injection malfunction in actions, ideally remove this in the future.
+        citizenAlignmentSystem = CoreRegistry.get(CitizenAlignmentSystem.class);
+    }
 
     @Override
     public void update(float delta) {
@@ -96,12 +110,10 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
      * @return The new citizen entity, or null if spawning is not possible.
      */
     private EntityRef spawnCitizen(EntityRef homeEntity) {
-        Prefab citizenPrefab = chooseCitizenPrefab();
-        if (citizenPrefab == null) { // if no prefab is available.
-            return null;
-        }
+        SettlementRefComponent settlementRefComponent = homeEntity.getComponent(SettlementRefComponent.class);
+        FactionAlignmentComponent settlementAlignmentComponent = settlementRefComponent.settlement.getComponent(FactionAlignmentComponent.class);
 
-        EntityBuilder entityBuilder = entityManager.newBuilder(chooseCitizenPrefab());
+        EntityBuilder entityBuilder = entityManager.newBuilder(citizenAlignmentSystem.getPrefab(settlementAlignmentComponent.alignment));
 
         LocationComponent homeLocationComponent = homeEntity.getComponent(LocationComponent.class);
         LocationComponent citizenLocationComponent = entityBuilder.getComponent(LocationComponent.class);
@@ -121,6 +133,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
         needsComponent.needs.put(CitizenNeed.Type.REST, new CitizenNeed(50, 0.5f, 20, 50));
 
         entityBuilder.saveComponent(needsComponent);
+        entityBuilder.addComponent(new TraderComponent());
 
         EntityRef entityRef = entityBuilder.build();
 
@@ -129,25 +142,9 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
             setupStartInventory(entityRef);
         }
 
+        entityRef.send(new CitizenSpawnedEvent());
+
         return entityRef;
-    }
-
-    /**
-     * Selects a random citizen prefab from a collection of prefabs with {@link CitizenComponent}.
-     *
-     * @return A random citizen prefab, or null if none are available.
-     */
-    private Prefab chooseCitizenPrefab() {
-        Collection<Prefab> citizenList = prefabManager.listPrefabs(CitizenComponent.class);
-        citizenList.removeIf(prefab -> prefab.hasComponent(MarketCitizenComponent.class));
-
-        int i = (int) (Math.random() * citizenList.size());
-        for (Prefab prefab : citizenList) {
-            if (i-- <= 0) {
-                return prefab;
-            }
-        }
-        return null;
     }
 
     private void setupStartInventory(EntityRef citizen) {
