@@ -40,6 +40,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Handles the inventory of the player at spawn and death
+ */
 @RegisterSystem
 public class PlayerInventorySystem extends BaseComponentSystem {
     @In
@@ -60,9 +63,16 @@ public class PlayerInventorySystem extends BaseComponentSystem {
     @In
     private LocalPlayer localPlayer;
 
+    /**
+     * Number of bullets and torches to be given to players at spawn
+     */
     private final int NUM_BULLET = 32;
     private final int NUM_TORCH = 99;
-    private final Vector3f OFFSET = new Vector3f(2, 2, 2);
+
+    /**
+     * Parameters for item drop position
+     */
+    private final Vector3f OFFSET = new Vector3f(1, 1, 1);
     private final float BOUND = 2f;
 
     @Override
