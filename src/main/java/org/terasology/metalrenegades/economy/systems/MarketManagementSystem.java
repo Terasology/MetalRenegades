@@ -35,8 +35,10 @@ import org.terasology.economy.events.ResourceDrawEvent;
 import org.terasology.economy.events.ResourceInfoRequestEvent;
 import org.terasology.economy.events.ResourceStoreEvent;
 import org.terasology.economy.events.SubscriberRegistrationEvent;
+import org.terasology.economy.events.UpdateWalletEvent;
 import org.terasology.economy.handler.MultiInvStorageHandler;
 import org.terasology.economy.systems.MarketLogisticSystem;
+import org.terasology.economy.systems.WalletSystem;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -77,9 +79,6 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     private PlayerTracker playerTracker;
 
     @In
-    private CurrencyManagementSystem currencySystem;
-
-    @In
     private InventoryManager inventoryManager;
 
     @In
@@ -93,6 +92,9 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
 
     @In
     private MultiInvStorageHandler handler;
+
+    @In
+    private WalletSystem walletSystem;
 
     private EntityRef playerResourceStore;
 
@@ -179,7 +181,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
     private MarketItem buy(MarketItem item) {
-        if (!currencySystem.isValidTransaction(-1 * item.cost)) {
+        if (!walletSystem.isValidTransaction(-1 * item.cost)) {
             logger.warn("Insufficient funds");
             return item;
         } else {
@@ -207,7 +209,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
                 break;
             }
 
-            currencySystem.changeWallet(-1 * item.cost);
+            localPlayer.getCharacterEntity().send(new UpdateWalletEvent(-1 * item.cost));
         }
 
         return item;
@@ -231,7 +233,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
             break;
         }
 
-        currencySystem.changeWallet(item.cost);
+        localPlayer.getCharacterEntity().send(new UpdateWalletEvent(item.cost));
         return item;
     }
 
