@@ -20,6 +20,7 @@ import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
 import org.terasology.dynamicCities.parcels.DynParcel;
+import org.terasology.economy.events.UpdateWalletEvent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -33,7 +34,6 @@ import org.terasology.logic.nameTags.NameTagComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.metalrenegades.economy.systems.CurrencyManagementSystem;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.Color;
@@ -63,9 +63,6 @@ public class FetchQuestSystem extends BaseComponentSystem {
 
     @In
     private EntityManager entityManager;
-
-    @In
-    private CurrencyManagementSystem currencyManagementSystem;
 
     @In
     private InventoryManager inventoryManager;
@@ -176,10 +173,10 @@ public class FetchQuestSystem extends BaseComponentSystem {
             inventoryManager.removeItem(character, EntityRef.NULL, item, true, amounts.getOrDefault(ITEM_ID, 0));
 
             // Pay the player
-            currencyManagementSystem.changeWallet(REWARD);
+            character.send(new UpdateWalletEvent(REWARD));
 
             // Remove the minmap overlay
-            localPlayer.getCharacterEntity().send(new RemoveBeaconOverlayEvent(activeQuestEntity));
+            character.send(new RemoveBeaconOverlayEvent(activeQuestEntity));
 
             // remove the quest
             questSystem.removeQuest(event.getQuest(), true);
