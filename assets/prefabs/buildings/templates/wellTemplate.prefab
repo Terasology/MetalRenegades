@@ -22,10 +22,10 @@
             { "blockType": "core:Plank:engine:stair.FRONT", "region": { "min": [-1, 4, -3], "size": [3, 1, 1]}},
             { "blockType": "core:Plank:engine:stair.LEFT", "region": { "min": [-1, 4, -2], "size": [1, 1, 1]}},
             { "blockType": "core:Plank:engine:stair.RIGHT", "region": { "min": [1, 4, -2], "size": [1, 1, 1]}},
-            { "blockType": "core:water", "region": { "min": [0, 0, -2], "size": [1, 2, 1]}},
             { "blockType": "engine:air", "region": { "min": [0, 2, -3], "size": [1, 2, 1]}},
             { "blockType": "engine:air", "region": { "min": [-1, 2, -2], "size": [3, 2, 1]}},
-            { "blockType": "engine:air", "region": { "min": [0, 2, -1], "size": [1, 2, 1]}}
+            { "blockType": "engine:air", "region": { "min": [0, 2, -1], "size": [1, 2, 1]}},
+            { "blockType": "MetalRenegades:waterCupSource", "region":  { "min":  [0, 0, -2], "size":  [1, 2, 1]}}
         ]
     }
 }
