@@ -17,6 +17,9 @@ package org.terasology.metalrenegades.interaction.component;
 
 import org.terasology.entitySystem.Component;
 
+/**
+ * Indicates a water cup source block, to be used inside wells.
+ */
 public class WellSourceComponent implements Component {
 
 }
