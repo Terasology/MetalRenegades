@@ -26,13 +26,16 @@ import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
 import org.terasology.registry.In;
 
+/**
+ * Tracks water source blocks inside of wells; and gives water cups to players upon interaction.
+ */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class WellWaterSystem extends BaseComponentSystem {
 
     @In
     private EntityManager entityManager;
 
-    @ReceiveEvent(components = {WellSourceComponent.class}, netFilter = RegisterMode.AUTHORITY)
+    @ReceiveEvent(components = {WellSourceComponent.class})
     public void onActivate(ActivateEvent event, EntityRef target) {
         EntityRef gatheringCharacter = event.getInstigator();
         EntityRef cupItem = entityManager.create("MetalRenegades:waterCup");
