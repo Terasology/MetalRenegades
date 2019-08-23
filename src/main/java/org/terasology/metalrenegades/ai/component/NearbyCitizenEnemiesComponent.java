@@ -20,6 +20,9 @@ import org.terasology.entitySystem.entity.EntityRef;
 
 import java.util.List;
 
+/**
+ * Stores the faction enemies in range of this citizen.
+ */
 public class NearbyCitizenEnemiesComponent implements Component {
 
     public float searchRadius = 20f;

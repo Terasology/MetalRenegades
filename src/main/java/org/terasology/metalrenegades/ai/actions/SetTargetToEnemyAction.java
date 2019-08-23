@@ -22,6 +22,10 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.metalrenegades.ai.component.NearbyCitizenEnemiesComponent;
 
+/**
+ * Action which sets this agent's move target to the nearest citizen from an enemy faction, as
+ * defined in {@link NearbyCitizenEnemiesComponent}.
+ */
 @BehaviorAction(name = "set_target_to_enemy")
 public class SetTargetToEnemyAction extends BaseAction {
 

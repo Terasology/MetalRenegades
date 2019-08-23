@@ -17,6 +17,9 @@ package org.terasology.metalrenegades.ai.event;
 
 import org.terasology.entitySystem.event.Event;
 
+/**
+ * Fired when a new citizen character is spawned by {@link org.terasology.metalrenegades.ai.system.CitizenSpawnSystem}.
+ */
 public class CitizenSpawnedEvent implements Event {
 
 }

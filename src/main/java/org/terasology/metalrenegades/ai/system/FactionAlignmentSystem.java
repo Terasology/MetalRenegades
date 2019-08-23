@@ -15,12 +15,7 @@
  */
 package org.terasology.metalrenegades.ai.system;
 
-import org.lwjgl.opengl.Display;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
-import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
-import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
 import org.terasology.dynamicCities.settlements.events.SettlementRegisterEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -30,14 +25,16 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
-import org.terasology.metalrenegades.ai.component.HomeComponent;
-import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 
+/**
+ * Assigns a faction to new settlements on spawn, and stores references to the character prefabs for all faction
+ * types.
+ */
 @RegisterSystem(RegisterMode.AUTHORITY)
-@Share(value = CitizenAlignmentSystem.class)
-public class CitizenAlignmentSystem extends BaseComponentSystem {
+@Share(value = FactionAlignmentSystem.class)
+public class FactionAlignmentSystem extends BaseComponentSystem {
 
     @In
     private AssetManager assetManager;
@@ -45,6 +42,9 @@ public class CitizenAlignmentSystem extends BaseComponentSystem {
     @In
     private PrefabManager prefabManager;
 
+    /**
+     * Defines a particular alignment with an associated character prefab.
+     */
     public enum Alignment {
             GOOD("goodCitizen"),
             BAD("badCitizen"),
@@ -57,6 +57,12 @@ public class CitizenAlignmentSystem extends BaseComponentSystem {
         }
     }
 
+    /**
+     * Returns the prefab associated with a provided faction alignment.
+     *
+     * @param alignment The alignment to return a prefab for.
+     * @return The character prefab for this alignment.
+     */
     public Prefab getPrefab(Alignment alignment) {
         return prefabManager.getPrefab(alignment.assetId);
     }

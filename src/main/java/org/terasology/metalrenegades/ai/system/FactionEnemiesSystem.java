@@ -29,6 +29,10 @@ import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 import org.terasology.metalrenegades.ai.component.NearbyCitizenEnemiesComponent;
 import org.terasology.registry.In;
 
+/**
+ * Tracks nearby faction enemies much like {@link org.terasology.behaviors.system.FindNearbyPlayersSystem}, and stores
+ * the results in each citizens {@link NearbyCitizenEnemiesComponent}.
+ */
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class FactionEnemiesSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
@@ -54,6 +58,17 @@ public class FactionEnemiesSystem extends BaseComponentSystem implements UpdateS
         }
     }
 
+    /**
+     * Checks for faction enemies nearby a particular citizen. Enemies are defined as follows:
+     * {@link org.terasology.metalrenegades.ai.system.FactionAlignmentSystem.Alignment#GOOD} citizens are enemies of
+     * {@link org.terasology.metalrenegades.ai.system.FactionAlignmentSystem.Alignment#BAD} citizens, and vice-versa,
+     * while {@link org.terasology.metalrenegades.ai.system.FactionAlignmentSystem.Alignment#NEUTRAL} are enemies with
+     * no other citizens.
+     *
+     * Results are stored in {@link NearbyCitizenEnemiesComponent}.
+     *
+     * @param citizen The citizen to check enemies for.
+     */
     private void checkForEnemies(EntityRef citizen) {
         if (!citizen.hasComponent(NearbyCitizenEnemiesComponent.class)
                 || !citizen.hasComponent(FactionAlignmentComponent.class)) {
@@ -77,8 +92,8 @@ public class FactionEnemiesSystem extends BaseComponentSystem implements UpdateS
 
             FactionAlignmentComponent otherAlignmentComponent = otherCitizen.getComponent(FactionAlignmentComponent.class);
             if (otherAlignmentComponent.alignment.equals(alignmentComponent.alignment) // continue if alignments are
-                    || otherAlignmentComponent.alignment.equals(CitizenAlignmentSystem.Alignment.NEUTRAL) // the same, or either alignment
-                    || alignmentComponent.alignment.equals(CitizenAlignmentSystem.Alignment.NEUTRAL)) { // is neutral.
+                    || otherAlignmentComponent.alignment.equals(FactionAlignmentSystem.Alignment.NEUTRAL) // the same, or either alignment
+                    || alignmentComponent.alignment.equals(FactionAlignmentSystem.Alignment.NEUTRAL)) { // is neutral.
                 continue;
             }
 

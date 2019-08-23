@@ -67,7 +67,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
     private InventoryManager inventoryManager;
 
     @In
-    private CitizenAlignmentSystem citizenAlignmentSystem;
+    private FactionAlignmentSystem citizenAlignmentSystem;
 
     @In
     private PrefabManager prefabManager;
@@ -75,7 +75,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
     @Override
     public void initialise() {
         // TODO: Temporary fix for injection malfunction in actions, ideally remove this in the future.
-        citizenAlignmentSystem = CoreRegistry.get(CitizenAlignmentSystem.class);
+        citizenAlignmentSystem = CoreRegistry.get(FactionAlignmentSystem.class);
     }
 
     @Override
