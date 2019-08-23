@@ -22,7 +22,7 @@ import java.util.List;
 
 public class NearbyCitizenEnemiesComponent implements Component {
 
-    public float searchRadius = 10f;
+    public float searchRadius = 20f;
 
     public List<EntityRef> enemiesWithinRange;
 

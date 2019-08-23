@@ -1,108 +1,94 @@
 {
-    parallel: [
+    dynamic: [
         {
-            dynamic: [
-                {
-                    guard: {
-                        componentPresent: "MetalRenegades:NearbyCitizenEnemies",
-                        values: ["N enemiesWithinRange nonEmpty"],
-                        child: {
-                            sequence: [
-                                set_target_to_enemy,
-                                {
-                                    lookup: {
-                                        tree: "Behaviors:hostile"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    selector: [
-                        {
-                            sequence: [
-                                {
-                                    check_need: {
-                                        needType: "FOOD"
-                                    }
-                                },
-                                {
-                                    lookup: {
-                                        tree: "MetalRenegades:findFood"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            sequence: [
-                                {
-                                    check_need: {
-                                        needType: "WATER"
-                                    }
-                                },
-                                {
-                                    lookup: {
-                                        tree: "MetalRenegades:findWater"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            sequence: [
-                                {
-                                    check_need: {
-                                        needType: "SOCIAL"
-                                    }
-                                },
-                                {
-                                    lookup: {
-                                        tree: "MetalRenegades:findSocial"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            sequence: [
-                                {
-                                    check_need: {
-                                        needType: "REST"
-                                    }
-                                },
-                                {
-                                    lookup: {
-                                        tree: "MetalRenegades:findRest"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
+            guard: {
+                componentPresent: "MetalRenegades:NearbyCitizenEnemies",
+                values: ["N enemiesWithinRange nonEmpty"],
+                child: {
                     sequence: [
-                        check_nighttime,
+                        set_target_to_enemy,
                         {
                             lookup: {
-                                tree: "MetalRenegades:returnHome"
+                                tree: "Behaviors:hostile"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            selector: [
+                {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "FOOD"
+                            }
+                        },
+                        {
+                            lookup: {
+                                tree: "MetalRenegades:findFood"
                             }
                         }
                     ]
                 },
                 {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "WATER"
+                            }
+                        },
+                        {
+                            lookup: {
+                                tree: "MetalRenegades:findWater"
+                            }
+                        }
+                    ]
+                },
+                {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "SOCIAL"
+                            }
+                        },
+                        {
+                            lookup: {
+                                tree: "MetalRenegades:findSocial"
+                            }
+                        }
+                    ]
+                },
+                {
+                    sequence: [
+                        {
+                            check_need: {
+                                needType: "REST"
+                            }
+                        },
+                        {
+                            lookup: {
+                                tree: "MetalRenegades:findRest"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            sequence: [
+                check_nighttime,
+                {
                     lookup: {
-                        tree: "Behaviors:stray"
+                        tree: "MetalRenegades:returnHome"
                     }
                 }
             ]
         },
         {
-            loop: {
-                child: {
-                     sequence: [
-                          { sleep: {time: 2}},
-                          check_for_citizen_enemies
-                    ]
-                }
+            lookup: {
+                tree: "Behaviors:stray"
             }
         }
     ]

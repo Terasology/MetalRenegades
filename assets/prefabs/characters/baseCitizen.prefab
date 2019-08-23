@@ -48,7 +48,11 @@
     },
     "Network": {},
     "MinionMove": {},
-    "Health": {},
+    "Health": {
+        "destroyEntityOnNoHealth" : true,
+        "currentHealth": 30,
+        "maxHealth": 30
+    },
     "BoxShape": {
         "extents": [
             1.0,
