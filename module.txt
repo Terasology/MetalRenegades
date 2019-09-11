@@ -17,7 +17,8 @@
         {"id" : "Dialogs", "minVersion" : "0.1.0"},
         {"id" : "WorldlyTooltip", "minVersion" : "1.1.1"},
         {"id" : "Hunger", "minVersion":  "1.0.1"},
-        {"id" : "Tasks", "minVersion": "0.2.0"}
+        {"id" : "Tasks", "minVersion": "0.2.0"},
+        {"id" : "Thirst", "minVersion":  "1.0.0"}
     ],
     "serverSideOnly" : false,
     "isGameplay" : true,

@@ -1,0 +1,15 @@
+{
+    "parent": "engine:iconItem",
+    "DisplayName": {
+        "name": "Water Cup"
+    },
+    "Item": {
+        "stackId": "MetalRenegades:waterCup",
+        "icon" : "MetalRenegades:waterCup",
+        "consumedOnUse": true,
+        "cooldownTime": 500
+    },
+    "Drink": {
+        "filling": 50
+    }
+}
