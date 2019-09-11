@@ -1,0 +1,12 @@
+{
+  "shader": "engine:genericMeshMaterial",
+  "params": {
+    "diffuse": "robot_Good_AnimatedTexture",
+    "colorOffset": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "textured": true
+  }
+}
