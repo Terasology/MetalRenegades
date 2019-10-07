@@ -10,7 +10,7 @@
     "MarketSubscriber" : {
      "production" : {"StructuralResources:Barrel" : 2},
      "productionInterval" : 500,
-     "consumption" : {"Core:plank" : 16},
+     "consumption" : {"CoreBlocks:Plank" : 16},
      "consumptionInterval" : 100
     }
 }

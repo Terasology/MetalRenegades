@@ -24,21 +24,16 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.events.PlayerDeathEvent;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.events.DropItemEvent;
 import org.terasology.logic.inventory.events.DropItemRequest;
-import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Handles the inventory of the player at spawn and death
@@ -88,7 +83,7 @@ public class PlayerInventorySystem extends BaseComponentSystem {
         items.put("core:explodeTool", 1);
         items.put("core:railgunTool", 1);
 
-        blocks.put("core:Torch", NUM_TORCH);
+        blocks.put("CoreBlocks:Torch", NUM_TORCH);
 
         combatStartingInventory.setItems(items, blocks);
     }
