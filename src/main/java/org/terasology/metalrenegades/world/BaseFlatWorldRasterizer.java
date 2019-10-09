@@ -30,7 +30,7 @@ public class BaseFlatWorldRasterizer implements WorldRasterizer {
 
     @Override
     public void initialize() {
-        dirt = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
+        dirt = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Dirt");
     }
 
     @Override

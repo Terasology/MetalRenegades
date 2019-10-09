@@ -2,7 +2,7 @@
     "OreGenDefinition" :  {},
     "PocketOreGen" :
     {
-        "block" : "Core:CoalOre", //  What block will be placed
+        "block" : "CoreBlocks:CoalOre", //  What block will be placed
         "frequency" : 1 // How often this pocket will happen in 10 vertical blocks in the region
     }
 }
