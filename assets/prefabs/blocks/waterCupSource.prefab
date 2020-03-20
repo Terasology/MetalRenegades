@@ -1,0 +1,9 @@
+{
+    "PlaySoundAction": {
+        "sounds": "engine:click"
+    },
+    "InteractionTarget": {},
+    "UnbreathableBlock": {},
+    "WellSource": {},
+    "Network": {}
+}

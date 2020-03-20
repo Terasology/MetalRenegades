@@ -1,7 +1,7 @@
 {
     "parent": "baseCitizen",
     "displayName": {
-        "name": "gooeyCitizen"
+        "name": "Gooey Citizen"
     },
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",

@@ -1,0 +1,20 @@
+/**
+ * CobbleStone is traditionally the more broken up type of stone that drops from Stone blocks in the world
+ * But maybe we'll do something else since ideally we'll have mini-blocks drop from Stone...
+ */
+{
+    "displayName": "Water Cup Source",
+    "liquid": true,
+    "water": true,
+    "hardness": 0,
+    "attachmentAllowed": false,
+    "translucent": true,
+    "targetable": true,
+    "penetrable": true,
+    "shadowCasting": true,
+    "replacementAllowed": true,
+    "tint": [0.1, 0.2, 0.2],
+    "entity": {
+        "prefab": "MetalRenegades:waterCupSource"
+    }
+}

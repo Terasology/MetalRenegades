@@ -30,7 +30,6 @@ import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.metalrenegades.economy.events.MarketScreenRequestEvent;
 import org.terasology.metalrenegades.economy.events.TransactionType;
-import org.terasology.metalrenegades.economy.systems.CurrencyManagementSystem;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.rendering.nui.NUIManager;
@@ -52,9 +51,6 @@ public class MarketUISystem extends BaseComponentSystem {
 
     @In
     private EntityManager entityManager;
-
-    @In
-    private CurrencyManagementSystem currencySystem;
 
     @In
     private InventoryManager inventoryManager;
