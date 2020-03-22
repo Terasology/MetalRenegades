@@ -19,14 +19,12 @@ package org.terasology.metalrenegades.minimap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.dynamicCities.minimap.DistrictOverlay;
-import org.terasology.dynamicCities.settlements.SettlementsCacheComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Rect2f;
 import org.terasology.math.geom.Rect2fTransformer;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
-import org.terasology.math.geom.Vector2i;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.minimap.overlays.MinimapOverlay;
 import org.terasology.rendering.assets.texture.Texture;
@@ -94,11 +92,11 @@ public class AddCharacterOverlay implements MinimapOverlay {
     }
 
     /**
-     * Constrains a point to a specified region. Works like a vector clamp.
+     * Checks if the citizen to be drawn lies inside the visible region in the minimap
      *
      * @param point: the coordinates of the point to be clamped
      * @param box:   limits
-     * @return new clamped coordinates of point
+     * @return whether point is to be drawn or not
      */
     private boolean isInside(Vector2f point, Rect2f box) {
 

@@ -20,11 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.metalrenegades.minimap.events.AddCharacterOverlayEvent;
 import org.terasology.metalrenegades.minimap.events.RemoveCharacterOverlayEvent;
-import org.terasology.dynamicCities.minimap.DistrictOverlay;
-import org.terasology.dynamicCities.minimap.events.AddCentreOverlayEvent;
-import org.terasology.dynamicCities.minimap.events.AddDistrictOverlayEvent;
-import org.terasology.dynamicCities.minimap.events.RemoveDistrictOverlayEvent;
-import org.terasology.dynamicCities.settlements.SettlementsCacheComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -59,13 +54,10 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
     @In
     private NetworkSystem networkSystem;
 
-    private Logger logger = LoggerFactory.getLogger(org.terasology.dynamicCities.minimap.MinimapOverlaySystem.class);
-
     private EntityRef clientEntity;
 
     private Map<EntityRef, Boolean> isOverlayAdded;
 
-    private boolean isOverlaySinglePlayerAdded;
 
     @Override
     public void initialise() {
@@ -82,29 +74,21 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
     }
 
     /**
-     * Checks network constraints and adds the DistrictOverlay to all settlement entities
+     * Adds the character Overlay to every person that sends this event
+     *
      * @param event
      * @param citizen
      */
     @ReceiveEvent
     public void onAddCharacterOverlayEvent(AddCharacterOverlayEvent event, EntityRef citizen) {
 
-        logger.error("event has been handled");
-
-
-            minimapSystem.addOverlay(new AddCharacterOverlay(citizen));
-
+        minimapSystem.addOverlay(new AddCharacterOverlay(citizen));
     }
 
 
     /**
-     * Checks network constraints and adds the CentreOverlay to all settlement entities
-     * @param event
-     * @param entityRef
-     */
-
-    /**
      * Removes CharacterOverlay from the map
+     *
      * @param event
      * @param entityRef
      */
