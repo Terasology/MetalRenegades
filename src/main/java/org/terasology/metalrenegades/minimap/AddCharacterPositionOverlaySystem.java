@@ -38,6 +38,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * This system manages the events to add and remove character overlays
+ */
+
 @RegisterSystem(RegisterMode.CLIENT)
 public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
 
@@ -74,7 +78,7 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
     }
 
     /**
-     * Adds the character Overlay to every person that sends this event
+     * Adds the character Overlay to the map for every citizen that sends this event
      *
      * @param event
      * @param citizen
@@ -102,6 +106,4 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
             }
         }
     }
-
-
 }

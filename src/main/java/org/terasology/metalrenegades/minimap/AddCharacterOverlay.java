@@ -41,6 +41,12 @@ public class AddCharacterOverlay implements MinimapOverlay {
 
     private Logger logger = LoggerFactory.getLogger(DistrictOverlay.class);
 
+    /**
+     * This class is used to add character overlays to the minimap based on the citizen type
+     * and position
+     * @param entityRef entity that needs to place itself on the minimap
+     */
+
     public AddCharacterOverlay(EntityRef entityRef) {
         this.CitizenEntity = entityRef;
     }
@@ -73,7 +79,7 @@ public class AddCharacterOverlay implements MinimapOverlay {
         );
 
         if (isInside(mapPoint, screenRect)) {
-            Rect2i region = Rect2i.createFromMinAndSize((int) mapPoint.x, (int) mapPoint.y, (int) iconSize.x / 2, (int) iconSize.y / 2);
+            Rect2i region = Rect2i.createFromMinAndSize((int) (mapPoint.x - iconSize.x/4), (int) (mapPoint.y-iconSize.y/4), (int) iconSize.x / 2, (int) iconSize.y / 2);
             String citizenType = CitizenEntity.getParentPrefab().getName();
             Optional<Texture> icon;
             if (citizenType.equals("MetalRenegades:marketCitizen")) {
@@ -94,7 +100,7 @@ public class AddCharacterOverlay implements MinimapOverlay {
     /**
      * Checks if the citizen to be drawn lies inside the visible region in the minimap
      *
-     * @param point: the coordinates of the point to be clamped
+     * @param point: the coordinates of the point to be checked
      * @param box:   limits
      * @return whether point is to be drawn or not
      */
