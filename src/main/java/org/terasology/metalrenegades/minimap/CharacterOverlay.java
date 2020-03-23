@@ -82,10 +82,10 @@ public class CharacterOverlay implements MinimapOverlay {
                 transformer.applyX(location.x),
                 transformer.applyY(location.y)
         );
-        Vector2f iconCenter = new Vector2f(mapPoint.x + iconSize.x/2,mapPoint.y + iconSize.y/2);
+        Vector2f iconCenter = new Vector2f(mapPoint.x - iconSize.x/2,mapPoint.y - iconSize.y/2);
 
         if (isInside(iconCenter, screenRect)) {
-            Rect2i region = Rect2i.createFromMinAndSize((int)iconCenter.x, (int)iconCenter.y, (int)iconSize.x, (int)iconSize.y/2);
+            Rect2i region = Rect2i.createFromMinAndSize((int)iconCenter.x, (int)iconCenter.y, (int)iconSize.x, (int)iconSize.y);
             String citizenType = CitizenEntity.getParentPrefab().getName();
             Optional<Texture> icon;
             if (citizenType.equals("MetalRenegades:marketCitizen")) {
