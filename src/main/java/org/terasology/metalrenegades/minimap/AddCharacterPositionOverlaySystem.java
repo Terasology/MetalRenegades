@@ -29,11 +29,13 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.MinimapSystem;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
+import org.terasology.minimap.overlays.MinimapOverlay;
 import org.terasology.network.ClientComponent;
 import org.terasology.network.NetworkMode;
 import org.terasology.network.NetworkSystem;
 import org.terasology.registry.In;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -60,7 +62,7 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
 
     private EntityRef clientEntity;
 
-    private Map<EntityRef, Boolean> isOverlayAdded;
+    private Map<EntityRef, MinimapOverlay> OverlayforEntityRef;
 
 
     @Override
@@ -68,11 +70,11 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
         if (networkSystem.getMode() == NetworkMode.CLIENT) {
             clientEntity = networkSystem.getServer().getClientEntity();
         }
-        isOverlayAdded = new HashMap<>();
+        OverlayforEntityRef = new HashMap<>();
 
         Iterator<EntityRef> entities = entityManager.getEntitiesWith(CitizenComponent.class).iterator();
         while (entities.hasNext()) {
-            minimapSystem.addOverlay(new AddCharacterOverlay(entities.next()));
+            minimapSystem.addOverlay(new CharacterOverlay(entities.next()));
         }
 
     }
@@ -86,7 +88,9 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onAddCharacterOverlayEvent(AddCharacterOverlayEvent event, EntityRef citizen) {
 
-        minimapSystem.addOverlay(new AddCharacterOverlay(citizen));
+        MinimapOverlay overlay = new CharacterOverlay(citizen);
+        minimapSystem.addOverlay(overlay);
+        OverlayforEntityRef.put(citizen, overlay);
     }
 
 
@@ -98,12 +102,7 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onRemoveCharacterOverlayEvent(RemoveCharacterOverlayEvent event, EntityRef entityRef) {
-        if (networkSystem.getMode() == NetworkMode.CLIENT) {
-            if (clientEntity.getComponent(ClientComponent.class).character.equals(entityRef.getId())) {
-                if (isOverlayAdded.containsKey(entityRef)) {
-                    isOverlayAdded.replace(entityRef, false);
-                }
-            }
-        }
+        MinimapOverlay overlay = OverlayforEntityRef.get(entityRef);
+        minimapSystem.removeOverlay(overlay);
     }
 }

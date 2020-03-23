@@ -33,21 +33,26 @@ import org.terasology.utilities.Assets;
 
 import java.util.Optional;
 
-public class AddCharacterOverlay implements MinimapOverlay {
-    private static final float ICON_SIZE = 32f;
+/**
+ * This class is used to add character overlays to the minimap based on the citizen type
+ *  and position
+ */
+
+
+public class CharacterOverlay implements MinimapOverlay {
+    private static final float ICON_SIZE = 16f;
 
     private EntityRef CitizenEntity;
     private Vector2f iconSize = new Vector2f(ICON_SIZE, ICON_SIZE);
 
-    private Logger logger = LoggerFactory.getLogger(DistrictOverlay.class);
+    private Logger logger = LoggerFactory.getLogger(CharacterOverlay.class);
 
     /**
-     * This class is used to add character overlays to the minimap based on the citizen type
-     * and position
-     * @param entityRef entity that needs to place itself on the minimap
+     * This constructor sets the citizenEntity to the entityRef
+     * @param entityRef entity passed as argument during object creation
      */
 
-    public AddCharacterOverlay(EntityRef entityRef) {
+    public CharacterOverlay(EntityRef entityRef) {
         this.CitizenEntity = entityRef;
     }
 
@@ -77,9 +82,10 @@ public class AddCharacterOverlay implements MinimapOverlay {
                 transformer.applyX(location.x),
                 transformer.applyY(location.y)
         );
+        Vector2f iconCenter = new Vector2f(mapPoint.x + iconSize.x/2,mapPoint.y + iconSize.y/2);
 
-        if (isInside(mapPoint, screenRect)) {
-            Rect2i region = Rect2i.createFromMinAndSize((int) (mapPoint.x - iconSize.x/4), (int) (mapPoint.y-iconSize.y/4), (int) iconSize.x / 2, (int) iconSize.y / 2);
+        if (isInside(iconCenter, screenRect)) {
+            Rect2i region = Rect2i.createFromMinAndSize((int)iconCenter.x, (int)iconCenter.y, (int)iconSize.x, (int)iconSize.y/2);
             String citizenType = CitizenEntity.getParentPrefab().getName();
             Optional<Texture> icon;
             if (citizenType.equals("MetalRenegades:marketCitizen")) {
