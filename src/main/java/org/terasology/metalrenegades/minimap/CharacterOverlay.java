@@ -18,7 +18,6 @@ package org.terasology.metalrenegades.minimap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.dynamicCities.minimap.DistrictOverlay;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Rect2f;
@@ -31,73 +30,84 @@ import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.utilities.Assets;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
  * This class is used to add character overlays to the minimap based on the citizen type
- *  and position
+ * and position
  */
 
 
 public class CharacterOverlay implements MinimapOverlay {
     private static final float ICON_SIZE = 16f;
 
-    private EntityRef CitizenEntity;
     private Vector2f iconSize = new Vector2f(ICON_SIZE, ICON_SIZE);
 
     private Logger logger = LoggerFactory.getLogger(CharacterOverlay.class);
 
+    private ArrayList<EntityRef> Citizens;
+
+
     /**
-     * This constructor sets the citizenEntity to the entityRef
-     * @param entityRef entity passed as argument during object creation
+     * This constructor sets creates the list of citizens
+     *
      */
 
-    public CharacterOverlay(EntityRef entityRef) {
-        this.CitizenEntity = entityRef;
+
+    public CharacterOverlay(){
+        this.Citizens = new ArrayList<EntityRef>();
     }
 
     @Override
     public void render(Canvas canvas, Rect2f worldRect) {
-        if (!CitizenEntity.hasComponent(CitizenComponent.class)) {
-            logger.error("No Citizen found!");
-            return;
-        }
 
-        Rect2f screenRect = Rect2f.createFromMinAndSize(
-                new Vector2f(canvas.getRegion().minX(), canvas.getRegion().minY()),
-                new Vector2f(canvas.getRegion().maxX(), canvas.getRegion().maxY())
-        );
-
-        Rect2fTransformer transformer = new Rect2fTransformer(worldRect, screenRect);
+        Collection<EntityRef> citizens = this.Citizens;
 
 
-        LocationComponent locationComponent = CitizenEntity.getComponent(LocationComponent.class);
-        if (locationComponent == null) {
-            logger.error("Cannot find location component for Citizen: ");
-            return;
-        }
-
-        Vector2f location = new Vector2f(locationComponent.getLocalPosition().x(), locationComponent.getLocalPosition().z());
-        Vector2f mapPoint = new Vector2f(
-                transformer.applyX(location.x),
-                transformer.applyY(location.y)
-        );
-        Vector2f iconCenter = new Vector2f(mapPoint.x - iconSize.x/2,mapPoint.y - iconSize.y/2);
-
-        if (isInside(iconCenter, screenRect)) {
-            Rect2i region = Rect2i.createFromMinAndSize((int)iconCenter.x, (int)iconCenter.y, (int)iconSize.x, (int)iconSize.y);
-            String citizenType = CitizenEntity.getParentPrefab().getName();
-            Optional<Texture> icon;
-            if (citizenType.equals("MetalRenegades:marketCitizen")) {
-                icon = Assets.getTexture("MetalRenegades:marketGooey");
-            } else {
-
-                icon = Assets.getTexture(citizenType);
+        for (EntityRef CitizenEntity : citizens) {
+            if (!CitizenEntity.hasComponent(CitizenComponent.class)) {
+                logger.error("No Citizen found!");
+                return;
             }
-            if (icon.isPresent()) {
-                canvas.drawTexture(icon.get(), region);
-            } else {
-                logger.error("No icon found for citizen" + citizenType);
+
+            Rect2f screenRect = Rect2f.createFromMinAndSize(
+                    new Vector2f(canvas.getRegion().minX(), canvas.getRegion().minY()),
+                    new Vector2f(canvas.getRegion().maxX(), canvas.getRegion().maxY())
+            );
+
+            Rect2fTransformer transformer = new Rect2fTransformer(worldRect, screenRect);
+
+
+            LocationComponent locationComponent = CitizenEntity.getComponent(LocationComponent.class);
+            if (locationComponent == null) {
+                logger.error("Cannot find location component for Citizen: ");
+                return;
+            }
+
+            Vector2f location = new Vector2f(locationComponent.getLocalPosition().x(), locationComponent.getLocalPosition().z());
+            Vector2f mapPoint = new Vector2f(
+                    transformer.applyX(location.x),
+                    transformer.applyY(location.y)
+            );
+            Vector2f iconCenter = new Vector2f(mapPoint.x - iconSize.x / 2, mapPoint.y - iconSize.y / 2);
+
+            if (isInside(iconCenter, screenRect)) {
+                Rect2i region = Rect2i.createFromMinAndSize((int) iconCenter.x, (int) iconCenter.y, (int) iconSize.x, (int) iconSize.y);
+                String citizenType = CitizenEntity.getParentPrefab().getName();
+                Optional<Texture> icon;
+                if (citizenType.equals("MetalRenegades:marketCitizen")) {
+                    icon = Assets.getTexture("MetalRenegades:marketGooey");
+                } else {
+
+                    icon = Assets.getTexture(citizenType);
+                }
+                if (icon.isPresent()) {
+                    canvas.drawTexture(icon.get(), region);
+                } else {
+                    logger.error("No icon found for citizen" + citizenType);
+                }
             }
         }
 
@@ -117,10 +127,29 @@ public class CharacterOverlay implements MinimapOverlay {
 
     }
 
+    /**
+     * This function adds the citizen to the Citizens list
+     * @param entityRef citizen to be added
+     */
+
+    public void AddCitizen(EntityRef entityRef) {
+        this.Citizens.add(entityRef);
+    }
+
+    /**
+     * This function removes the citizen from the list
+     * @param entityRef citizen to be removed
+     */
+
+    public void removeCitizen(EntityRef entityRef){
+        this.Citizens.remove(entityRef);
+
+    }
+
 
     @Override
     public int getZOrder() {
-        return 0;
+        return 2;
     }
 
 }
