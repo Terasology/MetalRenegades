@@ -17,7 +17,6 @@ package org.terasology.metalrenegades.minimap;
 
 
 import org.terasology.metalrenegades.minimap.events.AddCharacterOverlayEvent;
-import org.terasology.metalrenegades.minimap.events.RemoveCharacterEvent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -25,6 +24,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.players.MinimapSystem;
+import org.terasology.metalrenegades.minimap.events.RemoveCharacterFromOverlayEvent;
 import org.terasology.registry.In;
 
 /**
@@ -69,7 +69,7 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
      * @param entityRef
      */
     @ReceiveEvent
-    public void onRemoveCharacterOverlayEvent(RemoveCharacterEvent event, EntityRef entityRef) {
+    public void onRemoveCharacterOverlayEvent(RemoveCharacterFromOverlayEvent event, EntityRef entityRef) {
         characterOverlay.removeCitizen(entityRef);
     }
 }

@@ -22,8 +22,8 @@ import org.terasology.network.BroadcastEvent;
  * Event to be used to remove the character overlay once the citizen dies.
  */
 @BroadcastEvent
-public class RemoveCharacterEvent implements Event {
-    public RemoveCharacterEvent() {
+public class RemoveCharacterFromOverlayEvent implements Event {
+    public RemoveCharacterFromOverlayEvent() {
 
     }
 }
