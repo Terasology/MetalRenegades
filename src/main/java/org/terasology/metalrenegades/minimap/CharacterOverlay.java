@@ -16,6 +16,7 @@
 package org.terasology.metalrenegades.minimap;
 
 
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -30,9 +31,7 @@ import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.utilities.Assets;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class is used to add character overlays to the minimap based on the citizen type
@@ -49,15 +48,25 @@ public class CharacterOverlay implements MinimapOverlay {
 
     private ArrayList<EntityRef> Citizens;
 
+    private final Map<String, Optional> map = new HashMap<String, Optional>();
+
 
     /**
      * This constructor sets creates the list of citizens
-     *
      */
 
 
-    public CharacterOverlay(){
+    public CharacterOverlay() {
         this.Citizens = new ArrayList<EntityRef>();
+        this.map.put("MetalRenegades:marketCitizen", Assets.getTexture("MetalRenegades:marketGooey"));
+        this.map.put("MetalRenegades:badCitizen", Assets.getTexture("MetalRenegades:badCitizen"));
+        this.map.put("MetalRenegades:goodCitizen", Assets.getTexture("MetalRenegades:goodCitizen"));
+        this.map.put("MetalRenegades:gooeyCitizen", Assets.getTexture("MetalRenegades:gooeyCitizen"));
+        this.map.put("MetalRenegades:neutralGooey", Assets.getTexture("MetalRenegades:neutralGooey"));
+        this.map.put("MetalRenegades:nocturnalGooey", Assets.getTexture("MetalRenegades:nocturnalGooey"));
+        this.map.put("MetalRenegades:scaredGooey", Assets.getTexture("MetalRenegades:scaredGooey"));
+        this.map.put("MetalRenegades:angryGooey", Assets.getTexture("MetalRenegades:angryGooey"));
+        this.map.put("MetalRenegades:friendlyGooey", Assets.getTexture("MetalRenegades:friendlyGooey"));
     }
 
     @Override
@@ -65,19 +74,19 @@ public class CharacterOverlay implements MinimapOverlay {
 
         Collection<EntityRef> citizens = this.Citizens;
 
+        Rect2f screenRect = Rect2f.createFromMinAndSize(
+                new Vector2f(canvas.getRegion().minX(), canvas.getRegion().minY()),
+                new Vector2f(canvas.getRegion().maxX(), canvas.getRegion().maxY())
+        );
+
+        Rect2fTransformer transformer = new Rect2fTransformer(worldRect, screenRect);
+
 
         for (EntityRef CitizenEntity : citizens) {
             if (!CitizenEntity.hasComponent(CitizenComponent.class)) {
                 logger.error("No Citizen found!");
-                return;
+                continue;
             }
-
-            Rect2f screenRect = Rect2f.createFromMinAndSize(
-                    new Vector2f(canvas.getRegion().minX(), canvas.getRegion().minY()),
-                    new Vector2f(canvas.getRegion().maxX(), canvas.getRegion().maxY())
-            );
-
-            Rect2fTransformer transformer = new Rect2fTransformer(worldRect, screenRect);
 
 
             LocationComponent locationComponent = CitizenEntity.getComponent(LocationComponent.class);
@@ -96,13 +105,7 @@ public class CharacterOverlay implements MinimapOverlay {
             if (isInside(iconCenter, screenRect)) {
                 Rect2i region = Rect2i.createFromMinAndSize((int) iconCenter.x, (int) iconCenter.y, (int) iconSize.x, (int) iconSize.y);
                 String citizenType = CitizenEntity.getParentPrefab().getName();
-                Optional<Texture> icon;
-                if (citizenType.equals("MetalRenegades:marketCitizen")) {
-                    icon = Assets.getTexture("MetalRenegades:marketGooey");
-                } else {
-
-                    icon = Assets.getTexture(citizenType);
-                }
+                Optional<Texture> icon = this.map.get(citizenType);
                 if (icon.isPresent()) {
                     canvas.drawTexture(icon.get(), region);
                 } else {
@@ -129,6 +132,7 @@ public class CharacterOverlay implements MinimapOverlay {
 
     /**
      * This function adds the citizen to the Citizens list
+     *
      * @param entityRef citizen to be added
      */
 
@@ -138,10 +142,11 @@ public class CharacterOverlay implements MinimapOverlay {
 
     /**
      * This function removes the citizen from the list
+     *
      * @param entityRef citizen to be removed
      */
 
-    public void removeCitizen(EntityRef entityRef){
+    public void removeCitizen(EntityRef entityRef) {
         this.Citizens.remove(entityRef);
 
     }

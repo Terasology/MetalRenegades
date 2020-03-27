@@ -19,11 +19,11 @@ import org.terasology.entitySystem.event.Event;
 import org.terasology.network.BroadcastEvent;
 
 /**
- * Event to be used to add the character overlay to the minimap when the citizen is spawned.
+ * Event to be used to remove the character overlay once the citizen dies.
  */
 @BroadcastEvent
-public class AddCharacterOverlayEvent implements Event {
-    public AddCharacterOverlayEvent() {
+public class RemoveCharacterOverlayEvent implements Event {
+    public RemoveCharacterOverlayEvent() {
 
     }
 }
