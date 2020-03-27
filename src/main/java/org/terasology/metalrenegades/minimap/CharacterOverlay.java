@@ -105,11 +105,13 @@ public class CharacterOverlay implements MinimapOverlay {
             if (isInside(iconCenter, screenRect)) {
                 Rect2i region = Rect2i.createFromMinAndSize((int) iconCenter.x, (int) iconCenter.y, (int) iconSize.x, (int) iconSize.y);
                 String citizenType = CitizenEntity.getParentPrefab().getName();
-                Optional<Texture> icon = this.map.get(citizenType);
-                if (icon.isPresent()) {
-                    canvas.drawTexture(icon.get(), region);
-                } else {
-                    logger.error("No icon found for citizen" + citizenType);
+                if (this.map.get(citizenType) != null) {
+                    Optional<Texture> icon = this.map.get(citizenType);
+                    if (icon.isPresent()) {
+                        canvas.drawTexture(icon.get(), region);
+                    } else {
+                        logger.error("No icon found for citizen" + citizenType);
+                    }
                 }
             }
         }
