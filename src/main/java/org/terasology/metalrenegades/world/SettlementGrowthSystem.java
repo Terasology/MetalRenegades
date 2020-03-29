@@ -15,14 +15,11 @@
  */
 package org.terasology.metalrenegades.world;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.network.NetworkSystem;
 import org.terasology.registry.In;
 
 
