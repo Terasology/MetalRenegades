@@ -28,6 +28,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
@@ -39,10 +40,12 @@ import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
 import org.terasology.metalrenegades.economy.MarketCitizenComponent;
 import org.terasology.metalrenegades.economy.TraderComponent;
 import org.terasology.metalrenegades.economy.actions.ShowTradingScreenAction;
+import org.terasology.namegenerator.creature.CreatureNameProvider;
 import org.terasology.registry.In;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 /**
  * Spawns new citizens inside of available buildings with {@link PotentialHomeComponent}.
@@ -63,6 +66,8 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
     @In
     private InventoryManager inventoryManager;
+
+    private Random random = new Random();
 
     @Override
     public void update(float delta) {
@@ -123,6 +128,13 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
         entityBuilder.saveComponent(needsComponent);
 
         EntityRef entityRef = entityBuilder.build();
+
+        CitizenComponent citizencomponent = entityRef.getComponent(CitizenComponent.class);
+        if(entityRef.hasComponent(DisplayNameComponent.class)) {
+            DisplayNameComponent displayNameComponent = entityRef.getComponent(DisplayNameComponent.class);
+            CreatureNameProvider creatureNameProvider = new CreatureNameProvider(random.nextLong());
+            displayNameComponent.name = creatureNameProvider.generateName();
+        }
 
         if (entityRef.hasComponent(TraderComponent.class)) {
             entityRef.addComponent(createTradeDialogComponent());
