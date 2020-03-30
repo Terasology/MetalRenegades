@@ -39,6 +39,7 @@ import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
 import org.terasology.metalrenegades.economy.MarketCitizenComponent;
 import org.terasology.metalrenegades.economy.TraderComponent;
 import org.terasology.metalrenegades.economy.actions.ShowTradingScreenAction;
+import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.registry.In;
 
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
                 }
 
                 EntityRef citizen = spawnCitizen(entity);
+                citizen.send(new AddCharacterToOverlayEvent());
                 if (citizen == null) { // if no entity was generated.
                     continue;
                 }
