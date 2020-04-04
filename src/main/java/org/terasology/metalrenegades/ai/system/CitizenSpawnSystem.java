@@ -41,12 +41,15 @@ import org.terasology.metalrenegades.economy.MarketCitizenComponent;
 import org.terasology.metalrenegades.economy.TraderComponent;
 import org.terasology.metalrenegades.economy.actions.ShowTradingScreenAction;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
+import org.terasology.namegenerator.creature.CreatureAssetTheme;
 import org.terasology.namegenerator.creature.CreatureNameProvider;
 import org.terasology.registry.In;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+
+import static org.terasology.namegenerator.creature.CreatureAssetTheme.COUNTRY;
 
 /**
  * Spawns new citizens inside of available buildings with {@link PotentialHomeComponent}.
@@ -131,10 +134,9 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
         EntityRef entityRef = entityBuilder.build();
 
-        CitizenComponent citizencomponent = entityRef.getComponent(CitizenComponent.class);
         if(entityRef.hasComponent(DisplayNameComponent.class)) {
             DisplayNameComponent displayNameComponent = entityRef.getComponent(DisplayNameComponent.class);
-            CreatureNameProvider creatureNameProvider = new CreatureNameProvider(random.nextLong());
+            CreatureNameProvider creatureNameProvider = new CreatureNameProvider(random.nextLong(), CreatureAssetTheme.COUNTRY);
             displayNameComponent.name = creatureNameProvider.generateName();
         }
 

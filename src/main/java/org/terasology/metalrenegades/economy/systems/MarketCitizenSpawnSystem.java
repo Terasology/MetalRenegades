@@ -33,16 +33,20 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.metalrenegades.economy.actions.ShowMarketScreenAction;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
+import org.terasology.namegenerator.creature.CreatureAssetTheme;
+import org.terasology.namegenerator.creature.CreatureNameProvider;
 import org.terasology.registry.In;
 import org.terasology.utilities.Assets;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Spawns a market citizen in all markets
@@ -54,6 +58,8 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
     private EntityManager entityManager;
 
     private Logger logger = LoggerFactory.getLogger(MarketCitizenSpawnSystem.class);
+
+    Random random = new Random();
 
     @ReceiveEvent(components = GenericBuildingComponent.class)
     public void onMarketPlaceSpawn(BuildingEntitySpawnedEvent event, EntityRef entityRef) {
@@ -70,6 +76,11 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 trader.addComponent(settlementRefComponent);
                 MarketComponent marketComponent = settlementRefComponent.settlement.getComponent(MarketComponent.class);
+                if(entityRef.hasComponent(DisplayNameComponent.class)) {
+                    DisplayNameComponent displayNameComponent = entityRef.getComponent(DisplayNameComponent.class);
+                    CreatureNameProvider creatureNameProvider = new CreatureNameProvider(random.nextLong(), CreatureAssetTheme.COUNTRY);
+                    displayNameComponent.name = "shopkeeper " + creatureNameProvider.generateName();
+                }
 
 
                 DialogComponent dialogComponent = new DialogComponent();
