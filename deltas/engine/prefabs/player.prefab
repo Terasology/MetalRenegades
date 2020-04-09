@@ -1,0 +1,14 @@
+{
+  "StartingInventory": {
+    "items": [
+      { "uri": "MetalRenegades:pistol", "quantity": 1 },
+      { "uri": "MetalRenegades:bulletItem", "quantity": 32 },
+      { "uri": "core:pickaxe", "quantity": 1 },
+      { "uri": "core:shovel", "quantity": 1 },
+      { "uri": "core:axe", "quantity": 1 },
+      { "uri": "core:explodeTool", "quantity": 1 },
+      { "uri": "core:railgunTool", "quantity": 1 },
+      { "uri": "CoreBlocks:Torch", "quantity": 99 }
+    ]
+  }
+}
