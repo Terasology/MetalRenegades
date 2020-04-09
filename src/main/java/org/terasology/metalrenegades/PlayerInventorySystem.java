@@ -16,7 +16,6 @@
 package org.terasology.metalrenegades;
 
 import org.terasology.assets.management.AssetManager;
-import org.terasology.combatSystem.inventory.CombatStartingInventory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -31,8 +30,6 @@ import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockManager;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -53,25 +50,13 @@ public class PlayerInventorySystem extends BaseComponentSystem {
     private AssetManager assetManager;
 
     @In
-    private CombatStartingInventory combatStartingInventory;
-
-    @In
     private LocalPlayer localPlayer;
-
-
+    
     /**
      * Parameters for item drop position
      */
     private final Vector3f OFFSET = new Vector3f(1, 1, 1);
     private final float BOUND = 2f;
-
-    @Override
-    public void postBegin() {
-        // Ensure that CombatSystem does not spawn its own starting inventory.
-        Map<String, Integer> items = new HashMap<>();
-        Map<String, Integer> blocks = new HashMap<>();
-        combatStartingInventory.setItems(items, blocks);
-    }
 
     @ReceiveEvent
     public void onPlayerDeath(PlayerDeathEvent event, EntityRef character) {
