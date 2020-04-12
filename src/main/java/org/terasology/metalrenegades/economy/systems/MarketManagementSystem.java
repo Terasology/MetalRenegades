@@ -228,7 +228,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
             }
 
             SettlementRefComponent settlementRefComponent = bldg.getComponent(SettlementRefComponent.class);
-            bldg.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
+            playerResourceStore.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
             item.quantity--;
             localPlayer.getCharacterEntity().send(new UpdateWalletEvent(item.cost));
             break;
