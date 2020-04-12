@@ -184,7 +184,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
         if (!walletSystem.isValidTransaction(-1 * item.cost)) {
             logger.warn("Insufficient funds");
             return item;
-        } else {
+        } else if (item.quantity > 0) {
 
             if (!createItemOrBlock(item.name)) {
                 logger.warn("Failed to create entity");
@@ -206,10 +206,10 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
                         handler.availableResourceAmount(component, item.name));
 
                 item.quantity--;
+                localPlayer.getCharacterEntity().send(new UpdateWalletEvent(-1 * item.cost));
                 break;
             }
 
-            localPlayer.getCharacterEntity().send(new UpdateWalletEvent(-1 * item.cost));
         }
 
         return item;
@@ -230,10 +230,10 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
             SettlementRefComponent settlementRefComponent = bldg.getComponent(SettlementRefComponent.class);
             bldg.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
             item.quantity--;
+            localPlayer.getCharacterEntity().send(new UpdateWalletEvent(item.cost));
             break;
         }
 
-        localPlayer.getCharacterEntity().send(new UpdateWalletEvent(item.cost));
         return item;
     }
 
