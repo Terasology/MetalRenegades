@@ -38,7 +38,6 @@ import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.metalrenegades.economy.actions.ShowMarketScreenAction;
 import org.terasology.metalrenegades.economy.events.TransactionType;
-import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.namegenerator.creature.CreatureAssetTheme;
 import org.terasology.namegenerator.creature.CreatureNameProvider;
 import org.terasology.registry.In;
@@ -72,13 +71,13 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
                 Rect2i rect2i = dynParcel.shape;
                 Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 1, rect2i.minY() + rect2i.sizeY() / 2);
                 EntityRef trader = entityManager.create(traderGooeyOptional.get(), spawnPosition);
-                trader.send(new AddCharacterToOverlayEvent());
+
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 trader.addComponent(settlementRefComponent);
                 MarketComponent marketComponent = settlementRefComponent.settlement.getComponent(MarketComponent.class);
                 if(entityRef.hasComponent(DisplayNameComponent.class)) {
                     DisplayNameComponent displayNameComponent = entityRef.getComponent(DisplayNameComponent.class);
-                    CreatureNameProvider creatureNameProvider = new CreatureNameProvider(random.nextLong(), CreatureAssetTheme.COUNTRY);
+                    CreatureNameProvider creatureNameProvider = new CreatureNameProvider(random.nextLong(), CreatureAssetTheme.OLD_WEST);
                     displayNameComponent.name = "shopkeeper " + creatureNameProvider.generateName();
                 }
 
