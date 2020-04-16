@@ -29,11 +29,11 @@ public class SettlementGrowthSystem extends BaseComponentSystem {
     @In
     private SettlementEntityManager settlementEntityManager;
 
-    private int CYCLES = 2;
+    private int Cycles = 2;
 
     @Override
     public void postBegin() {
-       settlementEntityManager.setCityCyclesBeforeGrowth(CYCLES);
+       settlementEntityManager.setCityCyclesBeforeGrowth(Cycles);
     }
 
 
