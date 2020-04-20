@@ -15,6 +15,8 @@
  */
 package org.terasology.metalrenegades.ai.system;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.dialogs.action.CloseDialogAction;
 import org.terasology.dialogs.components.DialogComponent;
 import org.terasology.dialogs.components.DialogPage;
@@ -56,6 +58,8 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
     private float spawnTimer;
 
+    Logger logger = LoggerFactory.getLogger(CitizenSpawnSystem.class);
+
     @In
     private EntityManager entityManager;
 
@@ -77,6 +81,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
                 }
 
                 EntityRef citizen = spawnCitizen(entity);
+
                 citizen.send(new AddCharacterToOverlayEvent());
                 if (citizen == null) { // if no entity was generated.
                     continue;
@@ -142,6 +147,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
     private Prefab chooseCitizenPrefab() {
         Collection<Prefab> citizenList = prefabManager.listPrefabs(CitizenComponent.class);
         citizenList.removeIf(prefab -> prefab.hasComponent(MarketCitizenComponent.class));
+        citizenList.removeIf(prefab -> prefab.getName().equalsIgnoreCase("MetalRenegades:baseCitizen"));
 
         int i = (int) (Math.random() * citizenList.size());
         for (Prefab prefab : citizenList) {
