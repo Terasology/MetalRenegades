@@ -136,6 +136,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
             DisplayNameComponent displayNameComponent = entityRef.getComponent(DisplayNameComponent.class);
             CreatureNameProvider creatureNameProvider = new CreatureNameProvider(random.nextLong(), OLD_WEST);
             displayNameComponent.name = creatureNameProvider.generateName();
+            entityRef.saveComponent(displayNameComponent);
         }
 
         if (entityRef.hasComponent(TraderComponent.class)) {

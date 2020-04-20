@@ -79,6 +79,7 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
                     DisplayNameComponent displayNameComponent = entityRef.getComponent(DisplayNameComponent.class);
                     CreatureNameProvider creatureNameProvider = new CreatureNameProvider(random.nextLong(), CreatureAssetTheme.OLD_WEST);
                     displayNameComponent.name = "shopkeeper " + creatureNameProvider.generateName();
+                    entityRef.saveComponent(displayNameComponent);
                 }
 
 
