@@ -29,25 +29,21 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.metalrenegades.ai.CitizenNeed;
-import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
-import org.terasology.metalrenegades.economy.MarketCitizenComponent;
 import org.terasology.metalrenegades.economy.TraderComponent;
 import org.terasology.metalrenegades.economy.actions.ShowTradingScreenAction;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.registry.In;
-
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Spawns new citizens inside of available buildings with {@link PotentialHomeComponent}.
@@ -90,6 +86,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
                 }
 
                 EntityRef citizen = spawnCitizen(entity);
+                citizen.send(new AddCharacterToOverlayEvent());
                 if (citizen == null) { // if no entity was generated.
                     continue;
                 }
