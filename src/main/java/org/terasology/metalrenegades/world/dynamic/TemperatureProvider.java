@@ -67,9 +67,9 @@ public class TemperatureProvider implements FacetProvider {
 
     private double getRandomTemp(BaseVector2i pos) {
 //        float sumOfWeights = 10; // TODO
-//        Random random = new Random();
+        Random random = new Random();
 ////        float f = random.nextFloat() * sumOfWeights;
-//        return Math.sqrt(random.nextFloat());
-        return 0.6f;
+        return Math.pow(random.nextFloat(),0.1);
+//        return 0.6f;
     }
 }
