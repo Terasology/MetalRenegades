@@ -29,6 +29,8 @@ import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
 import org.terasology.world.generation.facets.SurfaceHumidityFacet;
 
+import java.util.Random;
+
 @Produces(SurfaceHumidityFacet.class)
 public class HumidityProvider implements ConfigurableFacetProvider {
     private static final int SAMPLE_RATE = 4;
@@ -65,7 +67,7 @@ public class HumidityProvider implements ConfigurableFacetProvider {
         // TODO: Setup humidity
         Rect2i processRegion = facet.getWorldRegion();
         for (BaseVector2i position: processRegion.contents()) {
-            double hum = getRandomHumidity(position);
+            double hum = getRandomHumidity();
             facet.setWorld(position, (float) hum);
         }
 
@@ -98,8 +100,10 @@ public class HumidityProvider implements ConfigurableFacetProvider {
         noise = new SubSampledNoise(brown, scale, SAMPLE_RATE);
     }
 
-    private float getRandomHumidity(BaseVector2i pos) {
-        return 0.1f;
+    private double getRandomHumidity() {
+        Random random = new Random();
+        return 1-Math.pow(random.nextFloat(),0.04);
+
     }
 
     public static class Configuration implements Component {

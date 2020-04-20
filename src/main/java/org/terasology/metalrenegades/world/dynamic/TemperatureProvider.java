@@ -54,7 +54,7 @@ public class TemperatureProvider implements FacetProvider {
         // TODO: Set temperature
         Rect2i processRegion = facet.getWorldRegion();
         for (BaseVector2i position: processRegion.contents()) {
-            double temp = getRandomTemp(position);
+            double temp = getRandomTemp();
             facet.setWorld(position, (float) temp);
         }
 
@@ -65,11 +65,8 @@ public class TemperatureProvider implements FacetProvider {
         return 0;
     }
 
-    private double getRandomTemp(BaseVector2i pos) {
-//        float sumOfWeights = 10; // TODO
+    private double getRandomTemp() {
         Random random = new Random();
-////        float f = random.nextFloat() * sumOfWeights;
-        return Math.pow(random.nextFloat(),0.1);
-//        return 0.6f;
+        return Math.pow(random.nextFloat(),0.08);
     }
 }
