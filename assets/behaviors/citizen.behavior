@@ -1,6 +1,22 @@
 {
     dynamic: [
         {
+            guard: {
+                componentPresent: "MetalRenegades:NearbyCitizenEnemies",
+                values: ["N enemiesWithinRange nonEmpty"],
+                child: {
+                    sequence: [
+                        set_target_to_enemy,
+                        {
+                            lookup: {
+                                tree: "Behaviors:hostile"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
             selector: [
                 {
                     sequence: [

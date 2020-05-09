@@ -15,33 +15,33 @@
  */
 package org.terasology.metalrenegades.ai.actions;
 
+import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.metalrenegades.ai.CitizenNeed;
-import org.terasology.metalrenegades.ai.component.NeedsComponent;
+import org.terasology.metalrenegades.ai.component.NearbyCitizenEnemiesComponent;
 
 /**
- * Checks the current status of a provided need type. Succeeds if action is needed to relieve this need, fails otherwise.
+ * Action which sets this agent's move target to the nearest citizen from an enemy faction, as
+ * defined in {@link NearbyCitizenEnemiesComponent}.
  */
-@BehaviorAction(name = "check_need")
-public class CheckNeedAction extends BaseAction {
-
-    private String needType;
+@BehaviorAction(name = "set_target_to_enemy")
+public class SetTargetToEnemyAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        if(!actor.hasComponent(NeedsComponent.class)) {
-            return BehaviorState.FAILURE;
+        if (!actor.hasComponent(NearbyCitizenEnemiesComponent.class)) {
+            return BehaviorState.SUCCESS;
         }
 
-        CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
+        NearbyCitizenEnemiesComponent enemiesComponent = actor.getComponent(NearbyCitizenEnemiesComponent.class);
+        FollowComponent followComponent = new FollowComponent();
 
-        NeedsComponent needsComponent = actor.getComponent(NeedsComponent.class);
-        CitizenNeed currentNeed = needsComponent.needs.get(needTypeValue);
+        followComponent.entityToFollow = enemiesComponent.closestEnemy;
+        actor.getEntity().addComponent(followComponent);
 
-        return currentNeed.isBelowGoal() ? BehaviorState.SUCCESS : BehaviorState.FAILURE;
+        return BehaviorState.SUCCESS;
     }
 
 }
