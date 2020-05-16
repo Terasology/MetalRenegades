@@ -57,7 +57,7 @@ public class AnimalSpawnSystem extends BaseComponentSystem {
 
         spawnSystem.setConfig(configuration);
 
-        sand = blockManager.getBlock("CoreBlocks:Sand");
+        sand = blockManager.getBlock("CoreAssets:Sand");
         air = blockManager.getBlock(BlockManager.AIR_ID);
     }
 

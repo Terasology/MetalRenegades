@@ -45,9 +45,9 @@ public class RoadManager extends BaseComponentSystem {
     @Override
     public void initialise() {
         BlockTheme theme = BlockTheme.builder(blockManager)
-                .register(DefaultBlockType.ROAD_SURFACE, "CoreBlocks:Gravel")
-                .register(DefaultBlockType.ROAD_FILL, "CoreBlocks:Dirt")
-                .register(RailBlockType.BASE, "CoreBlocks:Gravel")
+                .register(DefaultBlockType.ROAD_SURFACE, "CoreAssets:Gravel")
+                .register(DefaultBlockType.ROAD_FILL, "CoreAssets:Dirt")
+                .register(RailBlockType.BASE, "CoreAssets:Gravel")
                 .registerFamily(RailBlockType.RAIL, "Rails:rails")
                 .build();
 
