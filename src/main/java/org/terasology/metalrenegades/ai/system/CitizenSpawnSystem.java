@@ -145,7 +145,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
     }
 
     private void setupStartInventory(EntityRef citizen) {
-        Prefab railgun = prefabManager.getPrefab("Core:railgunTool");
+        Prefab railgun = prefabManager.getPrefab("CoreAdvancedAssets:gun");
         EntityRef item = entityManager.create(railgun);
         item.send(new GiveItemEvent(citizen));
     }
