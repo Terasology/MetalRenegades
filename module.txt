@@ -1,6 +1,6 @@
 {
     "id": "MetalRenegades",
-    "version": "1.1.0",
+    "version": "1.0.0",
     "author": "Wabadump & AndyTechGuy",
     "displayName": "Metal Renegades",
     "description": "A harsh western world with a robotic twist. A student project for GSOC 2019.",
