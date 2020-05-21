@@ -21,7 +21,7 @@
         { "id": "Hunger", "minVersion": "1.1.0" },
         { "id": "Inventory", "minVersion": "1.1.0" },
         { "id": "Minimap", "minVersion": "1.0.0" },
-        { "id": "OreGeneration", "minVersion": "1.0.0" },
+        { "id": "OreGeneration", "minVersion": "2.0.0" },
         { "id": "Rails", "minVersion": "1.0.0" },
         { "id": "Tasks", "minVersion": "1.0.0" },
         { "id": "Thirst", "minVersion": "1.0.0" },
