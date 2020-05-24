@@ -1,11 +1,11 @@
 /*
- * Copyright 2018 MovingBlocks
+ * Copyright 2020 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,6 @@ package org.terasology.metalrenegades.ai.component;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.metalrenegades.ai.CitizenNeed;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 /**
  * Inidicates an entity that can act as a simple need source.
