@@ -6,10 +6,13 @@
     "Item": {
         "stackId": "MetalRenegades:waterCup",
         "icon" : "MetalRenegades:waterCup",
-        "consumedOnUse": true,
-        "cooldownTime": 500
+        "cooldownTime": 500,
+        "maxStackSize": 1
     },
     "Drink": {
         "filling": 50
+    },
+    "WaterCup": {
+        "filled": true
     }
 }
