@@ -8,8 +8,8 @@
      "isEntity" : true
     },
     "MarketSubscriber" : {
-     "production" : {"waffles" : 10},
-     "productionInterval" : 100
+     "production" : {"emptyCup" : 1},
+     "productionInterval" : 1000
     },
     "InfiniteStorage" : {
      "inventory" : {}

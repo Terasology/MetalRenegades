@@ -30,6 +30,12 @@ public final class MarketItemBuilder {
     private static boolean isInitialised = false;
 
     private static void initialise() {
+        details.put("emptyCup", new MarketItem(
+                "emptyCup",
+                "A container to hold refreshing water from wells.",
+                25
+        ));
+
         details.put("waffles", new MarketItem(
                 "waffles",
                 "Hot and fresh waffles.",
