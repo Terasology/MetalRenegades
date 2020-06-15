@@ -15,8 +15,6 @@
  */
 package org.terasology.metalrenegades.interaction.systems;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -30,6 +28,7 @@ import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.metalrenegades.interaction.component.WaterCupComponent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
 import org.terasology.metalrenegades.interaction.events.CupFilledEvent;
+import org.terasology.metalrenegades.interaction.events.WellDrinkEvent;
 import org.terasology.registry.In;
 import org.terasology.thirst.component.ThirstComponent;
 import org.terasology.thirst.event.DrinkConsumedEvent;
@@ -82,7 +81,7 @@ public class WellWaterSystem extends BaseComponentSystem {
         wellSourceComp.waterRefills--;
         target.saveComponent(wellSourceComp);
 
-        if (wellSourceComp.waterRefills < 0) {
+        if (wellSourceComp.waterRefills < 0) { // if no refills remain, don't give water.
             wellSourceComp.waterRefills = 0;
             target.saveComponent(wellSourceComp);
             return;
@@ -94,6 +93,8 @@ public class WellWaterSystem extends BaseComponentSystem {
             thirst.lastCalculatedWater = thirst.maxWaterCapacity;
             thirst.lastCalculationTime = time.getGameTimeInMs();
             gatheringCharacter.saveComponent(thirst);
+
+            target.send(new WellDrinkEvent(gatheringCharacter));
 
             return;
         }

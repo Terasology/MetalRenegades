@@ -22,8 +22,14 @@ import org.terasology.entitySystem.Component;
  */
 public class WellSourceComponent implements Component {
 
+    /**
+     * The number of water refills remaining in this well. Replenishes after a certain period of time.
+     */
     public int waterRefills;
 
+    /**
+     * The maximum number of refills that this well can have.
+     */
     public int maxWaterRefills;
 
 }

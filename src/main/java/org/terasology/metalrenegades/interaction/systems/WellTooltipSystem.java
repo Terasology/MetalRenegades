@@ -27,6 +27,9 @@ import org.terasology.rendering.nui.widgets.TooltipLine;
 import org.terasology.wildAnimals.component.WildAnimalComponent;
 import org.terasology.worldlyTooltipAPI.events.GetTooltipNameEvent;
 
+/**
+ * Adds tooltips to wells about the number of thirst refills available.
+ */
 @RegisterSystem(RegisterMode.CLIENT)
 public class WellTooltipSystem extends BaseComponentSystem {
 

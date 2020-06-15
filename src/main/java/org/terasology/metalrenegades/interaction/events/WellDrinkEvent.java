@@ -19,31 +19,22 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
 
 /**
- * Fires when a cup item is filled from a well.
+ * Fires when a player drinks directly from a well.
  */
-public class CupFilledEvent implements Event {
+public class WellDrinkEvent implements Event {
 
     /**
-     * The entity gathering the water. Assumed to be a player entity.
+     * The entity drinking the water. Assumed to be a player entity.
      */
     private EntityRef gatheringCharacter;
 
-    /**
-     * The new cup item given to the player upon refilling.
-     */
-    private EntityRef cupItem;
 
-    public CupFilledEvent(EntityRef gatheringCharacter, EntityRef cupItem) {
+    public WellDrinkEvent(EntityRef gatheringCharacter) {
         this.gatheringCharacter = gatheringCharacter;
-        this.cupItem = cupItem;
     }
 
     public EntityRef getGatheringCharacter() {
         return gatheringCharacter;
-    }
-
-    public EntityRef getCupItem() {
-        return cupItem;
     }
 
 }

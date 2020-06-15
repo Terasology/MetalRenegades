@@ -12,6 +12,6 @@
     ]
   },
   "Thirst": {
-     "maxWaterCapacity": 200,
+     "maxWaterCapacity": 200
   }
 }
