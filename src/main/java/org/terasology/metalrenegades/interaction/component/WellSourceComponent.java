@@ -22,4 +22,8 @@ import org.terasology.entitySystem.Component;
  */
 public class WellSourceComponent implements Component {
 
+    public int waterRefills;
+
+    public int maxWaterRefills;
+
 }
