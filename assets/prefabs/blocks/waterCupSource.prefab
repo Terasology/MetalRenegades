@@ -4,6 +4,9 @@
     },
     "InteractionTarget": {},
     "UnbreathableBlock": {},
-    "WellSource": {},
+    "WellSource": {
+        "waterRefills": 5,
+        "maxWaterRefills": 5
+    },
     "Network": {}
 }
