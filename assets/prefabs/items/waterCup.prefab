@@ -10,7 +10,7 @@
         "maxStackSize": 1
     },
     "Drink": {
-        "filling": 50
+        "filling": 100
     },
     "WaterCup": {
         "filled": true

@@ -10,5 +10,8 @@
       { "uri": "CoreAdvancedAssets:gun", "quantity": 1 },
       { "uri": "CoreAssets:Torch", "quantity": 99 }
     ]
+  },
+  "Thirst": {
+     "maxWaterCapacity": 200,
   }
 }
