@@ -1,4 +1,8 @@
 {
+  "Hunger": {
+    "maxFoodCapacity": 200,
+    "foodDecayPerSecond": 0.05
+  },
   "StartingInventory": {
     "items": [
       { "uri": "MetalRenegades:pistol", "quantity": 1 },
