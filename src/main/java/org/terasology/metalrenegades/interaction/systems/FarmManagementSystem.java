@@ -32,11 +32,20 @@ import org.terasology.registry.In;
 import org.terasology.simpleFarming.events.OnSeedPlanted;
 import org.terasology.world.time.WorldTimeEvent;
 
+/**
+ * This system manages the native crops of settlements, and the generation of crops upon settlement farms.
+ */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class FarmManagementSystem extends BaseComponentSystem {
 
+    /**
+     * The number of blocks above the structure template centre that crops should spawn on.
+     */
     private static final int PLANT_OFFSET = 2;
 
+    /**
+     * The list of all possible native settlement crops. One of these is picked randomly upon settlement generation.
+     */
     private static final String[][] CROPS = {
             {"Blueberry", "BlueberryBush"},
             {"Cranberry", "CranberryBush"},
@@ -62,7 +71,7 @@ public class FarmManagementSystem extends BaseComponentSystem {
                 CityCropComponent cityCropComponent = settlementRefComponent.settlement.getComponent(CityCropComponent.class);
 
                 farm.send(new FarmPlantGenerationEvent(cityCropComponent.plantName, farmComponent.plantableRadius, farmComponent.genChance));
-                farm.removeComponent(FarmComponent.class);
+                farm.removeComponent(FarmComponent.class); // The farm component is deleted upon generation, to avoid re-generation later.
             } else {
                 farm.saveComponent(farmComponent);
             }
