@@ -1,0 +1,13 @@
+{
+    "GenericBuilding" : {
+     "name" : "Farm",
+     "templateNames" : ["MetalRenegades:farmTemplate"],
+     "zone" : "AGRICULTURE",
+     "minSize" : [9, 9],
+     "maxSize" : [9, 9],
+     "isEntity" : true
+    },
+    "SimpleSource": {
+        "needType": "FOOD"
+    }
+}
