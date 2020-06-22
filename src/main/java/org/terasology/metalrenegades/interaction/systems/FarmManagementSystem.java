@@ -40,7 +40,6 @@ public class FarmManagementSystem extends BaseComponentSystem {
     private static final String[][] CROPS = {
             {"Blueberry", "BlueberryBush"},
             {"Cranberry", "CranberryBush"},
-            {"Gooseberry", "GooseberryBush"},
             {"Peach", "PeachBush"},
             {"Raspberry", "RaspberryBush"},
             {"Strawberry", "StrawberryBush"},

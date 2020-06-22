@@ -8,7 +8,12 @@
      "isEntity" : true
     },
     "MarketSubscriber" : {
-     "production" : {"waffles" : 10},
+     "production" : {
+       "waffles" : 10,
+       "Blueberry": 1,
+       "Raspberry": 1,
+       "Strawberry": 1
+     },
      "productionInterval" : 100
     },
     "InfiniteStorage" : {
