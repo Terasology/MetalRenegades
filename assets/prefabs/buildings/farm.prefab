@@ -9,5 +9,9 @@
     },
     "SimpleSource": {
         "needType": "FOOD"
+    },
+    "Farm": {
+      "plantableRadius": 3,
+      "genChance": 0.15
     }
 }
