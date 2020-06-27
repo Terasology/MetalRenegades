@@ -16,6 +16,8 @@
 package org.terasology.metalrenegades.minimap;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -34,6 +36,8 @@ import org.terasology.registry.In;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
+
+    Logger logger = LoggerFactory.getLogger(AddCharacterPositionOverlaySystem.class);
 
     @In
     private MinimapSystem minimapSystem;
@@ -72,6 +76,7 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onRemoveCharacterOverlayFromEvent(RemoveCharacterFromOverlayEvent event, EntityRef entityRef) {
         characterOverlay.removeCitizen(entityRef);
+
     }
 
     /**
