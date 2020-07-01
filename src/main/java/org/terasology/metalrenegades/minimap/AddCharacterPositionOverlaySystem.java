@@ -75,6 +75,7 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onRemoveCharacterOverlayFromEvent(RemoveCharacterFromOverlayEvent event, EntityRef entityRef) {
+        logger.info("{} has been removed from the minimap ", entityRef.toString());
         characterOverlay.removeCitizen(entityRef);
 
     }
