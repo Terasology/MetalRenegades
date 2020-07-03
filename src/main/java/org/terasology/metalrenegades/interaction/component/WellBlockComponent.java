@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 MovingBlocks
+ * Copyright 2020 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,8 @@
 package org.terasology.metalrenegades.interaction.component;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
 
-/**
- * Indicates a water cup source block, to be used inside wells.
- */
-public class WellSourceComponent implements Component {
-
-    /**
-     * The number of water refills remaining in this well. Replenishes after a certain period of time.
-     */
-    public int waterRefills;
-
-    /**
-     * The maximum number of refills that this well can have.
-     */
-    public int maxRefills;
+public class WellBlockComponent implements Component {
 
 }

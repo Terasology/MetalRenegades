@@ -15,6 +15,12 @@
  */
 package org.terasology.metalrenegades.interaction.systems;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
+import org.terasology.dynamicCities.construction.events.BufferBlockEvent;
+import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
+import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -25,7 +31,11 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterHeldItemComponent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.events.GiveItemEvent;
+import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.geom.Rect2i;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.metalrenegades.interaction.component.WaterCupComponent;
+import org.terasology.metalrenegades.interaction.component.WellBlockComponent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
 import org.terasology.metalrenegades.interaction.events.CupFilledEvent;
 import org.terasology.metalrenegades.interaction.events.WellDrinkEvent;
@@ -40,6 +50,8 @@ import org.terasology.world.time.WorldTimeEvent;
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class WellWaterSystem extends BaseComponentSystem {
+
+    private Logger logger = LoggerFactory.getLogger(WellWaterSystem.class);
 
     private static final int CYCLES_UNTIL_REFILL = 40;
     private int worldTimeCycles = 0;
@@ -57,8 +69,8 @@ public class WellWaterSystem extends BaseComponentSystem {
                 WellSourceComponent wellSourceComp = waterSource.getComponent(WellSourceComponent.class);
                 wellSourceComp.waterRefills++;
 
-                if (wellSourceComp.waterRefills > wellSourceComp.maxWaterRefills) {
-                    wellSourceComp.waterRefills = wellSourceComp.maxWaterRefills;
+                if (wellSourceComp.waterRefills > wellSourceComp.maxRefills) {
+                    wellSourceComp.waterRefills = wellSourceComp.maxRefills;
                 }
             }
             worldTimeCycles = 0;
@@ -67,25 +79,26 @@ public class WellWaterSystem extends BaseComponentSystem {
         worldTimeCycles++;
     }
 
-    @ReceiveEvent(components = {WellSourceComponent.class})
-    public void onActivate(ActivateEvent event, EntityRef target) {
+    @ReceiveEvent(components = {WellBlockComponent.class})
+    public void onActivate(ActivateEvent event, EntityRef sourceBlock) {
         EntityRef gatheringCharacter = event.getInstigator();
-        EntityRef cupItem = entityManager.create("MetalRenegades:waterCup");
         EntityRef heldItem = gatheringCharacter.getComponent(CharacterHeldItemComponent.class).selectedItem;
-
-        if (!cupItem.exists() || !gatheringCharacter.exists()) {
+        if (!gatheringCharacter.exists()) {
             return;
         }
 
-        WellSourceComponent wellSourceComp = target.getComponent(WellSourceComponent.class);
+        EntityRef wellEntity = getWellEntity(sourceBlock);
+        if (wellEntity == null) {
+            logger.warn("No well entity found for activated well block!");
+            return;
+        }
+
+        WellSourceComponent wellSourceComp = wellEntity.getComponent(WellSourceComponent.class);
+        if (wellSourceComp.waterRefills <= 0) { // if no refills remain, don't give water.
+            return;
+        }
         wellSourceComp.waterRefills--;
-        target.saveComponent(wellSourceComp);
-
-        if (wellSourceComp.waterRefills < 0) { // if no refills remain, don't give water.
-            wellSourceComp.waterRefills = 0;
-            target.saveComponent(wellSourceComp);
-            return;
-        }
+        wellEntity.saveComponent(wellSourceComp);
 
         if (!heldItem.hasComponent(WaterCupComponent.class)) {
             ThirstComponent thirst = gatheringCharacter.getComponent(ThirstComponent.class);
@@ -94,14 +107,15 @@ public class WellWaterSystem extends BaseComponentSystem {
             thirst.lastCalculationTime = time.getGameTimeInMs();
             gatheringCharacter.saveComponent(thirst);
 
-            target.send(new WellDrinkEvent(gatheringCharacter));
+            wellEntity.send(new WellDrinkEvent(gatheringCharacter));
 
             return;
         }
 
-        heldItem.destroy();
+        EntityRef cupItem = entityManager.create("MetalRenegades:waterCup");
         cupItem.send(new GiveItemEvent(gatheringCharacter));
-        target.send(new CupFilledEvent(gatheringCharacter, cupItem));
+        wellEntity.send(new CupFilledEvent(gatheringCharacter, cupItem));
+        heldItem.destroy();
     }
 
     @ReceiveEvent(components = {WaterCupComponent.class})
@@ -115,6 +129,30 @@ public class WellWaterSystem extends BaseComponentSystem {
 
         item.destroy();
         cupItem.send(new GiveItemEvent(drinkingCharacter));
+    }
+
+    /**
+     * Retrieves the well entity associated with a well water source block.
+     *
+     * @param sourceBlock The activated source block.
+     * @return The well entity that contains this block.
+     */
+    private EntityRef getWellEntity(EntityRef sourceBlock) {
+        LocationComponent blockLocComp = sourceBlock.getComponent(LocationComponent.class);
+        Vector3i blockLocation = new Vector3i(blockLocComp.getWorldPosition());
+        EntityRef wellEntity = null;
+
+        for (EntityRef waterSource : entityManager.getEntitiesWith(WellSourceComponent.class)) {
+            DynParcelRefComponent dynParcelRefComponent = waterSource.getComponent(DynParcelRefComponent.class);
+            Rect2i parcelRect = dynParcelRefComponent.dynParcel.getShape();
+
+            if (parcelRect.contains(blockLocation.x, blockLocation.z)) {
+                wellEntity = waterSource;
+                break;
+            }
+        }
+
+        return wellEntity;
     }
 
 }

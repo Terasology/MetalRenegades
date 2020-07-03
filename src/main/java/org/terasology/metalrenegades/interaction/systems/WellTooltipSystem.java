@@ -42,7 +42,7 @@ public class WellTooltipSystem extends BaseComponentSystem {
     public void addRefillsToTooltip(GetItemTooltip event, EntityRef entity, NeedsComponent needsComponent) {
         WellSourceComponent wellSourceComp = entity.getComponent(WellSourceComponent.class);
 
-        event.getTooltipLines().add(new TooltipLine("Refills: " + wellSourceComp.waterRefills + " / " + wellSourceComp.maxWaterRefills));
+        event.getTooltipLines().add(new TooltipLine("Refills: " + wellSourceComp.waterRefills + " / " + wellSourceComp.maxRefills));
     }
 
 }
