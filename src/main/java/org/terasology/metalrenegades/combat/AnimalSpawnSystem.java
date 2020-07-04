@@ -50,7 +50,7 @@ public class AnimalSpawnSystem extends BaseComponentSystem {
         spawnSystem.setSpawnCondition(this::isValidSpawnPosition);
 
         AnimalSpawnConfig configuration = new AnimalSpawnConfig();
-        configuration.SPAWN_CHANCE_IN_PERCENT = 2;
+        configuration.SPAWN_CHANCE_IN_PERCENT = 1;
         configuration.MAX_DEER_GROUP_SIZE = 5;
         configuration.MIN_DEER_GROUP_SIZE = 2;
         configuration.MIN_GROUND_PER_DEER = 10;

@@ -2,6 +2,6 @@
     "DistrictType" : {
         "name" : "commercial",
         "color" : 74234,
-        "zones" : ["COMMERCIAL"]
+        "zones" : ["COMMERCIAL", "AGRICULTURE"]
     }
 }

@@ -8,8 +8,14 @@
      "isEntity" : true
     },
     "MarketSubscriber" : {
-     "production" : {"emptyCup" : 1},
-     "productionInterval" : 1000
+     "production" : {
+       "waffles" : 10,
+       "Blueberry": 1,
+       "Raspberry": 1,
+       "Strawberry": 1,
+       "emptyCup" : 1
+     },
+     "productionInterval" : 100
     },
     "InfiniteStorage" : {
      "inventory" : {}
