@@ -16,8 +16,10 @@
 package org.terasology.metalrenegades.interaction.component;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.entity.EntityRef;
 
+/**
+ * Indicates a water source block inside of a well entity, which the player interacts with to gather water.
+ */
 public class WellBlockComponent implements Component {
 
 }

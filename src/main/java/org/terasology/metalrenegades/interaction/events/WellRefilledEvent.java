@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 MovingBlocks
+ * Copyright 2020 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.metalrenegades.interaction.component;
+package org.terasology.metalrenegades.interaction.events;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.event.Event;
 
 /**
- * Indicates a water well entity, that the player can drink from.
+ * Fires when a well gains one more refill.
  */
-public class WellSourceComponent implements Component {
-
-    /**
-     * The number of water refills remaining in this well. Replenishes after a certain period of time.
-     */
-    public int waterRefills;
-
-    /**
-     * The maximum number of refills that this well can have.
-     */
-    public int maxRefills;
-
+public class WellRefilledEvent implements Event {
 }

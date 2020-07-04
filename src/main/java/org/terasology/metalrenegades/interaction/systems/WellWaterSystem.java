@@ -39,6 +39,7 @@ import org.terasology.metalrenegades.interaction.component.WellBlockComponent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
 import org.terasology.metalrenegades.interaction.events.CupFilledEvent;
 import org.terasology.metalrenegades.interaction.events.WellDrinkEvent;
+import org.terasology.metalrenegades.interaction.events.WellRefilledEvent;
 import org.terasology.registry.In;
 import org.terasology.thirst.component.ThirstComponent;
 import org.terasology.thirst.event.DrinkConsumedEvent;
@@ -53,7 +54,7 @@ public class WellWaterSystem extends BaseComponentSystem {
 
     private Logger logger = LoggerFactory.getLogger(WellWaterSystem.class);
 
-    private static final int CYCLES_UNTIL_REFILL = 40;
+    private static final int CYCLES_UNTIL_REFILL = 20;
     private int worldTimeCycles = 0;
 
     @In
@@ -72,6 +73,7 @@ public class WellWaterSystem extends BaseComponentSystem {
                 if (wellSourceComp.waterRefills > wellSourceComp.maxRefills) {
                     wellSourceComp.waterRefills = wellSourceComp.maxRefills;
                 }
+                waterSource.send(new WellRefilledEvent());
             }
             worldTimeCycles = 0;
         }
