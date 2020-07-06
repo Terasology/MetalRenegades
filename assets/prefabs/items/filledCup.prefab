@@ -1,11 +1,11 @@
 {
     "parent": "engine:iconItem",
     "DisplayName": {
-        "name": "Water Cup"
+        "name": "Filled Cup"
     },
     "Item": {
-        "stackId": "MetalRenegades:waterCup",
-        "icon" : "MetalRenegades:waterCup",
+        "stackId": "MetalRenegades:filledCup",
+        "icon" : "MetalRenegades:filledCup",
         "cooldownTime": 500,
         "maxStackSize": 1
     },

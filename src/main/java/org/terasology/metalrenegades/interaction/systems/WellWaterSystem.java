@@ -15,12 +15,7 @@
  */
 package org.terasology.metalrenegades.interaction.systems;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
-import org.terasology.dynamicCities.construction.events.BufferBlockEvent;
-import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
-import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -45,6 +40,8 @@ import org.terasology.thirst.component.ThirstComponent;
 import org.terasology.thirst.event.DrinkConsumedEvent;
 import org.terasology.world.time.WorldTimeEvent;
 
+import java.util.stream.StreamSupport;
+
 /**
  * Tracks water source blocks inside of wells, fills player's water cups upon interaction, and empties
  * water cups upon consumption.
@@ -52,29 +49,30 @@ import org.terasology.world.time.WorldTimeEvent;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class WellWaterSystem extends BaseComponentSystem {
 
-    private Logger logger = LoggerFactory.getLogger(WellWaterSystem.class);
-
-    private static final int CYCLES_UNTIL_REFILL = 20;
-    private int worldTimeCycles = 0;
-
     @In
     private EntityManager entityManager;
 
     @In
     private Time time;
 
+    /**
+     * The number of world time cycles it takes for all wells to replenish with one refill.
+     */
+    private static final int CYCLES_UNTIL_REFILL = 20;
+
+    private static final String EMPTY_CUP_URI = "MetalRenegades:emptyCup";
+
+    private static final String FULL_CUP_URI = "MetalRenegades:filledCup";
+
+    /**
+     * A timer counting the current number of cycles until all wells are replenished.
+     */
+    private int worldTimeCycles = 0;
+
     @ReceiveEvent
     public void onWorldTimeEvent(WorldTimeEvent worldTimeEvent, EntityRef entityRef) {
         if (worldTimeCycles >= CYCLES_UNTIL_REFILL) {
-            for (EntityRef waterSource : entityManager.getEntitiesWith(WellSourceComponent.class)) {
-                WellSourceComponent wellSourceComp = waterSource.getComponent(WellSourceComponent.class);
-                wellSourceComp.waterRefills++;
-
-                if (wellSourceComp.waterRefills > wellSourceComp.maxRefills) {
-                    wellSourceComp.waterRefills = wellSourceComp.maxRefills;
-                }
-                waterSource.send(new WellRefilledEvent());
-            }
+            refillWells();
             worldTimeCycles = 0;
         }
 
@@ -84,53 +82,80 @@ public class WellWaterSystem extends BaseComponentSystem {
     @ReceiveEvent(components = {WellBlockComponent.class})
     public void onActivate(ActivateEvent event, EntityRef sourceBlock) {
         EntityRef gatheringCharacter = event.getInstigator();
-        EntityRef heldItem = gatheringCharacter.getComponent(CharacterHeldItemComponent.class).selectedItem;
-        if (!gatheringCharacter.exists()) {
-            return;
-        }
-
         EntityRef wellEntity = getWellEntity(sourceBlock);
-        if (wellEntity == null) {
-            logger.warn("No well entity found for activated well block!");
+        if (!gatheringCharacter.exists() || wellEntity == EntityRef.NULL) {
             return;
         }
 
         WellSourceComponent wellSourceComp = wellEntity.getComponent(WellSourceComponent.class);
-        if (wellSourceComp.waterRefills <= 0) { // if no refills remain, don't give water.
+        if (!wellSourceComp.useRefill()) { // if no refills remain, don't give water.
             return;
         }
-        wellSourceComp.waterRefills--;
+
+        EntityRef heldItem = gatheringCharacter.getComponent(CharacterHeldItemComponent.class).selectedItem;
+        if (heldItem.hasComponent(WaterCupComponent.class)) {
+            fillWaterCup(gatheringCharacter, heldItem, wellEntity);
+        } else {
+            directDrink(gatheringCharacter, wellEntity);
+        }
+
         wellEntity.saveComponent(wellSourceComp);
-
-        if (!heldItem.hasComponent(WaterCupComponent.class)) {
-            ThirstComponent thirst = gatheringCharacter.getComponent(ThirstComponent.class);
-
-            thirst.lastCalculatedWater = thirst.maxWaterCapacity;
-            thirst.lastCalculationTime = time.getGameTimeInMs();
-            gatheringCharacter.saveComponent(thirst);
-
-            wellEntity.send(new WellDrinkEvent(gatheringCharacter));
-
-            return;
-        }
-
-        EntityRef cupItem = entityManager.create("MetalRenegades:waterCup");
-        cupItem.send(new GiveItemEvent(gatheringCharacter));
-        wellEntity.send(new CupFilledEvent(gatheringCharacter, cupItem));
-        heldItem.destroy();
     }
 
     @ReceiveEvent(components = {WaterCupComponent.class})
     public void onDrinkConsumed(DrinkConsumedEvent event, EntityRef item) {
         EntityRef drinkingCharacter = event.getInstigator();
-        EntityRef cupItem = entityManager.create("MetalRenegades:emptyCup");
+        EntityRef cupItem = entityManager.create(EMPTY_CUP_URI);
 
         if (!cupItem.exists() || !drinkingCharacter.exists()) {
             return;
         }
 
-        item.destroy();
+        item.destroy(); // Replace the full cup with an empty cup.
         cupItem.send(new GiveItemEvent(drinkingCharacter));
+    }
+
+    /**
+     * Fills a player's held empty cup with water. This is done by destroying the old cup entity, and giving the
+     * player a new cup entity.
+     *
+     * @param gatheringCharacter The player entity that is collecting water.
+     * @param oldCup The old cup entity that the player is holding.
+     * @param wellEntity The well building entity that the water is supplied from.
+     */
+    private void fillWaterCup(EntityRef gatheringCharacter, EntityRef oldCup, EntityRef wellEntity) {
+        EntityRef cupItem = entityManager.create(FULL_CUP_URI);
+        oldCup.destroy();
+
+        cupItem.send(new GiveItemEvent(gatheringCharacter));
+        wellEntity.send(new CupFilledEvent(gatheringCharacter, cupItem));
+    }
+
+    /**
+     * Replenishes a player's thirst bar back to full capacity.
+     *
+     * @param gatheringCharacter The player entity that is collecting water.
+     * @param wellEntity The well building entity that the water is supplied from.
+     */
+    private void directDrink(EntityRef gatheringCharacter, EntityRef wellEntity) {
+        ThirstComponent thirst = gatheringCharacter.getComponent(ThirstComponent.class);
+        thirst.lastCalculatedWater = thirst.maxWaterCapacity;
+        thirst.lastCalculationTime = time.getGameTimeInMs();
+        gatheringCharacter.saveComponent(thirst);
+
+        wellEntity.send(new WellDrinkEvent(gatheringCharacter));
+    }
+
+    /**
+     * Replenish all wells in the game world with one refill.
+     */
+    private void refillWells() {
+        for (EntityRef waterSource : entityManager.getEntitiesWith(WellSourceComponent.class)) {
+            WellSourceComponent wellSourceComp = waterSource.getComponent(WellSourceComponent.class);
+            if (wellSourceComp.addRefill()) {
+                waterSource.send(new WellRefilledEvent());
+            }
+        }
     }
 
     /**
@@ -142,19 +167,26 @@ public class WellWaterSystem extends BaseComponentSystem {
     private EntityRef getWellEntity(EntityRef sourceBlock) {
         LocationComponent blockLocComp = sourceBlock.getComponent(LocationComponent.class);
         Vector3i blockLocation = new Vector3i(blockLocComp.getWorldPosition());
-        EntityRef wellEntity = null;
 
-        for (EntityRef waterSource : entityManager.getEntitiesWith(WellSourceComponent.class)) {
-            DynParcelRefComponent dynParcelRefComponent = waterSource.getComponent(DynParcelRefComponent.class);
-            Rect2i parcelRect = dynParcelRefComponent.dynParcel.getShape();
+        return StreamSupport.stream(entityManager.getEntitiesWith(WellSourceComponent.class).spliterator(), false)
+                .filter(wellEntity -> buildingContainsPosition(wellEntity, blockLocation))
+                .findFirst()
+                .orElse(EntityRef.NULL);
+    }
 
-            if (parcelRect.contains(blockLocation.x, blockLocation.z)) {
-                wellEntity = waterSource;
-                break;
-            }
-        }
-
-        return wellEntity;
+    /**
+     * Checks if a building entity contains a particular world location. Used to determine which well entity
+     * a water source block belongs to. The building area is considered infinite in the y-axis, only x and z
+     * coordinates are checked.
+     *
+     * @param building The dynamic cities building entity to check.
+     * @param location The world position that will be checked.
+     * @return True if this building contains the location, false otherwise.
+     */
+    private boolean buildingContainsPosition(EntityRef building, Vector3i location) {
+        DynParcelRefComponent dynParcelRefComponent = building.getComponent(DynParcelRefComponent.class);
+        Rect2i parcelRect = dynParcelRefComponent.dynParcel.getShape();
+        return parcelRect.contains(location.x, location.z);
     }
 
 }

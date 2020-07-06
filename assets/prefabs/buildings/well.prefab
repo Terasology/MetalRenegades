@@ -11,7 +11,7 @@
         "needType": "WATER"
     },
     "WellSource": {
-        "maxRefills": 5,
-        "waterRefills": 5
+        "refillsLeft": 5,
+        "capacity": 5
     }
 }
