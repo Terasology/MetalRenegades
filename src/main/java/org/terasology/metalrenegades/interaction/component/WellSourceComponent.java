@@ -19,30 +19,4 @@ public class WellSourceComponent implements Component {
      */
     public int capacity;
 
-    /**
-     * Attempts to use one refill from this well.
-     *
-     * @return True if this is successful, false if this well is empty.
-     */
-    public boolean useRefill() {
-        if (refillsLeft <= 0) {
-            return false;
-        }
-        refillsLeft--;
-        return true;
-    }
-
-    /**
-     * Attempts to add one refill to this well.
-     *
-     * @return True if this is successful, false if this well is already full.
-     */
-    public boolean addRefill() {
-        if (refillsLeft >= capacity) {
-            return false;
-        }
-        refillsLeft++;
-        return true;
-    }
-
 }

@@ -88,7 +88,7 @@ public class WellWaterSystem extends BaseComponentSystem {
         }
 
         WellSourceComponent wellSourceComp = wellEntity.getComponent(WellSourceComponent.class);
-        if (!wellSourceComp.useRefill()) { // if no refills remain, don't give water.
+        if (!useRefill(wellSourceComp)) { // if no refills remain, don't give water.
             return;
         }
 
@@ -152,7 +152,7 @@ public class WellWaterSystem extends BaseComponentSystem {
     private void refillWells() {
         for (EntityRef waterSource : entityManager.getEntitiesWith(WellSourceComponent.class)) {
             WellSourceComponent wellSourceComp = waterSource.getComponent(WellSourceComponent.class);
-            if (wellSourceComp.addRefill()) {
+            if (addRefill(wellSourceComp)) {
                 waterSource.send(new WellRefilledEvent());
             }
         }
@@ -187,6 +187,32 @@ public class WellWaterSystem extends BaseComponentSystem {
         DynParcelRefComponent dynParcelRefComponent = building.getComponent(DynParcelRefComponent.class);
         Rect2i parcelRect = dynParcelRefComponent.dynParcel.getShape();
         return parcelRect.contains(location.x, location.z);
+    }
+
+    /**
+     * Attempts to use one refill from this well.
+     *
+     * @return True if this is successful, false if this well is empty.
+     */
+    public boolean useRefill(WellSourceComponent well) {
+        if (well.refillsLeft <= 0) {
+            return false;
+        }
+        well.refillsLeft--;
+        return true;
+    }
+
+    /**
+     * Attempts to add one refill to this well.
+     *
+     * @return True if this is successful, false if this well is already full.
+     */
+    public boolean addRefill(WellSourceComponent well) {
+        if (well.refillsLeft >= well.capacity) {
+            return false;
+        }
+        well.refillsLeft++;
+        return true;
     }
 
 }
