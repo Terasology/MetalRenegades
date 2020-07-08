@@ -88,15 +88,16 @@ public class WellWaterSystem extends BaseComponentSystem {
         }
 
         WellSourceComponent wellSourceComp = wellEntity.getComponent(WellSourceComponent.class);
-        if (!useRefill(wellSourceComp)) { // if no refills remain, don't give water.
-            return;
-        }
+        boolean refillAvailable = useRefill(wellSourceComp);
 
-        EntityRef heldItem = gatheringCharacter.getComponent(CharacterHeldItemComponent.class).selectedItem;
-        if (heldItem.hasComponent(WaterCupComponent.class)) {
-            fillWaterCup(gatheringCharacter, heldItem, wellEntity);
-        } else {
-            directDrink(gatheringCharacter, wellEntity);
+        if (refillAvailable) {
+            EntityRef heldItem = gatheringCharacter.getComponent(CharacterHeldItemComponent.class).selectedItem;
+
+            if (heldItem.hasComponent(WaterCupComponent.class)) {
+                fillWaterCup(gatheringCharacter, heldItem, wellEntity);
+            } else {
+                directDrink(gatheringCharacter, wellEntity);
+            }
         }
 
         wellEntity.saveComponent(wellSourceComp);
