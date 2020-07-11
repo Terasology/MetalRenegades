@@ -18,6 +18,7 @@ package org.terasology.metalrenegades.economy.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.logic.players.LocalPlayer;
+import org.terasology.metalrenegades.economy.events.MarketTransactionRequest;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.economy.systems.MarketManagementSystem;
 import org.terasology.registry.In;
@@ -129,9 +130,10 @@ public class MarketScreen extends CoreScreenLayer {
         confirm = find("confirm", UIButton.class);
         confirm.subscribe((widget -> {
             if (type == TransactionType.BUYING || type == TransactionType.SELLING) {
-                // TODO: Expose transaction logic as events
-//                player.getCharacterEntity().send(new MarketTransactionEvent(selected, type));
-                selected = marketManagementSystem.handleTransaction(selected, type);
+                MarketTransactionRequest marketTransactionRequest = new MarketTransactionRequest();
+                marketTransactionRequest.item = selected;
+                marketTransactionRequest.type = type;
+                player.getCharacterEntity().send(marketTransactionRequest);
                 logger.info("Confirmed transaction of one {}", selected.name);
             } else {
                 logger.warn("TransactionType not recognised. No transaction.");
