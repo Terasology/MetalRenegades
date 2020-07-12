@@ -41,7 +41,10 @@ public class NeedsSystem extends BaseComponentSystem {
         for (EntityRef entity : entityManager.getEntitiesWith(NeedsComponent.class)) {
             NeedsComponent needsComponent = entity.getComponent(NeedsComponent.class);
 
-            needsComponent.needs.forEach((k, v) -> v.runNeedCycle());
+            needsComponent.hungerNeed.runNeedCycle();
+            needsComponent.thirstNeed.runNeedCycle();
+            needsComponent.socialNeed.runNeedCycle();
+            needsComponent.restNeed.runNeedCycle();
 
             entity.saveComponent(needsComponent);
         }
