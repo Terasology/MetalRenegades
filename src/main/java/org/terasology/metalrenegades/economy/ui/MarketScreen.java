@@ -73,7 +73,7 @@ public class MarketScreen extends CoreScreenLayer {
         name.bindText(new ReadOnlyBinding<String>() {
             @Override
             public String get() {
-                return selected.name;
+                return selected.displayName;
             }
         });
 
@@ -114,7 +114,7 @@ public class MarketScreen extends CoreScreenLayer {
         items.setItemRenderer(new StringTextRenderer<MarketItem>() {
             @Override
             public String getString(MarketItem value) {
-                return value.name;
+                return value.displayName;
             }
         });
         items.subscribeSelection(((widget, item) -> handleItemSelection(item)));
