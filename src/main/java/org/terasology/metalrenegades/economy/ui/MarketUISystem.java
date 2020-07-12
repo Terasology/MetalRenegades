@@ -34,6 +34,7 @@ import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.rendering.nui.NUIManager;
+import org.terasology.world.block.items.BlockItemComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,13 @@ public class MarketUISystem extends BaseComponentSystem {
             for (int i = 0; i < slots; i++) {
                 EntityRef entity = inventoryManager.getItemInSlot(player, i);
                 if (entity.getParentPrefab() != null) {
-                    MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1); // TODO: 1?
+                    MarketItem item;
+                    logger.info(entity.getParentPrefab().getName() + " == " + "blockItemBase");
+                    if (entity.getParentPrefab().getName().equalsIgnoreCase("engine:blockItemBase")) {
+                        item = MarketItemBuilder.get(entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString(), inventoryManager.getStackSize(entity));
+                    } else {
+                        item = MarketItemBuilder.get(entity.getParentPrefab().getName(), inventoryManager.getStackSize(entity));
+                    }
                     marketItemList.add(item);
                 }
             }

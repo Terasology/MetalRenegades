@@ -52,6 +52,7 @@ import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.entity.BlockCommands;
+import org.terasology.world.block.items.BlockItemComponent;
 
 import java.util.Set;
 
@@ -178,26 +179,12 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
                 return item;
             }
 
-            Iterable<EntityRef> storageBuildings = entityManager.getEntitiesWith(MultiInvStorageComponent.class, SettlementRefComponent.class);
-            for (EntityRef bldg : storageBuildings) {
-                if (!bldg.isActive() || !bldg.exists()) {
-                    continue;
-                }
+            character.send(new WalletTransactionEvent(-1 * item.cost));
+            item.quantity--;
 
-                EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
-                MultiInvStorageComponent component = bldg.getComponent(MultiInvStorageComponent.class);
-
-                playerResourceStore.send(new ResourceDrawEvent(item.name, 1, bldg));
-
-                logger.info("\n\n playerStore: {} \n bldg: {} \n\n",
-                        playerResourceStore.getComponent(InfiniteStorageComponent.class).inventory.get(item.name),
-                        handler.availableResourceAmount(component, item.name));
-
-                item.quantity--;
-                character.send(new WalletTransactionEvent(-1 * item.cost));
-                break;
-            }
-
+            SettlementRefComponent playerSettlementRef = character.getComponent(SettlementRefComponent.class);
+            EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
+            playerResourceStore.send(new ResourceDrawEvent(item.name, 1, playerSettlementRef.settlement.getComponent(MarketComponent.class).market));
         }
 
         return item;
@@ -205,24 +192,16 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
 
     private MarketItem sell(EntityRef character, MarketItem item) {
         if (item.quantity <=0 || !destroyItemOrBlock(character, item.name)) {
-            logger.warn("Failed to create entity");
+            logger.warn("Failed to destroy entity");
             return item;
         }
 
-        Iterable<EntityRef> storageBuildings = entityManager.getEntitiesWith(MultiInvStorageComponent.class, SettlementRefComponent.class);
-        for (EntityRef bldg : storageBuildings) {
-            if (!bldg.isActive() || !bldg.exists()) {
-                continue;
-            }
+        character.send(new WalletTransactionEvent(item.cost));
+        item.quantity--;
 
-            EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
-            SettlementRefComponent settlementRefComponent = bldg.getComponent(SettlementRefComponent.class);
-
-            playerResourceStore.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
-            item.quantity--;
-            character.send(new WalletTransactionEvent(item.cost));
-            break;
-        }
+        EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
+        SettlementRefComponent settlementRefComponent = character.getComponent(SettlementRefComponent.class);
+        playerResourceStore.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
 
         return item;
     }
@@ -235,11 +214,9 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
      */
     private boolean createItemOrBlock(EntityRef character, String name) {
         Set<ResourceUrn> matches = assetManager.resolve(name, Prefab.class);
-        String itemURI = "";
 
         if (matches.size() == 1) {
             Prefab prefab = assetManager.getAsset(matches.iterator().next(), Prefab.class).orElse(null);
-            itemURI = prefab.getUrn().getModuleName() + ":" + name;
             if (prefab != null && prefab.getComponent(ItemComponent.class) != null) {
                 EntityRef entity = entityManager.create(prefab);
                 if (!inventoryManager.giveItem(character, character, entity)) {
@@ -249,7 +226,8 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
             }
         }
 
-        String message = blockCommands.giveBlock(character.getOwner(), itemURI, 1, null);
+        String blockURI = matches.iterator().next().getModuleName() + ":" + matches.iterator().next().getResourceName();
+        String message = blockCommands.giveBlock(character.getOwner(), blockURI, 1, null);
         if (message != null) {
             return true;
         }
@@ -267,9 +245,21 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
         try {
             for (int i = 0; i < inventoryManager.getNumSlots(character); i++) {
                 EntityRef current = inventoryManager.getItemInSlot(character, i);
-                if (!EntityRef.NULL.equals(current) && name.equalsIgnoreCase(current.getParentPrefab().getName())) {
+
+                if (EntityRef.NULL.equals(current)) {
+                    continue;
+                }
+
+                if (name.equalsIgnoreCase(current.getParentPrefab().getName())) {
                     item = current;
                     break;
+                }
+
+                if (current.getParentPrefab().getName().equalsIgnoreCase("engine:blockItemBase")) {
+                    if (current.getComponent(BlockItemComponent.class).blockFamily.getURI().toString().equalsIgnoreCase(name)) {
+                        item = current;
+                        break;
+                    }
                 }
             }
             inventoryManager.removeItem(character, EntityRef.NULL, item, true, 1);

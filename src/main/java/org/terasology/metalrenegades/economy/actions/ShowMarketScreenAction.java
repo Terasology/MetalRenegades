@@ -17,8 +17,6 @@
 package org.terasology.metalrenegades.economy.actions;
 
 import org.terasology.dialogs.action.PlayerAction;
-import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
-import org.terasology.dynamicCities.settlements.components.MarketComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.metalrenegades.economy.events.MarketScreenRequestEvent;
 import org.terasology.metalrenegades.economy.events.TransactionType;
