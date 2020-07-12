@@ -86,6 +86,55 @@ public final class MarketItemBuilder {
                 2
         ));
 
+        details.put("CoreAssets:Torch", new MarketItem(
+                "CoreAssets:Torch",
+                "Torches",
+                "Great for lighting up a room!",
+                5
+        ));
+
+        details.put("CoreAssets:pickaxe", new MarketItem(
+                "CoreAssets:pickaxe",
+                "Pickaxe",
+                "There's gold in them hills, and this tool will bring you to it.",
+                25
+        ));
+
+        details.put("CoreAssets:shovel", new MarketItem(
+                "CoreAssets:shovel",
+                "Shovel",
+                "There's lots of sand, so why not dig it?",
+                25
+        ));
+
+        details.put("CoreAssets:axe", new MarketItem(
+                "CoreAssets:axe",
+                "Axe",
+                "Chop chop!",
+                25
+        ));
+
+        details.put("CoreAdvancedAssets:dynamite", new MarketItem(
+                "CoreAdvancedAssets:dynamite",
+                "Dynamite",
+                "Fire in the hole!",
+                100
+        ));
+
+        details.put("MetalRenegades:pistol", new MarketItem(
+                "MetalRenegades:pistol",
+                "Pistol",
+                "Fires lead faster than the speed of sound.",
+                75
+        ));
+
+        details.put("MetalRenegades:bulletItem", new MarketItem(
+                "MetalRenegades:bulletItem",
+                "Pistol",
+                "A gunslinger is useless without a gun, and a gun is useless without its bullets",
+                10
+        ));
+
         details.put(EMPTY, new MarketItem(
                 "",
                 "",
