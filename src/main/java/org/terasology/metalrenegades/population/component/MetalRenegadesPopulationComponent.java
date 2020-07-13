@@ -13,12 +13,12 @@ import org.terasology.entitySystem.Component;
  *
  * The population is usually tracked by the {@link PopulationSystem}.
  */
-public class PopulationComponent implements Component {
+public class MetalRenegadesPopulationComponent implements Component {
     public int goodCitizens;
     public int badCitizens;
     public int neutralCitizens;
 
-    public PopulationComponent(){
+    public MetalRenegadesPopulationComponent(){
         this.badCitizens = 0;
         this.goodCitizens = 0;
         this.neutralCitizens = 0;

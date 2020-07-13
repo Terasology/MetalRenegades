@@ -15,7 +15,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
-import org.terasology.metalrenegades.population.component.PopulationComponent;
+import org.terasology.metalrenegades.population.component.MetalRenegadesPopulationComponent;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class PopulationSystem extends BaseComponentSystem {
@@ -25,7 +25,7 @@ public class PopulationSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onSettlementRegisterEvent(SettlementRegisterEvent buildingEntitySpawnedEvent, EntityRef entityRef) {
-       entityRef.addComponent(new PopulationComponent());
+        entityRef.addComponent(new MetalRenegadesPopulationComponent());
     }
 
     @ReceiveEvent
@@ -35,8 +35,8 @@ public class PopulationSystem extends BaseComponentSystem {
         EntityRef homeEntity = homeComponent.building;
         SettlementRefComponent settlementRefComponent = homeEntity.getComponent(SettlementRefComponent.class);
         EntityRef settlementEntity = settlementRefComponent.settlement;
-        PopulationComponent populationComponent = settlementEntity.getComponent(PopulationComponent.class);
-
+        MetalRenegadesPopulationComponent populationComponent =
+                settlementEntity.getComponent(MetalRenegadesPopulationComponent.class);
 
 
         switch (factionAlignmentComponent.alignment) {
