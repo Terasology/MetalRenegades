@@ -36,10 +36,52 @@ public final class MarketItemBuilder {
                 50
         ));
 
-        details.put(DEFAULT_ITEM, new MarketItem(
-                "default_item",
-                "The item you requested doesn't have any info",
-                0
+        details.put("Blueberry", new MarketItem(
+                "Blueberry",
+                "Blue/purple berries, perfect for a quick treat!",
+                10
+        ));
+
+        details.put("Cranberry", new MarketItem(
+                "Cranberry",
+                "Small berries, with an incredible red hue.",
+                10
+        ));
+
+        details.put("Peach", new MarketItem(
+                "Peach",
+                "A medium-sized pink fruit; nice and juicy!",
+                10
+        ));
+
+        details.put("Raspberry", new MarketItem(
+                "Raspberry",
+                "A small red berry, or is it really a bunch of smaller berries?",
+                10
+        ));
+
+        details.put("Strawberry", new MarketItem(
+                "Strawberry",
+                "A delicious red berry with an outer layer of seeds.",
+                10
+        ));
+
+        details.put("Tomato", new MarketItem(
+                "Tomato",
+                "A medium-size red vegetable/fruit.",
+                10
+        ));
+
+        details.put("Cucumber", new MarketItem(
+                "Cucumber",
+                "A long green vegetable, delicious to eat in slices!",
+                10
+        ));
+
+        details.put("Potato", new MarketItem(
+                "Potato",
+                "A brownish root vegetable, and a major ingredient in French Fries!",
+                10
         ));
 
         details.put(EMPTY, new MarketItem(

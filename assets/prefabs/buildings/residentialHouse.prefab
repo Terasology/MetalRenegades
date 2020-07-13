@@ -8,7 +8,7 @@
         "isEntity" : true
     },
     "PotentialHome": {
-        "maxCitizens": 2
+        "maxCitizens": 1
     },
     "SimpleSource": {
         "needType": "REST"
