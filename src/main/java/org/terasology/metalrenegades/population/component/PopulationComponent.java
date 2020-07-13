@@ -19,8 +19,8 @@ public class PopulationComponent implements Component {
     public int neutralCitizens;
 
     public PopulationComponent(){
-        this.badCitizens=0;
-        this.goodCitizens=0;
+        this.badCitizens = 0;
+        this.goodCitizens = 0;
         this.neutralCitizens = 0;
     }
 }
