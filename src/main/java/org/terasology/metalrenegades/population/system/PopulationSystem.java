@@ -5,40 +5,40 @@ package org.terasology.metalrenegades.population.system;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
+import org.terasology.dynamicCities.settlements.events.SettlementRegisterEvent;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.players.LocalPlayer;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
+import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.metalrenegades.population.component.PopulationComponent;
-import org.terasology.network.ClientComponent;
-import org.terasology.registry.In;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class PopulationSystem extends BaseComponentSystem {
 
-    @In
-    LocalPlayer player;
 
     Logger logger = LoggerFactory.getLogger(PopulationSystem.class);
 
     @ReceiveEvent
-    public void onPlayerSpawn(OnActivatedComponent event, EntityRef entity, ClientComponent component) {
-
-        entity.addComponent(new PopulationComponent());
-        logger.error("Component PopulationComponent added to player");
-
-
+    public void onSettlementRegisterEvent(SettlementRegisterEvent buildingEntitySpawnedEvent, EntityRef entityRef) {
+       entityRef.addComponent(new PopulationComponent());
     }
 
     @ReceiveEvent
     public void citizenSpawned(CitizenSpawnedEvent event, EntityRef citizen,
-                               FactionAlignmentComponent factionAlignmentComponent) {
-        PopulationComponent populationComponent = player.getClientEntity().getComponent(PopulationComponent.class);
+                               FactionAlignmentComponent factionAlignmentComponent, HomeComponent homeComponent) {
+
+        EntityRef homeEntity = homeComponent.building;
+        SettlementRefComponent settlementRefComponent = homeEntity.getComponent(SettlementRefComponent.class);
+        EntityRef settlementEntity = settlementRefComponent.settlement;
+        PopulationComponent populationComponent = settlementEntity.getComponent(PopulationComponent.class);
+
+
+
         switch (factionAlignmentComponent.alignment) {
             case NEUTRAL:
                 populationComponent.neutralCitizens++;
@@ -53,7 +53,7 @@ public class PopulationSystem extends BaseComponentSystem {
                 logger.error("Invalid Faction Alignment");
         }
 
-        player.getClientEntity().saveComponent(populationComponent);
+        settlementEntity.saveComponent(populationComponent);
     }
 
 
