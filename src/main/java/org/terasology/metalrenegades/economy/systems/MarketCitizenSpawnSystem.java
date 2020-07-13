@@ -32,6 +32,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
@@ -47,7 +48,7 @@ import java.util.Optional;
 /**
  * Spawns a market citizen in all markets
  */
-@RegisterSystem
+@RegisterSystem(RegisterMode.AUTHORITY)
 public class MarketCitizenSpawnSystem extends BaseComponentSystem {
 
     @In
@@ -71,7 +72,6 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
                 trader.addComponent(settlementRefComponent);
                 MarketComponent marketComponent = settlementRefComponent.settlement.getComponent(MarketComponent.class);
 
-
                 DialogComponent dialogComponent = new DialogComponent();
                 dialogComponent.pages = new ArrayList<>();
 
@@ -81,12 +81,12 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
 
                 DialogResponse buyResponse = new DialogResponse();
                 buyResponse.action = new ArrayList<>();
-                buyResponse.action.add(new ShowMarketScreenAction(marketComponent.market.getId(), TransactionType.BUYING));
+                buyResponse.action.add(new ShowMarketScreenAction(marketComponent.getMarketId(), TransactionType.BUYING));
                 buyResponse.text = "Buy";
 
                 DialogResponse sellResponse = new DialogResponse();
                 sellResponse.action = new ArrayList<>();
-                sellResponse.action.add(new ShowMarketScreenAction(marketComponent.market.getId(), TransactionType.SELLING));
+                sellResponse.action.add(new ShowMarketScreenAction(marketComponent.getMarketId(), TransactionType.SELLING));
                 sellResponse.text = "Sell";
 
                 DialogResponse closeResponse = new DialogResponse();

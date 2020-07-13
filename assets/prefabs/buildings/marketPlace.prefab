@@ -9,12 +9,20 @@
     },
     "MarketSubscriber" : {
      "production" : {
-       "waffles" : 10,
-       "Blueberry": 1,
-       "Raspberry": 1,
-       "Strawberry": 1
+       "AdditionalFruits:Blueberry": 3,
+       "AdditionalFruits:Raspberry": 3,
+       "AdditionalFruits:Strawberry": 3,
+       "CoreAssets:Torch": 2,
+       "CoreAssets:pickaxe": 1,
+       "CoreAssets:shovel": 1,
+       "CoreAssets:axe": 1,
+       "CoreAssets:Stone": 4,
+       "CoreAssets:Sand": 4,
+       "CoreAdvancedAssets:dynamite": 1,
+       "MetalRenegades:pistol": 1,
+       "MetalRenegades:bulletItem": 3
      },
-     "productionInterval" : 100
+    "productionInterval" : 10000
     },
     "InfiniteStorage" : {
      "inventory" : {}
