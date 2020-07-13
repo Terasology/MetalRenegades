@@ -37,8 +37,7 @@ public class PopulationSystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent
-    public void citizenSpawned(CitizenSpawnedEvent event, EntityRef citizen) {
-        FactionAlignmentComponent factionAlignmentComponent = citizen.getComponent(FactionAlignmentComponent.class);
+    public void citizenSpawned(CitizenSpawnedEvent event, EntityRef citizen, FactionAlignmentComponent factionAlignmentComponent) {
         PopulationComponent populationComponent = player.getClientEntity().getComponent(PopulationComponent.class);
         if (factionAlignmentComponent.alignment == FactionAlignmentSystem.Alignment.NEUTRAL) {
             populationComponent.neutralCitizens++;
