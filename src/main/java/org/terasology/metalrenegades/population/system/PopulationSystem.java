@@ -30,11 +30,10 @@ public class PopulationSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void citizenSpawned(CitizenSpawnedEvent event, EntityRef citizen,
-                               FactionAlignmentComponent factionAlignmentComponent, HomeComponent homeComponent) {
+                               FactionAlignmentComponent factionAlignmentComponent) {
 
-        EntityRef homeEntity = homeComponent.building;
-        SettlementRefComponent settlementRefComponent = homeEntity.getComponent(SettlementRefComponent.class);
-        EntityRef settlementEntity = settlementRefComponent.settlement;
+        EntityRef settlementEntity = event.getSettlement();
+
         FactionDistributionComponent populationComponent =
                 settlementEntity.getComponent(FactionDistributionComponent.class);
 
