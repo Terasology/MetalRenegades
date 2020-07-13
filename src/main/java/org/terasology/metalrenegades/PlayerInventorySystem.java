@@ -22,14 +22,19 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.events.PlayerDeathEvent;
+import org.terasology.logic.console.commandSystem.annotations.Command;
+import org.terasology.logic.console.commandSystem.annotations.Sender;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.ItemCommands;
 import org.terasology.logic.inventory.events.DropItemRequest;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockManager;
 
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -37,6 +42,10 @@ import java.util.Random;
  */
 @RegisterSystem
 public class PlayerInventorySystem extends BaseComponentSystem {
+
+    @In
+    private ItemCommands itemCommands;
+
     @In
     private BlockManager blockManager;
 
@@ -57,6 +66,20 @@ public class PlayerInventorySystem extends BaseComponentSystem {
      */
     private final Vector3f OFFSET = new Vector3f(1, 1, 1);
     private final float BOUND = 2f;
+
+    private HashMap<String, Integer> testingItems = new HashMap<>();
+
+    @Override
+    public void postBegin() {
+        testingItems.put("MetalRenegades:pistol", 1);
+        testingItems.put("MetalRenegades:bulletItem", 32);
+        testingItems.put("CoreAssets:pickaxe", 1);
+        testingItems.put("CoreAssets:shovel", 1);
+        testingItems.put("CoreAssets:axe", 1);
+        testingItems.put("CoreAdvancedAssets:dynamite", 1);
+        testingItems.put("CoreAdvancedAssets:gun", 1);
+        testingItems.put("CoreAssets:Torch", 64);
+    }
 
     @ReceiveEvent
     public void onPlayerDeath(PlayerDeathEvent event, EntityRef character) {
@@ -86,5 +109,11 @@ public class PlayerInventorySystem extends BaseComponentSystem {
                 }
             }
         }
+    }
+
+    @Command(shortDescription = "Gives basic testing items for Metal Renegades", requiredPermission = PermissionManager.CHEAT_PERMISSION)
+    public String testingKitMR(@Sender EntityRef sender) {
+        testingItems.entrySet().stream().forEach(e -> itemCommands.give(sender, e.getKey(), e.getValue(), null));
+        return "Testing item kit has been given.";
     }
 }
