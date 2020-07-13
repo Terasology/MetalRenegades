@@ -37,20 +37,21 @@ public class PopulationSystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent
-    public void citizenSpawned(CitizenSpawnedEvent event, EntityRef citizen, FactionAlignmentComponent factionAlignmentComponent) {
+    public void citizenSpawned(CitizenSpawnedEvent event, EntityRef citizen,
+                               FactionAlignmentComponent factionAlignmentComponent) {
         PopulationComponent populationComponent = player.getClientEntity().getComponent(PopulationComponent.class);
-        switch(factionAlignmentComponent.alignment) {
-            case FactionAlignmentSystem.Alignment.NEUTRAL:
-	            populationComponent.neutralCitizens++;
-	            break;
-	        case FactionAlignmentSystem.Alignment.GOOD:
-	            populationComponent.goodCitizens++;
-	            break;
-	        case FactionAlignmentSystem.Alignment.BAD:
-	        	populationComponent.badCitizens++;
-	        	break;
-	        default:
-	        	logger.error("Invalid Faction Alignment");
+        switch (factionAlignmentComponent.alignment) {
+            case NEUTRAL:
+                populationComponent.neutralCitizens++;
+                break;
+            case GOOD:
+                populationComponent.goodCitizens++;
+                break;
+            case BAD:
+                populationComponent.badCitizens++;
+                break;
+            default:
+                logger.error("Invalid Faction Alignment");
         }
 
         player.getClientEntity().saveComponent(populationComponent);
