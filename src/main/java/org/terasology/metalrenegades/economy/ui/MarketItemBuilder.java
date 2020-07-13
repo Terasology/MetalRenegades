@@ -34,56 +34,56 @@ public final class MarketItemBuilder {
                 "AdditionalFruits:Blueberry",
                 "Blueberries",
                 "Blue/purple berries, perfect for a quick treat!",
-                2
+                3
         ));
 
         details.put("AdditionalFruits:Cranberry", new MarketItem(
                 "AdditionalFruits:Cranberry",
                 "Cranberries",
                 "Small berries, with an incredible red hue.",
-                2
+                3
         ));
 
         details.put("AdditionalFruits:Peach", new MarketItem(
                 "AdditionalFruits:Peach",
                 "Peaches",
                 "A medium-sized pink fruit; nice and juicy!",
-                2
+                3
         ));
 
         details.put("AdditionalFruits:Raspberry", new MarketItem(
                 "AdditionalFruits:Raspberry",
                 "Raspberries",
                 "A small red berry, or is it really a bunch of smaller berries?",
-                2
+                3
         ));
 
         details.put("AdditionalFruits:Strawberry", new MarketItem(
                 "AdditionalFruits:Strawberry",
                 "Strawberries",
                 "A delicious red berry with an outer layer of seeds.",
-                2
+                3
         ));
 
         details.put("AdditionalFruits:Tomato", new MarketItem(
                 "AdditionalFruits:Tomato",
                 "Tomatoes",
                 "A medium-size red vegetable/fruit.",
-                2
+                3
         ));
 
         details.put("AdditionalVegetables:Cucumber", new MarketItem(
                 "AdditionalVegetables:Cucumber",
                 "Cucumbers",
                 "A long green vegetable, delicious to eat in slices!",
-                2
+                3
         ));
 
         details.put("AdditionalVegetables:Potato", new MarketItem(
                 "AdditionalVegetables:Potato",
                 "Potatoes",
                 "A brownish root vegetable, and a major ingredient in French Fries!",
-                2
+                3
         ));
 
         details.put("CoreAssets:Torch", new MarketItem(
@@ -130,10 +130,67 @@ public final class MarketItemBuilder {
 
         details.put("MetalRenegades:bulletItem", new MarketItem(
                 "MetalRenegades:bulletItem",
-                "Pistol",
+                "Bullets",
                 "A gunslinger is useless without a gun, and a gun is useless without its bullets",
                 10
         ));
+
+        details.put("CoreAssets:CoalOre", new MarketItem(
+                "CoreAssets:CoalOre",
+                "Coal Ore",
+                "A combustible black mineral, great for generating energy.",
+                20
+        ));
+
+        details.put("CoreAssets:CopperOre", new MarketItem(
+                "CoreAssets:CopperOre",
+                "Copper Ore",
+                "An orange metal, very soft and malleable.",
+                30
+        ));
+
+        details.put("CoreAssets:IronOre", new MarketItem(
+                "CoreAssets:IronOre",
+                "Iron Ore",
+                "A silver-coloured metal, used to make steel.",
+                40
+        ));
+
+        details.put("CoreAssets:GoldOre", new MarketItem(
+                "CoreAssets:GoldOre",
+                "Gold Ore",
+                "Gold taken straight from the hills.",
+                50
+        ));
+
+        details.put("CoreAssets:DiamondOre", new MarketItem(
+                "CoreAssets:DiamondOre",
+                "Diamond Ore",
+                "A beautiful yet strong gemstone.",
+                60
+        ));
+
+        details.put("CoreAssets:DiamondOre", new MarketItem(
+                "CoreAssets:DiamondOre",
+                "Diamond Ore",
+                "A beautiful yet strong gemstone.",
+                60
+        ));
+
+        details.put("CoreAssets:Sand", new MarketItem(
+                "CoreAssets:Sand",
+                "Sand",
+                "Granular yellow substance, very common in the desert.",
+                1
+        ));
+
+        details.put("CoreAssets:Stone", new MarketItem(
+                "CoreAssets:Stone",
+                "Stone",
+                "Rocks. Strong rocks.",
+                2
+        ));
+
 
         details.put(EMPTY, new MarketItem(
                 "",

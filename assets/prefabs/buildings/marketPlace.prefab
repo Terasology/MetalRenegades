@@ -16,6 +16,8 @@
        "CoreAssets:pickaxe": 1,
        "CoreAssets:shovel": 1,
        "CoreAssets:axe": 1,
+       "CoreAssets:Stone": 4,
+       "CoreAssets:Sand": 4,
        "CoreAdvancedAssets:dynamite": 1,
        "MetalRenegades:pistol": 1,
        "MetalRenegades:bulletItem": 3
