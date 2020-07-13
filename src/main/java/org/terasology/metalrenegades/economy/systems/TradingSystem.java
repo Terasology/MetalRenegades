@@ -1,0 +1,159 @@
+package org.terasology.metalrenegades.economy.systems;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.assets.ResourceUrn;
+import org.terasology.assets.management.AssetManager;
+import org.terasology.entitySystem.entity.EntityManager;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
+import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.ItemComponent;
+import org.terasology.logic.inventory.events.GiveItemEvent;
+import org.terasology.math.TeraMath;
+import org.terasology.metalrenegades.economy.events.TradeRequest;
+import org.terasology.metalrenegades.economy.events.TradeResponse;
+import org.terasology.metalrenegades.economy.ui.MarketItem;
+import org.terasology.registry.In;
+import org.terasology.world.block.entity.BlockCommands;
+
+import java.util.Random;
+import java.util.Set;
+
+@RegisterSystem(RegisterMode.AUTHORITY)
+public class TradingSystem extends BaseComponentSystem {
+
+    /**
+     * Maximum percentage difference between two values for them to be considered about equal
+     */
+    private final int MARGIN_PERCENTAGE = 20;
+
+    /**
+     * Probability that a trade will be accepted, provided the costs are about equal
+     */
+    private final int PROBABILITY = 50;
+
+    @In
+    private InventoryManager inventoryManager;
+
+    @In
+    private BlockCommands blockCommands;
+
+    @In
+    private AssetManager assetManager;
+
+    @In
+    private EntityManager entityManager;
+
+    private Logger logger = LoggerFactory.getLogger(TradingSystem.class);
+
+    /**
+     * Start the trading process for the specified items
+     */
+    @ReceiveEvent
+    public void onTradeRequest(TradeRequest request, EntityRef character) {
+
+        if (!isAcceptable(request.pItem, request.cItem)) {
+            character.send(new TradeResponse(false, "Offer Rejected."));
+            return;
+        }
+
+        try {
+            // remove item from citizen's inventory
+            remove(request.cItem, request.target);
+
+            // add item to player's inventory
+            add(request.cItem, character);
+
+            // remove item from player's inventory
+            remove(request.pItem, character);
+
+            // add item to citizen's inventory
+            add(request.pItem, request.target);
+        } catch (Exception e) {
+            logger.error("Trade failed. Exception: {}", e.getMessage());
+            character.send(new TradeResponse(false, "Trade Failed."));
+            return;
+        }
+
+        character.send(new TradeResponse(true, "Trade Succeeded."));
+    }
+
+    /**
+     * Remove an item from the specified entity's inventory
+     * @param item: MarketItem to be removed
+     * @param entity: Entity to be removed from
+     */
+    private void remove(MarketItem item, EntityRef entity) throws Exception {
+        EntityRef itemEntity = EntityRef.NULL;
+        for (int i = 0; i < inventoryManager.getNumSlots(entity); i++) {
+            EntityRef current = inventoryManager.getItemInSlot(entity, i);
+            if (current != EntityRef.NULL
+                    && item.name.equalsIgnoreCase(current.getParentPrefab().getName())) {
+                itemEntity = current;
+                break;
+            }
+        }
+
+        if (itemEntity.equals(EntityRef.NULL)) {
+            String error = "Could not remove block " + item.name + " from inventory " + entity;
+            throw new Exception(error);
+        }
+
+        inventoryManager.removeItem(entity, EntityRef.NULL, itemEntity, true, 1);
+    }
+
+    /**
+     * Add an item to the specified entity's inventory
+     * @param item: MarketItem to be added
+     * @param entity: Entity to be added to
+     * @throws Exception if addition of block to inventory fails
+     */
+    private void add(MarketItem item, EntityRef entity) throws Exception {
+        Set<ResourceUrn> matches = assetManager.resolve(item.name, Prefab.class);
+
+        if (matches.size() == 1) {
+            Prefab prefab = assetManager.getAsset(matches.iterator().next(), Prefab.class).orElse(null);
+            if (prefab != null && prefab.getComponent(ItemComponent.class) != null) {
+                EntityRef itemEntity = entityManager.create(prefab);
+                if (itemEntity != EntityRef.NULL) {
+                    itemEntity.send(new GiveItemEvent(entity));
+                    return;
+                }
+            }
+        }
+
+        String message = blockCommands.giveBlock(entity, item.name, 1, null);
+        if (message == null) {
+            String error = "Could not add block " + item.name + " to inventory " + entity;
+            throw new Exception(error);
+        }
+    }
+
+    /**
+     * Determines if two costs are about equal, depending on MARGIN_PERCENTAGE
+     * @param pCost: Integer cost of the player's item
+     * @param cCost: Integer cost of the citizen's item
+     * @return boolean indicating if the two costs are about equal
+     */
+    private boolean isAboutEqual(int pCost, int cCost) {
+        int delta = TeraMath.fastAbs(pCost - cCost);
+        return ((float)(delta / cCost) * 100) < MARGIN_PERCENTAGE;
+    }
+
+    /**
+     * Calculates if the trade will be acceptable to the citizen based on market costs
+     * @param pItem: MarketItem for the player's item
+     * @param cItem: MarketItem for the citizen's item
+     * @return boolean indicating if the trade is acceptable or not
+     */
+    public boolean isAcceptable(MarketItem pItem, MarketItem cItem) {
+        Random rnd = new Random();
+        return isAboutEqual(pItem.cost, cItem.cost) && (rnd.nextInt(100) < PROBABILITY);
+    }
+
+}
