@@ -14,7 +14,6 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
-import org.terasology.metalrenegades.ai.system.FactionAlignmentSystem;
 import org.terasology.metalrenegades.population.component.PopulationComponent;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
@@ -55,7 +54,6 @@ public class PopulationSystem extends BaseComponentSystem {
         }
 
         player.getClientEntity().saveComponent(populationComponent);
-        logger.error("Population is {} {} {] ",populationComponent.badCitizens, populationComponent.goodCitizens, populationComponent.neutralCitizens);
     }
 
 
