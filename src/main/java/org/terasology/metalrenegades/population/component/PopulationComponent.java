@@ -5,6 +5,14 @@ package org.terasology.metalrenegades.population.component;
 
 import org.terasology.entitySystem.Component;
 
+/**
+ * Track total population information of good, bad, and neutral citizens.
+ *
+ * The entity this component belongs to defines the scope of the tracked population. 
+ * For instance, it may be attached to a world entity for the overall population or a settlement entity for the population of that settlement.
+ *
+ * The population is usually tracked by the {@link PopulationSystem}.
+ */
 public class PopulationComponent implements Component {
     public int goodCitizens;
     public int badCitizens;
