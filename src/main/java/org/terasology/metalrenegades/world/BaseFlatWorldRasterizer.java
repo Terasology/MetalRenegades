@@ -39,7 +39,7 @@ public class BaseFlatWorldRasterizer implements WorldRasterizer {
         for (Vector3i position : chunkRegion.getRegion()) {
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
             if (position.y < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
             }
         }
     }
