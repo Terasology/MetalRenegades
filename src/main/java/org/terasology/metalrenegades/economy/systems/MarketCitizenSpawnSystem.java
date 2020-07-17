@@ -35,6 +35,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.economy.actions.ShowMarketScreenAction;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
@@ -70,7 +71,9 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 trader.addComponent(settlementRefComponent);
                 MarketComponent marketComponent = settlementRefComponent.settlement.getComponent(MarketComponent.class);
-
+                HomeComponent homeComponent = new HomeComponent();
+                homeComponent.building = entityRef;
+                trader.addComponent(homeComponent);
 
                 DialogComponent dialogComponent = new DialogComponent();
                 dialogComponent.pages = new ArrayList<>();

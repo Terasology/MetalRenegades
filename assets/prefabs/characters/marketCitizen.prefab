@@ -41,7 +41,7 @@
         ]
     },
     "Behavior" : {
-        "tree" : "Behaviors:stray"
+        "tree" : "MetalRenegades:shopkeeperStray"
     },
     "MarketCitizen": {}
 }
