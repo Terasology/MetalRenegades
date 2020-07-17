@@ -179,12 +179,12 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
                 return item;
             }
 
-            character.send(new WalletTransactionEvent(-1 * item.cost));
-            item.quantity--;
-
             SettlementRefComponent playerSettlementRef = character.getComponent(SettlementRefComponent.class);
             EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
             playerResourceStore.send(new ResourceDrawEvent(item.name, 1, playerSettlementRef.settlement.getComponent(MarketComponent.class).market));
+
+            character.send(new WalletTransactionEvent(-1 * item.cost));
+            item.quantity--;
         }
 
         return item;
@@ -195,13 +195,12 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
             logger.warn("Failed to destroy entity");
             return item;
         }
-
-        character.send(new WalletTransactionEvent(item.cost));
-        item.quantity--;
-
         EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
         SettlementRefComponent settlementRefComponent = character.getComponent(SettlementRefComponent.class);
         playerResourceStore.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
+
+        character.send(new WalletTransactionEvent(item.cost));
+        item.quantity--;
 
         return item;
     }
@@ -214,6 +213,12 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
      */
     private boolean createItemOrBlock(EntityRef character, String name) {
         Set<ResourceUrn> matches = assetManager.resolve(name, Prefab.class);
+        SettlementRefComponent playerSettlementRef = character.getComponent(SettlementRefComponent.class);
+        ResourceInfoRequestEvent request = playerSettlementRef.settlement.getComponent(MarketComponent.class).market.send(new ResourceInfoRequestEvent());
+
+        if (!request.isHandled || request.resources.get(name) <= 0) {
+            return false;
+        }
 
         if (matches.size() == 1) {
             Prefab prefab = assetManager.getAsset(matches.iterator().next(), Prefab.class).orElse(null);
@@ -261,6 +266,9 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
                         break;
                     }
                 }
+            }
+            if (item == EntityRef.NULL) {
+                return false;
             }
             inventoryManager.removeItem(character, EntityRef.NULL, item, true, 1);
         } catch (Exception e) {
