@@ -31,6 +31,7 @@ import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.metalrenegades.economy.events.MarketScreenRequestEvent;
 import org.terasology.metalrenegades.economy.events.TransactionType;
+import org.terasology.metalrenegades.economy.events.UpdateMarketScreenEvent;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.rendering.nui.NUIManager;
@@ -63,6 +64,10 @@ public class MarketUISystem extends BaseComponentSystem {
 
     private MarketScreen marketScreen;
 
+    private long marketID;
+
+    private TransactionType type;
+
     @Override
     public void initialise() {
         marketScreen = (MarketScreen) nuiManager.createScreen("MetalRenegades:marketScreen");
@@ -83,9 +88,40 @@ public class MarketUISystem extends BaseComponentSystem {
         List<MarketItem> marketItemList = new ArrayList<>();
         marketScreen.setItemList(marketItemList); // clear out any old item listings from the UI.
 
-        if (event.type == TransactionType.BUYING) {
-            localPlayer.getCharacterEntity().send(new MarketInfoClientRequestEvent(event.market));
-        } else if (event.type == TransactionType.SELLING){
+        this.marketID = event.market;
+        this.type = event.type;
+
+        updateScreenInformation();
+
+        marketScreen.setType(event.type);
+    }
+
+    @ReceiveEvent
+    public void onResourceInfoResponse(MarketInfoClientResponseEvent marketInfoResponseEvent, EntityRef character) {
+        List<MarketItem> marketItemList = new ArrayList<>();
+        Map<String, Integer> resources;
+
+        resources = marketInfoResponseEvent.resources;
+
+        for (Map.Entry<String, Integer> entry : resources.entrySet()) {
+            MarketItem item = MarketItemBuilder.get(entry.getKey(), entry.getValue());
+            marketItemList.add(item);
+        }
+
+        marketScreen.setItemList(marketItemList);
+    }
+
+    @ReceiveEvent
+    public void onUpdateScreenEvent(UpdateMarketScreenEvent event, EntityRef entity) {
+        updateScreenInformation();
+    }
+
+    private void updateScreenInformation() {
+        List<MarketItem> marketItemList = new ArrayList<>();
+
+        if (type == TransactionType.BUYING) {
+            localPlayer.getCharacterEntity().send(new MarketInfoClientRequestEvent(marketID));
+        } else if (type == TransactionType.SELLING){
             EntityRef player = localPlayer.getCharacterEntity();
             int slots = inventoryManager.getNumSlots(player);
 
@@ -106,23 +142,6 @@ public class MarketUISystem extends BaseComponentSystem {
         } else {
             logger.warn("TransactionType not recognised.");
         }
-
-        marketScreen.setType(event.type);
-    }
-
-    @ReceiveEvent
-    public void onResourceInfoResponse(MarketInfoClientResponseEvent marketInfoResponseEvent, EntityRef character) {
-        List<MarketItem> marketItemList = new ArrayList<>();
-        Map<String, Integer> resources;
-
-        resources = marketInfoResponseEvent.resources;
-
-        for (Map.Entry<String, Integer> entry : resources.entrySet()) {
-            MarketItem item = MarketItemBuilder.get(entry.getKey(), entry.getValue());
-            marketItemList.add(item);
-        }
-
-        marketScreen.setItemList(marketItemList);
     }
 
 }

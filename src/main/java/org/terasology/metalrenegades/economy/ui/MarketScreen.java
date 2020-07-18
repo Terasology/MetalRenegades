@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.metalrenegades.economy.events.MarketTransactionRequest;
 import org.terasology.metalrenegades.economy.events.TransactionType;
+import org.terasology.metalrenegades.economy.events.UpdateMarketScreenEvent;
 import org.terasology.metalrenegades.economy.systems.MarketManagementSystem;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
@@ -135,6 +136,7 @@ public class MarketScreen extends CoreScreenLayer {
                 marketTransactionRequest.type = type;
                 player.getCharacterEntity().send(marketTransactionRequest);
                 logger.info("Confirmed transaction of one {}", selected.name);
+                player.getCharacterEntity().send(new UpdateMarketScreenEvent());
             } else {
                 logger.warn("TransactionType not recognised. No transaction.");
             }
