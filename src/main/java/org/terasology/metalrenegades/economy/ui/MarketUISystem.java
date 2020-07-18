@@ -36,6 +36,7 @@ import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.world.block.items.BlockItemComponent;
+import org.terasology.world.time.WorldTimeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,13 @@ public class MarketUISystem extends BaseComponentSystem {
     @Override
     public void initialise() {
         marketScreen = (MarketScreen) nuiManager.createScreen("MetalRenegades:marketScreen");
+    }
+
+    @ReceiveEvent
+    public void onWorldTimeCycle(WorldTimeEvent worldTimeEvent, EntityRef entity) {
+        if (marketID != 0 && type != null) {
+            updateScreenInformation();
+        }
     }
 
     @ReceiveEvent
