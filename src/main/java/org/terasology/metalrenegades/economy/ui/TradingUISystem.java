@@ -68,6 +68,9 @@ public class TradingUISystem extends BaseComponentSystem {
     @In
     private BlockCommands blockCommands;
 
+    @In
+    private MarketItemRegistry marketItemRegistry;
+
     /**
      * Maximum percentage difference between two values for them to be considered about equal
      */
@@ -180,7 +183,7 @@ public class TradingUISystem extends BaseComponentSystem {
         for (int i = 0; i < inventoryManager.getNumSlots(targetCitizen); i++) {
             EntityRef entity = inventoryManager.getItemInSlot(targetCitizen, i);
             if (entity.getParentPrefab() != null) {
-                MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
+                MarketItem item = marketItemRegistry.get(entity.getParentPrefab().getName(), 1);
                 items.add(item);
             }
         }
@@ -197,7 +200,7 @@ public class TradingUISystem extends BaseComponentSystem {
         for (int i = 0; i < inventoryManager.getNumSlots(player); i++) {
             EntityRef entity = inventoryManager.getItemInSlot(player, i);
             if (entity.getParentPrefab() != null) {
-                MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
+                MarketItem item = marketItemRegistry.get(entity.getParentPrefab().getName(), 1);
                 items.add(item);
             }
         }
