@@ -1,0 +1,13 @@
+{
+    "MarketPriceConfiguration": {
+        "items": [
+            ["CoreAssets:Torch", "Torches", "Great for lighting up a room!", "5"],
+            ["CoreAssets:pickaxe", "Pickaxe", "There's gold in them hills, and this tool will bring you to it.", "25"],
+            ["CoreAssets:shovel", "Shovel", "There's lots of sand, so why not dig it?", "25"],
+            ["CoreAssets:axe", "Axe", "Chop chop!", "25"],
+            ["CoreAdvancedAssets:dynamite", "Dynamite", "Fire in the hole!", "100"],
+            ["MetalRenegades:pistol", "Pistol", "Fires lead faster than the speed of sound.", "75"],
+            ["MetalRenegades:bulletItem", "Bullets", "A gunslinger is useless without a gun, and a gun is useless without its bullets", "10"]
+        ]
+    }
+}
