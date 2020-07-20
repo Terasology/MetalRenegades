@@ -35,7 +35,7 @@ public class TradingSystem extends BaseComponentSystem {
     /**
      * Probability that a trade will be accepted, provided the costs are about equal
      */
-    private final int PROBABILITY = 50;
+    private final int PROBABILITY = 80;
 
     @In
     private InventoryManager inventoryManager;
@@ -58,7 +58,12 @@ public class TradingSystem extends BaseComponentSystem {
     public void onTradeRequest(TradeRequest request, EntityRef character) {
 
         if (!isAcceptable(request.pItem, request.cItem)) {
-            character.send(new TradeResponse(false, "Offer Rejected."));
+            character.send(new TradeResponse(false, "I can't accept that offer!"));
+            return;
+        }
+
+        if (!isTradeAccepted()) {
+            character.send(new TradeResponse(false, "I'm not in the mood to trade."));
             return;
         }
 
@@ -76,11 +81,11 @@ public class TradingSystem extends BaseComponentSystem {
             add(request.pItem, request.target);
         } catch (Exception e) {
             logger.error("Trade failed. Exception: {}", e.getMessage());
-            character.send(new TradeResponse(false, "Trade Failed."));
+            character.send(new TradeResponse(false, "Trade failed"));
             return;
         }
 
-        character.send(new TradeResponse(true, "Trade Succeeded."));
+        character.send(new TradeResponse(true, "I have accepted your offer."));
     }
 
     /**
@@ -146,14 +151,23 @@ public class TradingSystem extends BaseComponentSystem {
     }
 
     /**
-     * Calculates if the trade will be acceptable to the citizen based on market costs
+     * Calculates if the trade is acceptable to the citizen based only on market costs.
      * @param pItem: MarketItem for the player's item
      * @param cItem: MarketItem for the citizen's item
      * @return boolean indicating if the trade is acceptable or not
      */
     public boolean isAcceptable(MarketItem pItem, MarketItem cItem) {
+        return isAboutEqual(pItem.cost, cItem.cost);
+    }
+
+    /**
+     * Calculates if an acceptable trade is performed based on chance.
+     *
+     * @return boolean indicating if the trade is accepted.
+     */
+    public boolean isTradeAccepted() {
         Random rnd = new Random();
-        return isAboutEqual(pItem.cost, cItem.cost) && (rnd.nextInt(100) < PROBABILITY);
+        return rnd.nextInt(100) < PROBABILITY;
     }
 
 }
