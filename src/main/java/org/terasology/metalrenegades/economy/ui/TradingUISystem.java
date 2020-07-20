@@ -23,12 +23,14 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.interactions.InteractionUtil;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.metalrenegades.economy.events.TradeScreenRequestEvent;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.rendering.nui.NUIManager;
+import org.terasology.world.block.items.BlockItemComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,8 +108,18 @@ public class TradingUISystem extends BaseComponentSystem {
         List<MarketItem> items = new ArrayList<>();
         for (int i = 0; i < inventoryManager.getNumSlots(targetCitizen); i++) {
             EntityRef entity = inventoryManager.getItemInSlot(targetCitizen, i);
+
             if (entity.getParentPrefab() != null) {
-                MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
+                MarketItem item;
+                int quantity = inventoryManager.getStackSize(entity);
+
+                if (entity.hasComponent(BlockItemComponent.class)) {
+                    String itemName = entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString();
+                    item = MarketItemBuilder.get(itemName, quantity);
+                } else {
+                    item = MarketItemBuilder.get(entity.getParentPrefab().getName(), quantity);
+                }
+
                 items.add(item);
             }
         }
@@ -123,8 +135,17 @@ public class TradingUISystem extends BaseComponentSystem {
         EntityRef player = localPlayer.getCharacterEntity();
         for (int i = 0; i < inventoryManager.getNumSlots(player); i++) {
             EntityRef entity = inventoryManager.getItemInSlot(player, i);
+
             if (entity.getParentPrefab() != null) {
-                MarketItem item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
+                MarketItem item;
+
+                if (entity.hasComponent(BlockItemComponent.class)) {
+                    String itemName = entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString();
+                    item = MarketItemBuilder.get(itemName, 1);
+                } else {
+                    item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
+                }
+
                 items.add(item);
             }
         }

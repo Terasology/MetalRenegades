@@ -20,6 +20,7 @@ import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
 import org.terasology.registry.In;
 import org.terasology.world.block.entity.BlockCommands;
+import org.terasology.world.block.items.BlockItemComponent;
 
 import java.util.Random;
 import java.util.Set;
@@ -97,10 +98,17 @@ public class TradingSystem extends BaseComponentSystem {
         EntityRef itemEntity = EntityRef.NULL;
         for (int i = 0; i < inventoryManager.getNumSlots(entity); i++) {
             EntityRef current = inventoryManager.getItemInSlot(entity, i);
-            if (current != EntityRef.NULL
-                    && item.name.equalsIgnoreCase(current.getParentPrefab().getName())) {
+
+            if (EntityRef.NULL.equals(current)) {
+                continue;
+            }
+
+            if (item.name.equalsIgnoreCase(current.getParentPrefab().getName())) {
                 itemEntity = current;
-                break;
+            } else if (current.hasComponent(BlockItemComponent.class)) {
+                if (current.getComponent(BlockItemComponent.class).blockFamily.getURI().toString().equalsIgnoreCase(item.name)) {
+                    itemEntity = current;
+                }
             }
         }
 
