@@ -45,8 +45,5 @@ public class ShowMarketScreenAction implements PlayerAction {
         talkTo.send(new MarketScreenRequestEvent(marketID, charEntity, type));
     }
 
-    public long getMarketID() {
-        return marketID;
-    }
 }
 
