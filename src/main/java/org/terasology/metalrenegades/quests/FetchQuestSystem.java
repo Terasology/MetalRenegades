@@ -20,7 +20,7 @@ import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
 import org.terasology.dynamicCities.parcels.DynParcel;
-import org.terasology.economy.events.UpdateWalletEvent;
+import org.terasology.economy.events.WalletTransactionEvent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -173,7 +173,7 @@ public class FetchQuestSystem extends BaseComponentSystem {
             inventoryManager.removeItem(character, EntityRef.NULL, item, true, amounts.getOrDefault(ITEM_ID, 0));
 
             // Pay the player
-            character.send(new UpdateWalletEvent(REWARD));
+            character.send(new WalletTransactionEvent(REWARD));
 
             // Remove the minmap overlay
             character.send(new RemoveBeaconOverlayEvent(activeQuestEntity));

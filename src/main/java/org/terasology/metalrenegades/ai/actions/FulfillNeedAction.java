@@ -36,7 +36,23 @@ public class FulfillNeedAction extends BaseAction {
         CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
 
         NeedsComponent needsComponent = actor.getComponent(NeedsComponent.class);
-        needsComponent.needs.get(needTypeValue).restoreNeed();
+
+        switch (needTypeValue) {
+            case FOOD:
+                needsComponent.hungerNeed.restoreNeed();
+                break;
+            case WATER:
+                needsComponent.thirstNeed.restoreNeed();
+                break;
+            case SOCIAL:
+                needsComponent.socialNeed.restoreNeed();
+                break;
+            case REST:
+                needsComponent.restNeed.restoreNeed();
+                break;
+            default:
+                return BehaviorState.FAILURE;
+        }
 
         actor.save(needsComponent);
         actor.getEntity().removeComponent(FollowComponent.class);

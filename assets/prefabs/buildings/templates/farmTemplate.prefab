@@ -1,0 +1,15 @@
+{
+  "StructureTemplate" : {
+    "type": "DynamicCities:building",
+    "front": "FRONT"
+  },
+  "SpawnBlockRegions": {
+    "regionsToFill":[
+      { "blockType": "CoreAssets:Dirt", "region": { "min": [-3, 0, -7], "size": [7, 2, 7]}},
+      { "blockType": "CoreAssets:OakTrunk", "region": { "min": [-4, 0, 0], "size": [9, 2, 1]}},
+      { "blockType": "CoreAssets:OakTrunk", "region": { "min": [-4, 0, -8], "size": [9, 2, 1]}},
+      { "blockType": "CoreAssets:OakTrunk", "region": { "min": [4, 0, -8], "size": [1, 2, 9]}},
+      { "blockType": "CoreAssets:OakTrunk", "region": { "min": [-4, 0, -8], "size": [1, 2, 9]}}
+    ]
+  }
+}
