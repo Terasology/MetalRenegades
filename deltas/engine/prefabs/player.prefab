@@ -8,5 +8,8 @@
       { "uri": "CoreAssets:pickaxe", "quantity": 1 },
       { "uri": "CoreAssets:Torch", "quantity": 10 }
     ]
+  },
+  "Thirst": {
+     "maxWaterCapacity": 200
   }
 }
