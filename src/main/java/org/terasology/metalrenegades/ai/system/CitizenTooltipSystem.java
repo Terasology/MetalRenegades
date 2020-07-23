@@ -47,7 +47,10 @@ public class CitizenTooltipSystem extends BaseComponentSystem {
 
     @ReceiveEvent(components = NeedsComponent.class)
     public void addNeedsToTooltip(GetItemTooltip event, EntityRef entity, NeedsComponent needsComponent) {
-        needsComponent.needs.forEach((k, v) -> event.getTooltipLines().add(new TooltipLine(k.toString() + " " + v.toString())));
+        event.getTooltipLines().add(new TooltipLine("Hunger: " + needsComponent.hungerNeed.toString()));
+        event.getTooltipLines().add(new TooltipLine("Thirst: " + needsComponent.thirstNeed.toString()));
+        event.getTooltipLines().add(new TooltipLine("Social: " + needsComponent.socialNeed.toString()));
+        event.getTooltipLines().add(new TooltipLine("Rest: " + needsComponent.restNeed.toString()));
     }
 
     @ReceiveEvent(components = CitizenComponent.class)

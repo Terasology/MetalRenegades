@@ -5,14 +5,8 @@
   },
   "StartingInventory": {
     "items": [
-      { "uri": "MetalRenegades:pistol", "quantity": 1 },
-      { "uri": "MetalRenegades:bulletItem", "quantity": 32 },
       { "uri": "CoreAssets:pickaxe", "quantity": 1 },
-      { "uri": "CoreAssets:shovel", "quantity": 1 },
-      { "uri": "CoreAssets:axe", "quantity": 1 },
-      { "uri": "CoreAdvancedAssets:dynamite", "quantity": 1 },
-      { "uri": "CoreAdvancedAssets:gun", "quantity": 1 },
-      { "uri": "CoreAssets:Torch", "quantity": 99 }
+      { "uri": "CoreAssets:Torch", "quantity": 10 }
     ]
   },
   "Thirst": {

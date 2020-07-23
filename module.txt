@@ -8,7 +8,7 @@
         { "id": "AdditionalFruits", "minVersion":  "1.0.0"},
         { "id": "AdditionalVegetables", "minVersion":  "1.0.0"},
         { "id": "AdvancedRails", "minVersion": "1.0.0" },
-        { "id": "Behaviors", "minVersion": "1.0.0" },
+        { "id": "Behaviors", "minVersion": "1.1.0" },
         { "id": "Cities", "minVersion": "1.1.0" },
         { "id": "CombatSystem", "minVersion": "1.0.0" },
         { "id": "CommonWorld", "minVersion": "1.0.0" },
