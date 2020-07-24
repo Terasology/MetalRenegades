@@ -39,7 +39,24 @@ public class CheckNeedAction extends BaseAction {
         CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
 
         NeedsComponent needsComponent = actor.getComponent(NeedsComponent.class);
-        CitizenNeed currentNeed = needsComponent.needs.get(needTypeValue);
+        CitizenNeed currentNeed;
+
+        switch (needTypeValue) {
+            case FOOD:
+                currentNeed = needsComponent.hungerNeed;
+                break;
+            case WATER:
+                currentNeed = needsComponent.thirstNeed;
+                break;
+            case SOCIAL:
+                currentNeed = needsComponent.socialNeed;
+                break;
+            case REST:
+                currentNeed = needsComponent.restNeed;
+                break;
+            default:
+                return BehaviorState.FAILURE;
+        }
 
         return currentNeed.isBelowGoal() ? BehaviorState.SUCCESS : BehaviorState.FAILURE;
     }
