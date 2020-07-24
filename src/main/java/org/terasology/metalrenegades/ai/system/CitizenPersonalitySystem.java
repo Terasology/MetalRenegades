@@ -1,18 +1,5 @@
-/*
- * Copyright 2020 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.system;
 
 import org.terasology.entitySystem.entity.EntityRef;
@@ -39,13 +26,13 @@ public class CitizenPersonalitySystem extends BaseComponentSystem {
     /**
      * The +- range of possible model scaling differences.
      */
-    public static final float SCALE_RANGE = 0.1f;
+    public static final float SCALE_RANGE = 0.5f;
 
     /**
      * The ratio of model scale change to height offset change. This is included to prevent characters from hovering
      * or sinking into the ground when grown/shrunk.
      */
-    public static final float HEIGHT_OFFSET_RATIO = 8;
+    public static final float HEIGHT_OFFSET_RATIO = 2f;
 
     /**
      * A random number generator for all character characteristics.
@@ -70,13 +57,12 @@ public class CitizenPersonalitySystem extends BaseComponentSystem {
 
         target.saveComponent(nameTagComponent);
 
-        SkeletalMeshComponent skeletalMeshComponent = target.getComponent(SkeletalMeshComponent.class);
-
         float scaleDiff = random.nextFloat(-SCALE_RANGE, SCALE_RANGE);
-        float scale = skeletalMeshComponent.scale.x + scaleDiff;
+        float scaleFactor = scaleDiff + 1;
 
-        skeletalMeshComponent.scale = new Vector3f(scale, scale, scale);
-        skeletalMeshComponent.heightOffset = skeletalMeshComponent.heightOffset + scaleDiff * HEIGHT_OFFSET_RATIO;
+        SkeletalMeshComponent skeletalMeshComponent = target.getComponent(SkeletalMeshComponent.class);
+        skeletalMeshComponent.scale.mul(scaleFactor);
+        skeletalMeshComponent.heightOffset += scaleDiff * HEIGHT_OFFSET_RATIO;
         target.saveComponent(skeletalMeshComponent);
     }
 
