@@ -25,6 +25,9 @@ import org.terasology.world.block.items.BlockItemComponent;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Manages requests and responses for player-citizen trades.
+ */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class TradingSystem extends BaseComponentSystem {
 
