@@ -1,0 +1,12 @@
+{
+  "OreGenDefinition": {},
+  "PocketDensityOreGen": {
+    "block": "CoreAssets:DiamondOre",
+    //  What block will be placed
+    "frequency": 2,
+    // How often this pocket will happen in 10 vertical blocks in the region
+    "radius": 1,
+    "thickness": 3,
+    "density": 0.5
+  }
+}

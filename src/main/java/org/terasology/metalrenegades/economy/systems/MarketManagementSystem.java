@@ -28,34 +28,31 @@ import org.terasology.dynamicCities.population.PopulationComponent;
 import org.terasology.dynamicCities.settlements.components.ActiveSettlementComponent;
 import org.terasology.dynamicCities.settlements.components.MarketComponent;
 import org.terasology.dynamicCities.settlements.events.SettlementRegisterEvent;
-import org.terasology.economy.components.InfiniteStorageComponent;
-import org.terasology.economy.components.MarketSubscriberComponent;
-import org.terasology.economy.components.MultiInvStorageComponent;
-import org.terasology.economy.events.ResourceDrawEvent;
-import org.terasology.economy.events.ResourceInfoRequestEvent;
-import org.terasology.economy.events.ResourceStoreEvent;
-import org.terasology.economy.events.SubscriberRegistrationEvent;
-import org.terasology.economy.events.UpdateWalletEvent;
+import org.terasology.economy.components.*;
+import org.terasology.economy.events.*;
 import org.terasology.economy.handler.MultiInvStorageHandler;
 import org.terasology.economy.systems.MarketLogisticSystem;
-import org.terasology.economy.systems.WalletSystem;
+import org.terasology.economy.systems.WalletAuthoritySystem;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.players.LocalPlayer;
+import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.metalrenegades.economy.events.MarketTransactionRequest;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
-import org.terasology.network.ClientComponent;
+import org.terasology.network.NetworkComponent;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.entity.BlockCommands;
+import org.terasology.world.block.items.BlockItemComponent;
 
 import java.util.Set;
 
@@ -63,7 +60,7 @@ import java.util.Set;
  * Handles most core market features
  */
 @Share(MarketManagementSystem.class)
-@RegisterSystem
+@RegisterSystem(RegisterMode.AUTHORITY)
 public class MarketManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
     @In
@@ -82,9 +79,6 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     private InventoryManager inventoryManager;
 
     @In
-    private LocalPlayer localPlayer;
-
-    @In
     private BlockCommands blockCommands;
 
     @In
@@ -94,19 +88,20 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     private MultiInvStorageHandler handler;
 
     @In
-    private WalletSystem walletSystem;
-
-    private EntityRef playerResourceStore;
+    private WalletAuthoritySystem walletAuthoritySystem;
 
     private final int COOLDOWN = 200;
     private int counter = 0;
 
     private Logger logger = LoggerFactory.getLogger(MarketManagementSystem.class);
 
-    @Override
-    public void postBegin() {
-        playerResourceStore = entityManager.create();
+    @ReceiveEvent
+    public void onPlayerJoin(OnPlayerSpawnedEvent onPlayerSpawnedEvent, EntityRef player) {
+        EntityRef playerResourceStore = entityManager.create();
         playerResourceStore.addComponent(new InfiniteStorageComponent(1));
+        playerResourceStore.setOwner(player);
+
+        player.addComponent(new PlayerResourceStoreComponent(playerResourceStore));
     }
 
     @Override
@@ -139,7 +134,9 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     @ReceiveEvent(components = {ActiveSettlementComponent.class, PopulationComponent.class, CultureComponent.class})
     public void onSettlementSpawnEvent(SettlementRegisterEvent event, EntityRef settlement) {
         EntityRef market = entityManager.create(new InfiniteStorageComponent(1));
+        settlement.addComponent(new NetworkComponent());
         MarketComponent marketComponent = new MarketComponent(market);
+        marketComponent.marketId = market.getId();
         settlement.addComponent(marketComponent);
     }
 
@@ -156,83 +153,54 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
         entityRef.send(new SubscriberRegistrationEvent());
     }
 
-    // TODO: Expose transaction logic as events
-//    @ReceiveEvent
-//    public void onMarketTransactionConfirm(MarketTransactionEvent event, EntityRef character) {
-//
-//    }
-
     /**
      * Initiate a transaction and delegate to an appropriate method depending
      * on the nature of the transaction
-     * @param item MarketItem to be bought/sold
-     * @param type TransactionType
-     * @return updated MarketItem
      */
-    public MarketItem handleTransaction(MarketItem item, TransactionType type) {
-        if (type == TransactionType.BUYING) {
-            return buy(item);
-        } else if (type == TransactionType.SELLING) {
-            return sell(item);
+    @ReceiveEvent
+    public void onMarketTransactionRequest(MarketTransactionRequest request, EntityRef character) {
+        if (request.type == TransactionType.BUYING) {
+            buy(character, request.item);
+        } else if (request.type == TransactionType.SELLING) {
+            sell(character, request.item);
         } else {
             logger.warn("TransactionType invalid");
-            return item;
         }
     }
 
-    private MarketItem buy(MarketItem item) {
-        if (!walletSystem.isValidTransaction(-1 * item.cost)) {
+    private MarketItem buy(EntityRef character, MarketItem item) {
+        if (!walletAuthoritySystem.isValidTransaction(character,-1 * item.cost)) {
             logger.warn("Insufficient funds");
             return item;
         } else if (item.quantity > 0) {
 
-            if (!createItemOrBlock(item.name)) {
+            if (!createItemOrBlock(character, item.name)) {
                 logger.warn("Failed to create entity");
                 return item;
             }
 
-            Iterable<EntityRef> storageBuildings = entityManager.getEntitiesWith(MultiInvStorageComponent.class, SettlementRefComponent.class);
-            for (EntityRef bldg : storageBuildings) {
-                if (!bldg.isActive() || !bldg.exists()) {
-                    continue;
-                }
+            SettlementRefComponent playerSettlementRef = character.getComponent(SettlementRefComponent.class);
+            EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
+            playerResourceStore.send(new ResourceDrawEvent(item.name, 1, playerSettlementRef.settlement.getComponent(MarketComponent.class).market));
 
-                MultiInvStorageComponent component = bldg.getComponent(MultiInvStorageComponent.class);
-
-                playerResourceStore.send(new ResourceDrawEvent(item.name, 1, bldg));
-
-                logger.info("\n\n playerStore: {} \n bldg: {} \n\n",
-                        playerResourceStore.getComponent(InfiniteStorageComponent.class).inventory.get(item.name),
-                        handler.availableResourceAmount(component, item.name));
-
-                item.quantity--;
-                localPlayer.getCharacterEntity().send(new UpdateWalletEvent(-1 * item.cost));
-                break;
-            }
-
+            character.send(new WalletTransactionEvent(-1 * item.cost));
+            item.quantity--;
         }
 
         return item;
     }
 
-    private MarketItem sell(MarketItem item) {
-        if (item.quantity <=0 || !destroyItemOrBlock(item.name)) {
-            logger.warn("Failed to create entity");
+    private MarketItem sell(EntityRef character, MarketItem item) {
+        if (item.quantity <=0 || !destroyItemOrBlock(character, item.name)) {
+            logger.warn("Failed to destroy entity");
             return item;
         }
+        EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
+        SettlementRefComponent settlementRefComponent = character.getComponent(SettlementRefComponent.class);
+        playerResourceStore.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
 
-        Iterable<EntityRef> storageBuildings = entityManager.getEntitiesWith(MultiInvStorageComponent.class, SettlementRefComponent.class);
-        for (EntityRef bldg : storageBuildings) {
-            if (!bldg.isActive() || !bldg.exists()) {
-                continue;
-            }
-
-            SettlementRefComponent settlementRefComponent = bldg.getComponent(SettlementRefComponent.class);
-            playerResourceStore.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
-            item.quantity--;
-            localPlayer.getCharacterEntity().send(new UpdateWalletEvent(item.cost));
-            break;
-        }
+        character.send(new WalletTransactionEvent(item.cost));
+        item.quantity--;
 
         return item;
     }
@@ -243,22 +211,28 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
      * @param name Name of the item bought
      * @return Boolean indication whether the creating was a success or a failure
      */
-    private boolean createItemOrBlock(String name) {
+    private boolean createItemOrBlock(EntityRef character, String name) {
         Set<ResourceUrn> matches = assetManager.resolve(name, Prefab.class);
+        SettlementRefComponent playerSettlementRef = character.getComponent(SettlementRefComponent.class);
+        ResourceInfoRequestEvent request = playerSettlementRef.settlement.getComponent(MarketComponent.class).market.send(new ResourceInfoRequestEvent());
+
+        if (!request.isHandled || request.resources.get(name) <= 0) {
+            return false;
+        }
 
         if (matches.size() == 1) {
             Prefab prefab = assetManager.getAsset(matches.iterator().next(), Prefab.class).orElse(null);
             if (prefab != null && prefab.getComponent(ItemComponent.class) != null) {
-                EntityRef playerEntity = localPlayer.getClientEntity().getComponent(ClientComponent.class).character;
                 EntityRef entity = entityManager.create(prefab);
-                if (!inventoryManager.giveItem(playerEntity, playerEntity, entity)) {
+                if (!inventoryManager.giveItem(character, character, entity)) {
                     entity.destroy();
                     return true;
                 }
             }
         }
 
-        String message = blockCommands.giveBlock(localPlayer.getClientEntity(), name, 1, null);
+        String blockURI = matches.iterator().next().getModuleName() + ":" + matches.iterator().next().getResourceName();
+        String message = blockCommands.giveBlock(character.getOwner(), blockURI, 1, null);
         if (message != null) {
             return true;
         }
@@ -271,18 +245,32 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
      * @param name Name of the item sold
      * @return Boolean indication whether the removal was a success or a failure
      */
-    private boolean destroyItemOrBlock(String name) {
-        EntityRef player = localPlayer.getCharacterEntity();
+    private boolean destroyItemOrBlock(EntityRef character, String name) {
         EntityRef item = EntityRef.NULL;
         try {
-            for (int i = 0; i < inventoryManager.getNumSlots(player); i++) {
-                EntityRef current = inventoryManager.getItemInSlot(player, i);
-                if (!EntityRef.NULL.equals(current) && name.equalsIgnoreCase(current.getParentPrefab().getName())) {
+            for (int i = 0; i < inventoryManager.getNumSlots(character); i++) {
+                EntityRef current = inventoryManager.getItemInSlot(character, i);
+
+                if (EntityRef.NULL.equals(current)) {
+                    continue;
+                }
+
+                if (name.equalsIgnoreCase(current.getParentPrefab().getName())) {
                     item = current;
                     break;
                 }
+
+                if (current.getParentPrefab().getName().equalsIgnoreCase("engine:blockItemBase")) {
+                    if (current.getComponent(BlockItemComponent.class).blockFamily.getURI().toString().equalsIgnoreCase(name)) {
+                        item = current;
+                        break;
+                    }
+                }
             }
-            inventoryManager.removeItem(localPlayer.getCharacterEntity(), EntityRef.NULL, item, true, 1);
+            if (item == EntityRef.NULL) {
+                return false;
+            }
+            inventoryManager.removeItem(character, EntityRef.NULL, item, true, 1);
         } catch (Exception e) {
             logger.error("Could not create entity from {}. Exception: {}", name, e.getMessage());
             return false;

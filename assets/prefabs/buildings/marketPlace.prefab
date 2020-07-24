@@ -9,12 +9,12 @@
     },
     "MarketSubscriber" : {
      "production" : {
-       "waffles" : 10,
-       "Blueberry": 1,
-       "Raspberry": 1,
-       "Strawberry": 1
+         "AdditionalFruits:Blueberry": 3,
+         "AdditionalFruits:Raspberry": 3,
+         "AdditionalFruits:Strawberry": 3,
+         "MetalRenegades:emptyCup": 2
      },
-     "productionInterval" : 100
+    "productionInterval" : 10000
     },
     "InfiniteStorage" : {
      "inventory" : {}

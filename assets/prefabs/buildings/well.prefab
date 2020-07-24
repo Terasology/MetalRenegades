@@ -9,5 +9,9 @@
     },
     "SimpleSource": {
         "needType": "WATER"
+    },
+    "WellSource": {
+        "refillsLeft": 5,
+        "capacity": 5
     }
 }
