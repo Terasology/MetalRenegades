@@ -39,17 +39,19 @@ public class CitizenPersonalitySystem extends BaseComponentSystem {
      */
     private Random random;
 
+    private CreatureNameProvider nameProvider;
+
     @Override
     public void postBegin() {
         long seed = this.hashCode() & 0x921233;
         random = new FastRandom(seed);
+        nameProvider = new CreatureNameProvider(random.nextLong(), CreatureAssetTheme.OLD_WEST);
     }
 
     @ReceiveEvent
     public void onCitizenSpawn(CitizenSpawnedEvent citizenSpawnedEvent, EntityRef target) {
         NameTagComponent nameTagComponent = new NameTagComponent();
 
-        CreatureNameProvider nameProvider = new CreatureNameProvider(random.nextLong(), CreatureAssetTheme.OLD_WEST);
         nameTagComponent.text = nameProvider.generateName();
         nameTagComponent.textColor = Color.GREEN;
         nameTagComponent.yOffset = 0.5f;
