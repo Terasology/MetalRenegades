@@ -1,0 +1,21 @@
+/**
+ * A chest is interesting for two reasons: It is asymmetrical (front texture differs) and should store stuff
+ */
+{
+    "basedOn": "CoreAssets:wood",
+    "attachmentAllowed": false,
+    "family": "horizontal",
+    // Graphics
+    "tile":"CoreAssets:ChestSides",
+    "tiles": {
+        "front": "CoreAssets:ChestFront",
+        "topBottom": "CoreAssets:ChestTopBottom"
+    },
+    "entity": {
+        "prefab": "MetalRenegades:hiddenChest"
+    },
+    "inventory": {
+        "stackable": false,
+        "directPickup": true
+    }
+}
