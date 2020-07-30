@@ -25,7 +25,6 @@
         { "id": "Inventory", "minVersion": "1.1.0" },
         { "id": "Minimap", "minVersion": "1.0.0" },
         { "id": "OreGeneration", "minVersion": "2.0.0" },
-        { "id": "Pathfinding", "minVersion": "1.0.0" },
         { "id": "Rails", "minVersion": "1.0.0" },
         { "id": "SimpleFarming", "minVersion":  "2.1.0"},
         { "id": "Tasks", "minVersion": "1.0.0" },
