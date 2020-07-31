@@ -9,9 +9,10 @@
     },
     "MarketSubscriber" : {
      "production" : {
-       "AdditionalFruits:Blueberry": 3,
-       "AdditionalFruits:Raspberry": 3,
-       "AdditionalFruits:Strawberry": 3
+         "AdditionalFruits:Blueberry": 3,
+         "AdditionalFruits:Raspberry": 3,
+         "AdditionalFruits:Strawberry": 3,
+         "MetalRenegades:emptyCup": 2
      },
     "productionInterval" : 10000
     },

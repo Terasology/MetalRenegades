@@ -7,7 +7,9 @@
             ["CoreAssets:axe", "Axe", "Chop chop!", "25"],
             ["CoreAdvancedAssets:dynamite", "Dynamite", "Fire in the hole!", "100"],
             ["MetalRenegades:pistol", "Pistol", "Fires lead faster than the speed of sound.", "75"],
-            ["MetalRenegades:bulletItem", "Bullets", "A gunslinger is useless without a gun, and a gun is useless without its bullets", "10"]
+            ["MetalRenegades:bulletItem", "Bullets", "A gunslinger is useless without a gun, and a gun is useless without its bullets.", "10"],
+            ["MetalRenegades:emptyCup", "Empty Cup", "Take your drinks with you on the go!", "20"],
+            ["MetalRenegades:filledCup", "Filled Cup", "The perfect drink for a thirsty traveller.", "30"]
         ]
     }
 }

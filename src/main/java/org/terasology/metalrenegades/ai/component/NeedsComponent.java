@@ -17,6 +17,7 @@ package org.terasology.metalrenegades.ai.component;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.metalrenegades.ai.CitizenNeed;
+import org.terasology.network.Replicate;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -26,6 +27,27 @@ import java.util.Map;
  */
 public class NeedsComponent implements Component {
 
-    public Map<CitizenNeed.Type, CitizenNeed> needs = new EnumMap<>(CitizenNeed.Type.class);
+    @Replicate
+    public CitizenNeed hungerNeed;
+
+    @Replicate
+    public CitizenNeed thirstNeed;
+
+    @Replicate
+    public CitizenNeed socialNeed;
+
+    @Replicate
+    public CitizenNeed restNeed;
+
+    public NeedsComponent(CitizenNeed hunger, CitizenNeed thirst, CitizenNeed social, CitizenNeed rest) {
+        this.hungerNeed = hunger;
+        this.thirstNeed = thirst;
+        this.socialNeed = social;
+        this.restNeed = rest;
+    }
+
+    public NeedsComponent() {
+
+    }
 
 }

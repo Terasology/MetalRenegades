@@ -15,6 +15,11 @@
  */
 package org.terasology.metalrenegades.economy.ui;
 
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.logic.players.LocalPlayer;
+import org.terasology.metalrenegades.economy.events.TradeRequest;
+import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.NUIManager;
@@ -31,6 +36,9 @@ import java.util.List;
  * UI for trading with citizens
  */
 public class TradingScreen extends CoreScreenLayer {
+
+    @In
+    private LocalPlayer localPlayer;
 
     @In
     private TradingUISystem tradingUISystem;
@@ -120,16 +128,7 @@ public class TradingScreen extends CoreScreenLayer {
         // Initialize confirm trade button
         confirm = find("tradeButton", UIButton.class);
         confirm.subscribe(widget -> {
-            if (tradingUISystem.isAcceptable(pList.getSelection(), cList.getSelection())) {
-                if (tradingUISystem.trade(pList.getSelection(), cList.getSelection())) {
-                    message = "Trade completed.";
-                    tradingUISystem.refreshLists();
-                } else {
-                    message = "Trade failed.";
-                }
-            } else {
-                message = "Offer declined.";
-            }
+            localPlayer.getCharacterEntity().send(new TradeRequest(tradingUISystem.getTargetCitizen(), pList.getSelection(), cList.getSelection()));
         });
 
         // Initialize close dialogue button
@@ -173,6 +172,10 @@ public class TradingScreen extends CoreScreenLayer {
      */
     public void setCitizenItems(List<MarketItem> list) {
         this.cItems = list;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
