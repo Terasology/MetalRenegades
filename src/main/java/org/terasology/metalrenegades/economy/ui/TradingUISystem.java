@@ -51,6 +51,7 @@ public class TradingUISystem extends BaseComponentSystem {
     @In
     private MarketItemRegistry marketItemRegistry;
 
+    @In
     private InventoryManager inventoryManager;
 
     /**
