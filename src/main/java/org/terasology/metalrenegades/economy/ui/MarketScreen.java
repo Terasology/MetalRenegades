@@ -49,6 +49,9 @@ public class MarketScreen extends CoreScreenLayer {
     @In
     private NUIManager nuiManager;
 
+    @In
+    private MarketItemRegistry marketItemRegistry;
+
     private UIList<MarketItem> items;
 
     private UILabel name;
@@ -61,20 +64,21 @@ public class MarketScreen extends CoreScreenLayer {
     private UIButton back;
 
     private List<MarketItem> list = new ArrayList<>();
-    private MarketItem selected = MarketItemBuilder.getEmpty();
+    private MarketItem selected;
     private TransactionType type;
 
     private Logger logger = LoggerFactory.getLogger(MarketScreen.class);
 
     @Override
     public void initialise() {
+        selected = marketItemRegistry.getEmpty();
 
         // Initialise name label
         name = find("itemName", UILabel.class);
         name.bindText(new ReadOnlyBinding<String>() {
             @Override
             public String get() {
-                return selected.name;
+                return selected.displayName;
             }
         });
 
@@ -115,7 +119,7 @@ public class MarketScreen extends CoreScreenLayer {
         items.setItemRenderer(new StringTextRenderer<MarketItem>() {
             @Override
             public String getString(MarketItem value) {
-                return value.name;
+                return value.displayName;
             }
         });
         items.subscribeSelection(((widget, item) -> handleItemSelection(item)));
@@ -158,7 +162,7 @@ public class MarketScreen extends CoreScreenLayer {
     @Override
     public void onClosed() {
         super.onClosed();
-        selected = MarketItemBuilder.getEmpty();
+        selected = marketItemRegistry.getEmpty();
         items.setSelection(selected);
     }
 

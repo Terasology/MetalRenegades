@@ -59,6 +59,9 @@ public class MarketUISystem extends BaseComponentSystem {
     private InventoryManager inventoryManager;
 
     @In
+    private MarketItemRegistry marketItemRegistry;
+
+    @In
     private LocalPlayer localPlayer;
 
     private Logger logger = LoggerFactory.getLogger(MarketUISystem.class);
@@ -112,7 +115,7 @@ public class MarketUISystem extends BaseComponentSystem {
         resources = marketInfoResponseEvent.resources;
 
         for (Map.Entry<String, Integer> entry : resources.entrySet()) {
-            MarketItem item = MarketItemBuilder.get(entry.getKey(), entry.getValue());
+            MarketItem item = marketItemRegistry.get(entry.getKey(), entry.getValue());
             marketItemList.add(item);
         }
 
@@ -139,9 +142,9 @@ public class MarketUISystem extends BaseComponentSystem {
                     MarketItem item;
                     logger.info(entity.getParentPrefab().getName() + " == " + "blockItemBase");
                     if (entity.getParentPrefab().getName().equalsIgnoreCase("engine:blockItemBase")) {
-                        item = MarketItemBuilder.get(entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString(), inventoryManager.getStackSize(entity));
+                        item = marketItemRegistry.get(entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString(), inventoryManager.getStackSize(entity));
                     } else {
-                        item = MarketItemBuilder.get(entity.getParentPrefab().getName(), inventoryManager.getStackSize(entity));
+                        item = marketItemRegistry.get(entity.getParentPrefab().getName(), inventoryManager.getStackSize(entity));
                     }
                     marketItemList.add(item);
                 }

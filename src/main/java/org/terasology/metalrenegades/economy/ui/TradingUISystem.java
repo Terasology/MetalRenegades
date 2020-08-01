@@ -49,6 +49,9 @@ public class TradingUISystem extends BaseComponentSystem {
     private LocalPlayer localPlayer;
 
     @In
+    private MarketItemRegistry marketItemRegistry;
+
+    @In
     private InventoryManager inventoryManager;
 
     /**
@@ -115,9 +118,9 @@ public class TradingUISystem extends BaseComponentSystem {
 
                 if (entity.hasComponent(BlockItemComponent.class)) {
                     String itemName = entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString();
-                    item = MarketItemBuilder.get(itemName, quantity);
+                    item = marketItemRegistry.get(itemName, quantity);
                 } else {
-                    item = MarketItemBuilder.get(entity.getParentPrefab().getName(), quantity);
+                    item = marketItemRegistry.get(entity.getParentPrefab().getName(), quantity);
                 }
 
                 items.add(item);
@@ -141,9 +144,9 @@ public class TradingUISystem extends BaseComponentSystem {
 
                 if (entity.hasComponent(BlockItemComponent.class)) {
                     String itemName = entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString();
-                    item = MarketItemBuilder.get(itemName, 1);
+                    item = marketItemRegistry.get(itemName, 1);
                 } else {
-                    item = MarketItemBuilder.get(entity.getParentPrefab().getName(), 1);
+                    item = marketItemRegistry.get(entity.getParentPrefab().getName(), 1);
                 }
 
                 items.add(item);
