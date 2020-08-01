@@ -75,13 +75,20 @@ public class ChestFillingSystem extends BaseComponentSystem implements UpdateSub
             InventoryComponent inventoryComponent = chestEntity.getComponent(InventoryComponent.class);
 
             int slots = inventoryManager.getNumSlots(chestEntity);
+            boolean containsItem = false;
 
             for (int i = 0; i < slots; i++) {
                 EntityRef slotItem = getSlotItem();
                 if (slotContainsItem()) {
+                    containsItem = true;
                     inventoryComponent.itemSlots.set(i, getSlotItem());
                 }
             }
+
+            if (!containsItem) { // ensures that there is at least one item in each chest
+                inventoryComponent.itemSlots.set(0, getSlotItem());
+            }
+
             chestEntity.saveComponent(inventoryComponent);
             chestEntity.removeComponent(DiscoverableChestComponent.class);
         }
