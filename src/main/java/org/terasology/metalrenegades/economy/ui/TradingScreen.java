@@ -69,7 +69,7 @@ public class TradingScreen extends CoreScreenLayer {
     /**
      * Selected items
      */
-    private MarketItem pSelected = marketItemRegistry.getEmpty();
+    private MarketItem pSelected;
     private MarketItem cSelected;
 
     /**
@@ -88,7 +88,7 @@ public class TradingScreen extends CoreScreenLayer {
         pList.setItemRenderer(new StringTextRenderer<MarketItem>() {
             @Override
             public String getString(MarketItem value) {
-                return value.name;
+                return value.displayName;
             }
         });
         pList.subscribeSelection(((widget, item) -> pSelected = item));
@@ -105,7 +105,7 @@ public class TradingScreen extends CoreScreenLayer {
         cList.setItemRenderer(new StringTextRenderer<MarketItem>() {
             @Override
             public String getString(MarketItem value) {
-                return value.name;
+                return value.displayName;
             }
         });
         cList.subscribeSelection(((widget, item) -> cSelected = item));
