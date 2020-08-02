@@ -30,6 +30,8 @@ import org.terasology.dynamicCities.world.SolidRasterizer;
 import org.terasology.dynamicCities.world.TreeRasterizer;
 import org.terasology.dynamicCities.world.trees.DefaultTreeProvider;
 import org.terasology.engine.SimpleUri;
+import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesProvider;
+import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesRasterizer;
 import org.terasology.oreGeneration.generation.OreRasterizer;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
@@ -62,6 +64,7 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new DefaultTreeProvider())
                 .addProvider(new ResourceProvider())
                 .addProvider(new RoughnessProvider())
+                .addProvider(new DiscoverablesProvider())
                 .addProvider(new SiteFacetProvider())
                 .addProvider(new SettlementFacetProvider())
                 .addEntities(new RegionEntityProvider())
@@ -69,6 +72,7 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addRasterizer(new FloraRasterizer())
                 .addRasterizer(new TreeRasterizer())
                 .addRasterizer(new OreRasterizer())
+                .addRasterizer(new DiscoverablesRasterizer())
                 .addPlugins();
     }
 }
