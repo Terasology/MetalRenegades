@@ -2,13 +2,14 @@
     "GenericBuilding" : {
      "name" : "House",
      "generatorNames" : ["RectHouseGenerator"],
+       "templateNames" : ["MetalRenegades:oldwestResidentialHouse1", "MetalRenegades:oldwestResidentialHouse2"],
      "zone" : "RESIDENTIAL",
      "minSize" : [14, 14],
      "maxSize" : [22, 22],
         "isEntity" : true
     },
     "PotentialHome": {
-        "maxCitizens": 1
+        "maxCitizens": 2
     },
     "SimpleSource": {
         "needType": "REST"
