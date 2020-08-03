@@ -46,6 +46,9 @@ public class TradingScreen extends CoreScreenLayer {
     @In
     private NUIManager nuiManager;
 
+    @In
+    private MarketItemRegistry marketItemRegistry;
+
     /**
      * UI Elements
      */
@@ -66,8 +69,8 @@ public class TradingScreen extends CoreScreenLayer {
     /**
      * Selected items
      */
-    private MarketItem pSelected = MarketItemBuilder.getEmpty();
-    private MarketItem cSelected = MarketItemBuilder.getEmpty();
+    private MarketItem pSelected;
+    private MarketItem cSelected;
 
     /**
      * Trade result message
@@ -76,6 +79,8 @@ public class TradingScreen extends CoreScreenLayer {
 
     @Override
     public void initialise() {
+        pSelected = marketItemRegistry.getEmpty();
+        cSelected = marketItemRegistry.getEmpty();
 
         // Initialize player inventory list
         pList = find("playerList", UIList.class);
@@ -83,7 +88,7 @@ public class TradingScreen extends CoreScreenLayer {
         pList.setItemRenderer(new StringTextRenderer<MarketItem>() {
             @Override
             public String getString(MarketItem value) {
-                return value.name;
+                return value.displayName;
             }
         });
         pList.subscribeSelection(((widget, item) -> pSelected = item));
@@ -100,7 +105,7 @@ public class TradingScreen extends CoreScreenLayer {
         cList.setItemRenderer(new StringTextRenderer<MarketItem>() {
             @Override
             public String getString(MarketItem value) {
-                return value.name;
+                return value.displayName;
             }
         });
         cList.subscribeSelection(((widget, item) -> cSelected = item));
