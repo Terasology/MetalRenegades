@@ -41,7 +41,7 @@
         ]
     },
     "Behavior" : {
-        "tree" : "Behaviors:stray"
+        "tree" : "Behaviors:restrictedStray"
     },
     "MarketCitizen": {}
 }
