@@ -8,7 +8,8 @@
             ["AdditionalFruits:Strawberry", "Strawberries", "A delicious red berry with an outer layer of seeds.", "10"],
             ["AdditionalFruits:Tomato", "Tomatoes", "A medium-size red vegetable/fruit.", "10"],
             ["AdditionalVegetables:Cucumber", "Cucumbers", "A long green vegetable, delicious to eat in slices!", "10"],
-            ["AdditionalVegetables:Potato", "Potatoes", "A brownish root vegetable, and a major ingredient in French Fries!", "10"]
+            ["AdditionalVegetables:Potato", "Potatoes", "A brownish root vegetable, and a major ingredient in French Fries!", "10"],
+            ["WildAnimals:meat", "Meat", "The meat of a deer found outside the city.", "20"]
         ]
     }
 }
