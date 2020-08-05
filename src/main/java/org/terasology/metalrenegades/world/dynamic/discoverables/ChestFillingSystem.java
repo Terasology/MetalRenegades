@@ -40,7 +40,10 @@ public class ChestFillingSystem extends BaseComponentSystem implements UpdateSub
             "CoreAssets:axe",
             "CoreAssets:shovel",
             "MetalRenegades:emptyCup",
-            "MetalRenegades:pistol"
+            "MetalRenegades:pistol",
+            "MetalRenegades:emerald",
+            "MetalRenegades:ruby",
+            "MetalRenegades:sapphire"
     };
 
     /**
