@@ -1,6 +1,8 @@
 {
     "StructureTemplate": {
     },
+    "NoConstructionAnimation": {
+    },
     "SpawnBlockRegions": {
         "regionsToFill": [
             { "blockType": "CoreAssets:Glass", "region": { "min": [-4, 2, 0], "size": [1, 2, 1]}},
