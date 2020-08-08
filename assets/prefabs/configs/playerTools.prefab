@@ -11,5 +11,14 @@
             ["MetalRenegades:emptyCup", "Empty Cup", "Take your drinks with you on the go!", "20"],
             ["MetalRenegades:filledCup", "Filled Cup", "The perfect drink for a thirsty traveller.", "30"]
         ]
+    },
+    "DiscoverableItemConfiguration": {
+        "items": [
+            ["CoreAssets:pickaxe", "1"],
+            ["CoreAssets:axe", "1"],
+            ["CoreAssets:shovel", "1"],
+            ["MetalRenegades:emptyCup", "1"],
+            ["MetalRenegades:pistol", "1"]
+        ]
     }
 }

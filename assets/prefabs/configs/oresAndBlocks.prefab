@@ -9,5 +9,12 @@
             ["CoreAssets:Sand", "Sand", "Granular yellow substance, very common in the desert.", "1"],
             ["CoreAssets:Stone", "Stone", "Rocks. Strong rocks.", "1"]
         ]
+    },
+    "DiscoverableItemConfiguration": {
+        "items": [
+            ["MetalRenegades:emerald", "1"],
+            ["MetalRenegades:ruby", "1"],
+            ["MetalRenegades:sapphire", "1"]
+        ]
     }
 }

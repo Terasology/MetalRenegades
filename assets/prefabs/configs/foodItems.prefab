@@ -11,5 +11,14 @@
             ["AdditionalVegetables:Potato", "Potatoes", "A brownish root vegetable, and a major ingredient in French Fries!", "10"],
             ["WildAnimals:meat", "Meat", "The meat of a deer found outside the city.", "20"]
         ]
+    },
+    "DiscoverableItemConfiguration": {
+        "items": [
+            ["AdditionalFruits:Blueberry", "5"],
+            ["AdditionalFruits:Raspberry", "5"],
+            ["AdditionalFruits:Strawberry", "5"],
+            ["AdditionalVegetables:Potato", "5"],
+            ["MetalRenegades:bulletItem", "5"]
+        ]
     }
 }
