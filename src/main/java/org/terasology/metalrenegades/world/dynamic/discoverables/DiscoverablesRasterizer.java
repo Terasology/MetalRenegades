@@ -3,11 +3,15 @@
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
 import org.terasology.entitySystem.entity.EntityManager;
+import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.math.ChunkMath;
+import org.terasology.math.Region3i;
 import org.terasology.math.geom.BaseVector3i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+import org.terasology.structureTemplates.components.SpawnBlockRegionsComponent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
@@ -15,6 +19,7 @@ import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Places discoverable chests in the world at the positions specified in {@link DiscoverablesFacet}.
@@ -30,9 +35,13 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
      */
     private Block chest;
 
+    private Prefab structure;
+
     @Override
     public void initialize() {
         chest = CoreRegistry.get(BlockManager.class).getBlock("MetalRenegades:hiddenChest.RIGHT");
+        structure = Objects.requireNonNull(CoreRegistry.get(PrefabManager.class)).getPrefab("MetalRenegades:wellTemplate");
+
         entityManager = CoreRegistry.get(EntityManager.class);
     }
 
@@ -40,9 +49,23 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         DiscoverablesFacet discoverablesFacet = chunkRegion.getFacet(DiscoverablesFacet.class);
 
+        SpawnBlockRegionsComponent spawnBlockRegionsComponent =
+                structure.getComponent(SpawnBlockRegionsComponent.class);
+
         for (Map.Entry<BaseVector3i, DiscoverablesChest> entry : discoverablesFacet.getWorldEntries().entrySet()) {
-            Vector3i chestPosition = new Vector3i(entry.getKey());
-            chunk.setBlock(ChunkMath.calcRelativeBlockPos(chestPosition), chest);
+            Vector3i structurePosition = new Vector3i(entry.getKey());
+
+            for (SpawnBlockRegionsComponent.RegionToFill regionToFill : spawnBlockRegionsComponent.regionsToFill) {
+                  Block block = regionToFill.blockType;
+
+                  Region3i region = regionToFill.region;
+                  for (Vector3i pos : region) {
+                      pos.add(structurePosition);
+                      if (chunkRegion.getRegion().encompasses(pos)) {
+                          chunk.setBlock(ChunkMath.calcRelativeBlockPos(pos), block);
+                      }
+                  }
+            }
         }
     }
 
