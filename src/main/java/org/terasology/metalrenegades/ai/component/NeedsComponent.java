@@ -15,11 +15,16 @@
  */
 package org.terasology.metalrenegades.ai.component;
 
+import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.network.Replicate;
 
+import java.util.Collection;
 import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 /**
@@ -28,23 +33,7 @@ import java.util.Map;
 public class NeedsComponent implements Component {
 
     @Replicate
-    public CitizenNeed hungerNeed;
-
-    @Replicate
-    public CitizenNeed thirstNeed;
-
-    @Replicate
-    public CitizenNeed socialNeed;
-
-    @Replicate
-    public CitizenNeed restNeed;
-
-    public NeedsComponent(CitizenNeed hunger, CitizenNeed thirst, CitizenNeed social, CitizenNeed rest) {
-        this.hungerNeed = hunger;
-        this.thirstNeed = thirst;
-        this.socialNeed = social;
-        this.restNeed = rest;
-    }
+    public List<CitizenNeed> needs = Lists.newArrayList();;
 
     public NeedsComponent() {
 
