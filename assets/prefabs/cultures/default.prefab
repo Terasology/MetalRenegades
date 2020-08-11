@@ -1,9 +1,26 @@
 {
-    "Culture" : {
-        "name" : "develop clan",
-        "buildingNeedPerZone" : {"UTILITY" : 0.08, "GOVERNMENTAL" : 0.5, "CLERICAL" : 0.5, "RESIDENTIAL" : 1.1, "COMMERCIAL" : 0.7, "AGRICULTURE":  0.2},
-        "growthRate" : 8,
-        "availableBuildings" : ["Marketplace", "House", "SimpleChurch", "blacksmith", "Townhall", "Well", "Farm"],
-        "residentialZones" : ["RESIDENTIAL"]
-    }
+  "Culture": {
+    "name": "develop clan",
+    "buildingNeedPerZone": {
+      "AGRICULTURE": 0.2,
+      "CLERICAL": 0.5,
+      "COMMERCIAL": 0.7,
+      "GOVERNMENTAL": 0.5,
+      "RESIDENTIAL": 1.1,
+      "UTILITY": 0.08
+    },
+    "growthRate": 8,
+    "availableBuildings": [
+      "blacksmith",
+      "Farm",
+      "House",
+      "Jail",
+      "Marketplace",
+      "Saloon",
+      "SimpleChurch",
+      "Townhall",
+      "Well"
+    ],
+    "residentialZones": ["RESIDENTIAL"]
+  }
 }
