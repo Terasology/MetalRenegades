@@ -67,6 +67,7 @@ public class CharacterOverlay implements MinimapOverlay {
         this.map.put("MetalRenegades:scaredGooey", Assets.getTexture("MetalRenegades:scaredGooey"));
         this.map.put("MetalRenegades:angryGooey", Assets.getTexture("MetalRenegades:angryGooey"));
         this.map.put("MetalRenegades:friendlyGooey", Assets.getTexture("MetalRenegades:friendlyGooey"));
+        this.map.put("Mawgooey:mawgooey", Assets.getTexture("MetalRenegades:enemyIcon"));
     }
 
     @Override
@@ -83,12 +84,6 @@ public class CharacterOverlay implements MinimapOverlay {
 
 
         for (EntityRef CitizenEntity : citizens) {
-            if (!CitizenEntity.hasComponent(CitizenComponent.class)) {
-                logger.error("No Citizen found!");
-                continue;
-            }
-
-
             LocationComponent locationComponent = CitizenEntity.getComponent(LocationComponent.class);
             if (locationComponent == null) {
                 logger.error("Cannot find location component for Citizen: ");

@@ -11,18 +11,23 @@ import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.health.BeforeDestroyEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.event.OnPlayerRespawnedEvent;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
+import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.combat.component.EnemyGracePeriodComponent;
 import org.terasology.metalrenegades.combat.component.NightEnemyComponent;
+import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
+import org.terasology.metalrenegades.minimap.events.RemoveCharacterFromOverlayEvent;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
@@ -145,26 +150,34 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
             if (settlementEntityManager.checkOutsideAllSettlements(new Vector2i(enemyLoc.getX(), enemyLoc.getZ()))) {
                 return false;
             }
-            enemy.destroy();
+            removeEnemy(enemy);
             return true;
         });
 
         // If there are too many enemies in the world, remove the oldest enemies to make room.
         while (enemyQueue.size() > MAX_ENEMIES) {
-            enemyQueue.remove().destroy();
+            removeEnemy(enemyQueue.remove());
         }
     }
 
     @ReceiveEvent
     public void onDawnEvent(OnDawnEvent event, EntityRef entityRef) {
         while (!enemyQueue.isEmpty()) {
-            enemyQueue.remove().destroy();
+            removeEnemy(enemyQueue.remove());
         }
     }
 
     @ReceiveEvent
     public void onCharacterRespawn(OnPlayerRespawnedEvent event, EntityRef entity) {
         entity.saveComponent(new EnemyGracePeriodComponent(5));
+    }
+
+    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH)
+    public void onEntityDestroyed(BeforeDestroyEvent event, EntityRef entityRef,
+                                  NightEnemyComponent nightEnemyComponent) {
+        entityRef.send(new RemoveCharacterFromOverlayEvent());
+        entityRef.destroy();
+        event.consume();
     }
 
     /**
@@ -250,7 +263,14 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         entityBuilder.saveComponent(locationComponent);
         entityBuilder.addComponent(new NightEnemyComponent());
 
-        enemyQueue.add(entityBuilder.build());
+        EntityRef enemyEntity = entityBuilder.build();
+        enemyEntity.send(new AddCharacterToOverlayEvent());
+        enemyQueue.add(enemyEntity);
+    }
+
+    private void removeEnemy(EntityRef enemy) {
+        enemy.send(new RemoveCharacterFromOverlayEvent());
+        enemy.destroy();
     }
 
 }
