@@ -37,6 +37,10 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Function;
 
+/**
+ * Spawns enemies around players that travel outside the area of a settlement at nighttime. These enemies are destroyed
+ * if the player goes back inside a city, or the sun rises.
+ */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
@@ -60,17 +64,35 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
      */
     private Function<Vector3i, Boolean> isValidSpawnPosition;
 
-    private FastRandom random;
-
+    /**
+     * A block definition for sand, used to detect valid spawn positions.
+     */
     private Block sand;
+
+    /**
+     * A block definition for an air "block", used to detect valid spawn positions.
+     */
     private Block air;
 
+    /**
+     * The number of update cycles left until enemies are spawned/destroyed again.
+     */
     private int cyclesLeft;
 
+    /**
+     * Contains all enemies currently in the world. Used to remove enemies in spawn order when the maximum number of
+     * enemies is reached.
+     */
     private Queue<EntityRef> enemyQueue;
 
+    /**
+     * The maximum number of enemies that can spawn in the world.
+     */
     private static final int MAX_ENEMIES = 20;
 
+    /**
+     * True if this system is initialised, false otherwise.
+     */
     private boolean ready;
 
     @Override
@@ -78,11 +100,10 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         sand = blockManager.getBlock("CoreAssets:Sand");
         air = blockManager.getBlock(BlockManager.AIR_ID);
 
-        random = new FastRandom();
         isValidSpawnPosition = this::isValidSpawnPosition;
-
         nightTrackerSystem = CoreRegistry.get(NightTrackerSystem.class);
         enemyQueue = Queues.newLinkedBlockingQueue();
+
         ready = true;
     }
 
@@ -98,6 +119,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
             ClientComponent clientComponent = client.getComponent(ClientComponent.class);
             EntityRef character = clientComponent.character;
 
+            // Prevents enemy spawning if the player just respawned, to allow them to prepare.
             if (character.hasComponent(EnemyGracePeriodComponent.class)) {
                 EnemyGracePeriodComponent enemyGracePeriodComponent =
                         character.getComponent(EnemyGracePeriodComponent.class);
@@ -108,6 +130,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
                 } else {
                     character.saveComponent(enemyGracePeriodComponent);
                 }
+                continue;
             }
 
             if (!character.hasComponent(SettlementRefComponent.class)) {
@@ -115,6 +138,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
             }
         }
 
+        // Removes enemies that have entered a settlement
         enemyQueue.removeIf(enemy -> {
             LocationComponent locComp = enemy.getComponent(LocationComponent.class);
             Vector3f enemyLoc = locComp.getWorldPosition();
@@ -125,6 +149,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
             return true;
         });
 
+        // If there are too many enemies in the world, remove the oldest enemies to make room.
         while (enemyQueue.size() > MAX_ENEMIES) {
             enemyQueue.remove().destroy();
         }
@@ -142,17 +167,28 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         entity.saveComponent(new EnemyGracePeriodComponent(5));
     }
 
+    /**
+     * Spawns an enemy around the area of a particular character entity.
+     *
+     * @param character The spawn target character.
+     */
     private void spawnEnemyOnCharacter(EntityRef character) {
         LocationComponent locationComponent = character.getComponent(LocationComponent.class);
 
         List<Vector3i> spawnPositions = findSpawnPositions(new Vector3i(locationComponent.getWorldPosition()));
-        Optional<Vector3i> potentialPos = spawnPositions.stream().filter(p -> random.nextFloat() > 0.999).findFirst();
+        Optional<Vector3i> potentialPos = spawnPositions.stream().findFirst();
 
         if (potentialPos.isPresent()) {
             spawnOnPosition(potentialPos.get());
         }
     }
 
+    /**
+     * Searches a 60x20x60 area around a given position for acceptable spawn positions.
+     *
+     * @param centrePos The position to search around.
+     * @return A list of possible spawn positions.
+     */
     private List<Vector3i> findSpawnPositions(Vector3i centrePos) {
         Vector3i worldPos = new Vector3i(centrePos);
         List<Vector3i> foundPositions = Lists.newArrayList();
@@ -170,6 +206,12 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         return foundPositions;
     }
 
+    /**
+     * Returns true if the given position is a valid position to spawn an enemy character.
+     *
+     * @param pos The position to check.
+     * @return If the position is valid or not.
+     */
     private boolean isValidSpawnPosition(Vector3i pos) {
         if (!settlementEntityManager.checkOutsideAllSettlements(new Vector2i(pos.x, pos.z))) {
             return false;
@@ -195,6 +237,11 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         return true;
     }
 
+    /**
+     * Spawns an enemy on the given world coordinate.
+     *
+     * @param pos The position to spawn a character on top of.
+     */
     private void spawnOnPosition(Vector3i pos) {
         EntityBuilder entityBuilder = entityManager.newBuilder("MawGooey:mawGooey");
         LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
