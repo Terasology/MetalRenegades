@@ -67,7 +67,7 @@ public class NeedsSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onCitizenSpawned(CitizenSpawnedEvent citizenSpawnedEvent, EntityRef citizen) {
         NeedsComponent needsComponent = new NeedsComponent();
-        configComponent.needsConfigs.stream().forEach(config -> {
+        configComponent.needsConfigs.forEach(config -> {
             Iterator<String> it = config.iterator();
 
             CitizenNeed.Type needType = CitizenNeed.Type.valueOf(it.next());
