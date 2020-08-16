@@ -14,7 +14,6 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.metalrenegades.economy.systems.MarketCitizenSpawnSystem;
 import org.terasology.registry.In;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.utilities.random.Random;
@@ -109,12 +108,9 @@ public class ChestFillingSystem extends BaseComponentSystem implements UpdateSub
      * @return The chest slot item.
      */
     private EntityRef getSlotItem() {
-        if (hiddenItemsRegistry.isEmpty()) {
-            initialise();
-
-            if (hiddenItemsRegistry.isEmpty()) { // still empty after initialization? something must be wrong
-                logger.warn("No items in the hidden chest registry!");
-            }
+        if (hiddenItemsRegistry.isEmpty()) { // still empty after initialization? something must be wrong
+            logger.warn("No items in the hidden chest registry!");
+            return EntityRef.NULL;
         }
 
         Object[] itemURIs = hiddenItemsRegistry.keySet().toArray();
