@@ -121,14 +121,6 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
 
         entityBuilder.addComponent(homeComponent);
         entityBuilder.saveComponent(citizenLocationComponent);
-
-        NeedsComponent needsComponent = new NeedsComponent(
-                new CitizenNeed(20, 0.5f, 5, 15), // hunger
-                new CitizenNeed(20, 1, 8, 20), // thirst
-                new CitizenNeed(30, 1, 15, 30), // social
-                new CitizenNeed(50, 0.5f, 20, 50)); // rest
-
-        entityBuilder.saveComponent(needsComponent);
         entityBuilder.addComponent(new TraderComponent());
 
         EntityRef entityRef = entityBuilder.build();

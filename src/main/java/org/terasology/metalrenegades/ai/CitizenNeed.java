@@ -48,18 +48,32 @@ public class CitizenNeed {
     private float value;
 
     /**
+     * The type of this CitizenNeed
+     */
+    private Type needType;
+
+    /**
      * Creates a CitizenNeed with provided settings.
      *
      * @param capacity Preset value for {@link CitizenNeed#capacity}.
      * @param reductionRate Preset value for {@link CitizenNeed#reductionRate}.
      * @param goal Preset value for {@link CitizenNeed#goal}.
-     * @param value Preset value for {@link CitizenNeed#value}.
      */
-    public CitizenNeed(float capacity, float reductionRate, float goal, float value) {
+    public CitizenNeed(Type needType, float capacity, float reductionRate, float goal) {
+        this.needType = needType;
         this.capacity = capacity;
         this.reductionRate = reductionRate;
         this.goal = goal;
-        this.value = value;
+        this.value = capacity;
+    }
+
+    /**
+     * Returns the type of need that this CitizenNeed is.
+     *
+     * @return This need type.
+     */
+    public Type getNeedType() {
+        return this.needType;
     }
 
     /**
@@ -87,7 +101,7 @@ public class CitizenNeed {
 
     @Override
     public String toString() {
-        return this.value + "/" + this.capacity;
+        return Math.round(this.value) + "/" + Math.round(this.capacity);
     }
 
 }

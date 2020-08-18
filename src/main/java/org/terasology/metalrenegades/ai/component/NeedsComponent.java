@@ -15,12 +15,12 @@
  */
 package org.terasology.metalrenegades.ai.component;
 
+import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.network.Replicate;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Component which keeps track of a citizens current need status.
@@ -28,26 +28,6 @@ import java.util.Map;
 public class NeedsComponent implements Component {
 
     @Replicate
-    public CitizenNeed hungerNeed;
-
-    @Replicate
-    public CitizenNeed thirstNeed;
-
-    @Replicate
-    public CitizenNeed socialNeed;
-
-    @Replicate
-    public CitizenNeed restNeed;
-
-    public NeedsComponent(CitizenNeed hunger, CitizenNeed thirst, CitizenNeed social, CitizenNeed rest) {
-        this.hungerNeed = hunger;
-        this.thirstNeed = thirst;
-        this.socialNeed = social;
-        this.restNeed = rest;
-    }
-
-    public NeedsComponent() {
-
-    }
+    public List<CitizenNeed> needs = Lists.newArrayList();;
 
 }

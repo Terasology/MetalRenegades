@@ -21,6 +21,7 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
+import org.terasology.metalrenegades.ai.system.NeedsSystem;
 
 /**
  * Checks the current status of a provided need type. Succeeds if action is needed to relieve this need, fails otherwise.
@@ -39,23 +40,10 @@ public class CheckNeedAction extends BaseAction {
         CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
 
         NeedsComponent needsComponent = actor.getComponent(NeedsComponent.class);
-        CitizenNeed currentNeed;
+        CitizenNeed currentNeed = NeedsSystem.getNeedFromType(needsComponent, needTypeValue);
 
-        switch (needTypeValue) {
-            case FOOD:
-                currentNeed = needsComponent.hungerNeed;
-                break;
-            case WATER:
-                currentNeed = needsComponent.thirstNeed;
-                break;
-            case SOCIAL:
-                currentNeed = needsComponent.socialNeed;
-                break;
-            case REST:
-                currentNeed = needsComponent.restNeed;
-                break;
-            default:
-                return BehaviorState.FAILURE;
+        if (currentNeed == null) {
+            return BehaviorState.FAILURE;
         }
 
         return currentNeed.isBelowGoal() ? BehaviorState.SUCCESS : BehaviorState.FAILURE;
