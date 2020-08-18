@@ -5,8 +5,9 @@ package org.terasology.metalrenegades.combat.system;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.system.NightTrackerSystem;
-import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -19,35 +20,35 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.health.BeforeDestroyEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.event.OnPlayerRespawnedEvent;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.metalrenegades.ai.component.CitizenComponent;
-import org.terasology.metalrenegades.combat.component.EnemyGracePeriodComponent;
 import org.terasology.metalrenegades.combat.component.NightEnemyComponent;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.metalrenegades.minimap.events.RemoveCharacterFromOverlayEvent;
-import org.terasology.network.ClientComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.utilities.random.FastRandom;
+import org.terasology.utilities.random.Random;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.chunks.ChunkConstants;
+import org.terasology.world.chunks.event.BeforeChunkUnload;
+import org.terasology.world.chunks.event.OnChunkLoaded;
 import org.terasology.world.sun.OnDawnEvent;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Queue;
-import java.util.function.Function;
 
 /**
- * Spawns enemies around players that travel outside the area of a settlement at nighttime. These enemies are destroyed
- * if the player goes back inside a city, or the sun rises.
+ * Spawns enemies outside the area of settlements at nighttime. These enemies are destroyed if they go inside a city,
+ * or the sun rises.
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+
+    private final Logger logger = LoggerFactory.getLogger(EnemySpawnSystem.class);
 
     @In
     private EntityManager entityManager;
@@ -65,21 +66,6 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
     private SettlementEntityManager settlementEntityManager;
 
     /**
-     * Check blocks at and around the target position and check if it's a valid spawning spot
-     */
-    private Function<Vector3i, Boolean> isValidSpawnPosition;
-
-    /**
-     * A block definition for sand, used to detect valid spawn positions.
-     */
-    private Block sand;
-
-    /**
-     * A block definition for an air "block", used to detect valid spawn positions.
-     */
-    private Block air;
-
-    /**
      * The number of update cycles left until enemies are spawned/destroyed again.
      */
     private int cyclesLeft;
@@ -91,132 +77,134 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
     private Queue<EntityRef> enemyQueue;
 
     /**
+     * A list of positions of loaded chunks that enemies can be spawned in
+     */
+    private List<Vector3i> chunkPositions;
+
+    /**
      * The maximum number of enemies that can spawn in the world.
      */
-    private static final int MAX_ENEMIES = 20;
+    private static final int MAX_ENEMIES = 30;
 
     /**
      * True if this system is initialised, false otherwise.
      */
     private boolean ready;
 
+    /**
+     * A random value generator used to determine enemy spawn positions.
+     */
+    private Random random;
+
     @Override
     public void postBegin() {
-        sand = blockManager.getBlock("CoreAssets:Sand");
-        air = blockManager.getBlock(BlockManager.AIR_ID);
-
-        isValidSpawnPosition = this::isValidSpawnPosition;
         nightTrackerSystem = CoreRegistry.get(NightTrackerSystem.class);
+        random = new FastRandom();
+
         enemyQueue = Queues.newLinkedBlockingQueue();
+        chunkPositions = Lists.newArrayList();
 
         ready = true;
     }
 
     @Override
     public void update(float delta) {
-        if (cyclesLeft < 300 || !nightTrackerSystem.isNight() || !ready) {
+        if (cyclesLeft < 30 || !nightTrackerSystem.isNight() || !ready) {
             cyclesLeft++;
             return;
         }
         cyclesLeft = 0;
 
-        for (EntityRef client : entityManager.getEntitiesWith(ClientComponent.class)) {
-            ClientComponent clientComponent = client.getComponent(ClientComponent.class);
-            EntityRef character = clientComponent.character;
-
-            // Prevents enemy spawning if the player just respawned, to allow them to prepare.
-            if (character.hasComponent(EnemyGracePeriodComponent.class)) {
-                EnemyGracePeriodComponent enemyGracePeriodComponent =
-                        character.getComponent(EnemyGracePeriodComponent.class);
-                enemyGracePeriodComponent.cyclesLeft--;
-
-                if (enemyGracePeriodComponent.cyclesLeft >= 0) {
-                    character.removeComponent(EnemyGracePeriodComponent.class);
-                } else {
-                    character.saveComponent(enemyGracePeriodComponent);
-                }
-                continue;
-            }
-
-            if (!character.hasComponent(SettlementRefComponent.class)) {
-                spawnEnemyOnCharacter(character);
-            }
-        }
+        spawnEnemyInWorld();
 
         // Removes enemies that have entered a settlement
         enemyQueue.removeIf(enemy -> {
+            // prevents a rare NPE where an enemy has no location component
+            if (!enemy.hasComponent(LocationComponent.class)) {
+                removeEnemy(enemy);
+                logger.warn("Removed enemy without a location component");
+                return true;
+            }
+
             LocationComponent locComp = enemy.getComponent(LocationComponent.class);
             Vector3f enemyLoc = locComp.getWorldPosition();
-            if (settlementEntityManager.checkOutsideAllSettlements(new Vector2i(enemyLoc.getX(), enemyLoc.getZ()))) {
+            if (settlementEntityManager.checkOutsideAllSettlements(new Vector2i(enemyLoc.getX(), enemyLoc.getZ())) && enemy.isActive()) {
                 return false;
             }
             removeEnemy(enemy);
+            logger.debug("Removed inactive enemy at ({}, {}, {}).", enemyLoc.getX(), enemyLoc.getY(), enemyLoc.getZ());
             return true;
         });
 
         // If there are too many enemies in the world, remove the oldest enemies to make room.
         while (enemyQueue.size() > MAX_ENEMIES) {
             removeEnemy(enemyQueue.remove());
+            logger.debug("Too many enemies in world, removed oldest enemy from queue.");
         }
     }
 
     @ReceiveEvent
     public void onDawnEvent(OnDawnEvent event, EntityRef entityRef) {
+        logger.debug("Dawn event invoked, despawning all enemies.");
         while (!enemyQueue.isEmpty()) {
             removeEnemy(enemyQueue.remove());
         }
     }
 
     @ReceiveEvent
-    public void onCharacterRespawn(OnPlayerRespawnedEvent event, EntityRef entity) {
-        entity.saveComponent(new EnemyGracePeriodComponent(5));
+    public void chunkLoadedEvent(OnChunkLoaded event, EntityRef entity) {
+        chunkPositions.add(event.getChunkPos());
     }
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH)
-    public void onEntityDestroyed(BeforeDestroyEvent event, EntityRef entityRef,
-                                  NightEnemyComponent nightEnemyComponent) {
-        entityRef.send(new RemoveCharacterFromOverlayEvent());
-        entityRef.destroy();
-        event.consume();
+    @ReceiveEvent
+    public void beforeChunkUnload(BeforeChunkUnload event, EntityRef entity) {
+        chunkPositions.remove(event.getChunkPos());
     }
 
     /**
-     * Spawns an enemy around the area of a particular character entity.
-     *
-     * @param character The spawn target character.
+     * Attempts to spawn an enemy in the game world outside of cities in loaded chunks.
      */
-    private void spawnEnemyOnCharacter(EntityRef character) {
-        LocationComponent locationComponent = character.getComponent(LocationComponent.class);
+    private void spawnEnemyInWorld() {
+        Vector3i spawnPosition = findSpawnPosition();
 
-        List<Vector3i> spawnPositions = findSpawnPositions(new Vector3i(locationComponent.getWorldPosition()));
-        Optional<Vector3i> potentialPos = spawnPositions.stream().findFirst();
-
-        if (potentialPos.isPresent()) {
-            spawnOnPosition(potentialPos.get());
+        if (spawnPosition != null) {
+            spawnOnPosition(spawnPosition);
         }
     }
 
     /**
-     * Searches a 60x20x60 area around a given position for acceptable spawn positions.
+     * Finds a random coordinate position that can be used to spawn enemies.
      *
-     * @param centrePos The position to search around.
-     * @return A list of possible spawn positions.
+     * @return A randomly chosen possible spawn position, or null if none could be found.
      */
-    private List<Vector3i> findSpawnPositions(Vector3i centrePos) {
-        Vector3i worldPos = new Vector3i(centrePos);
-        List<Vector3i> foundPositions = Lists.newArrayList();
-        Vector3i blockPos = new Vector3i();
-        for (int y = -10; y < 10; y++) {
-            for (int z = -30; z < 30; z++) {
-                for (int x = -30; x < 30; x++) {
-                    blockPos.set(x + worldPos.x, y + worldPos.y, z + worldPos.z);
-                    if (isValidSpawnPosition.apply(blockPos)) {
-                        foundPositions.add(new Vector3i(blockPos));
-                    }
-                }
+    private Vector3i findSpawnPosition() {
+        if (chunkPositions.isEmpty()) {
+            logger.debug("No currently spawned chunks, skipping spawn cycle....");
+            return null;
+        }
+
+        Vector3i chunkPosition = chunkPositions.get(random.nextInt(chunkPositions.size()));
+        Vector3i chunkWorldPosition = chunkPosition.mul(ChunkConstants.SIZE_X, ChunkConstants.SIZE_Y, ChunkConstants.SIZE_Z);
+        Vector2i randomColumn = new Vector2i(chunkWorldPosition.x + random.nextInt(ChunkConstants.SIZE_X),
+                chunkWorldPosition.z + random.nextInt(ChunkConstants.SIZE_Z));
+
+        if (!worldProvider.isBlockRelevant(chunkWorldPosition)) {
+            // 2nd line of defense in case chunk load/unload events are skipped.
+            chunkPositions.remove(chunkPosition);
+            logger.warn("Inactive chunk requested! Removing chunk from spawn list and skipping spawn cycle");
+            return null;
+        }
+
+        for (int y = chunkWorldPosition.y - ChunkConstants.SIZE_Y; y < chunkWorldPosition.y + ChunkConstants.SIZE_Y; y++) {
+            Vector3i possiblePosition = new Vector3i(randomColumn.x, y, randomColumn.y);
+            if (isValidSpawnPosition(possiblePosition)) {
+                return possiblePosition;
             }
         }
-        return foundPositions;
+
+        logger.debug("No valid position found in column ({}, {}) inside chunk ({}, {}, {}), skipping spawn cycle.",
+                randomColumn.x, randomColumn.y, chunkPosition.x, chunkPosition.y, chunkPosition.z);
+        return null;
     }
 
     /**
@@ -232,7 +220,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
 
         Vector3i below = new Vector3i(pos.x, pos.y - 1, pos.z);
         Block blockBelow = worldProvider.getBlock(below);
-        if (!blockBelow.equals(sand)) {
+        if (blockBelow.isPenetrable()) {
             return false;
         }
 
@@ -243,7 +231,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
 
         Vector3i above = new Vector3i(pos.x, pos.y + 1, pos.z);
         Block blockAbove = worldProvider.getBlock(above);
-        if (!blockAbove.equals(air)) {
+        if (!blockAbove.isPenetrable()) {
             return false;
         }
 
@@ -268,6 +256,11 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         enemyQueue.add(enemyEntity);
     }
 
+    /**
+     * Removes an enemy from the minimap overlay, then destroys the character entity.
+     *
+     * @param enemy The enemy to remove.
+     */
     private void removeEnemy(EntityRef enemy) {
         enemy.send(new RemoveCharacterFromOverlayEvent());
         enemy.destroy();
