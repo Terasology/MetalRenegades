@@ -1,0 +1,37 @@
+{
+  dynamic: [
+    {
+      sequence: [
+        inside_city_check,
+        {
+          guard: {
+            componentPresent: "Behaviors:FindNearbyPlayers",
+            values: ["N charactersWithinRange nonEmpty"],
+            child: {
+              sequence: [
+                { sleep: {time: 0.1f }},
+                flee_from_character,
+                { lookup: {tree: "Behaviors:flee" }}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      guard: {
+        componentPresent: "Behaviors:FindNearbyPlayers",
+        values: ["N charactersWithinRange nonEmpty"],
+        child: {
+          sequence: [
+            { sleep: {time: 0.1f }},
+            followCharacter,
+            { lookup: {tree: "Behaviors:hostile" }}
+
+          ]
+        }
+      }
+    },
+    { lookup: { tree: "Behaviors:stray" }}
+  ]
+}
