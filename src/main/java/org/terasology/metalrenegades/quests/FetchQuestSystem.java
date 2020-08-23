@@ -36,7 +36,7 @@ import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
-import org.terasology.rendering.nui.Color;
+import org.terasology.nui.Color;
 import org.terasology.tasks.CollectBlocksTask;
 import org.terasology.tasks.Task;
 import org.terasology.tasks.TaskGraph;
