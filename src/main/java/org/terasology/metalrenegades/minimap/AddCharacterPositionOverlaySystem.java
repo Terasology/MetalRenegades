@@ -64,7 +64,7 @@ public class AddCharacterPositionOverlaySystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onAddCharacterOverlayEvent(AddCharacterToOverlayEvent event, EntityRef citizen) {
-        characterOverlay.AddCitizen(citizen);
+        characterOverlay.addCitizen(citizen);
     }
 
     /**
