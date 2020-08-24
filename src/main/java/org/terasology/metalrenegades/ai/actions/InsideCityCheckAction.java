@@ -14,6 +14,10 @@ import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 
+/**
+ * Checks if a character currently within the bounds of a city or not. Succeeds if the character is inside a city,
+ * false otherwise.
+ */
 @BehaviorAction(name = "inside_city_check")
 public class InsideCityCheckAction extends BaseAction {
 
