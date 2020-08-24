@@ -9,7 +9,7 @@ import org.terasology.world.generation.facets.base.SparseObjectFacet3D;
 /**
  * Contains information about discoverable chest locations.
  */
-public class DiscoverablesFacet extends SparseObjectFacet3D<DiscoverablesChest> {
+public class DiscoverablesFacet extends SparseObjectFacet3D<DiscoverableLocation> {
 
     public DiscoverablesFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);

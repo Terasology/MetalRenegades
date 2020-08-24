@@ -35,12 +35,15 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
      */
     private Block chest;
 
-    private Prefab structure;
+    private Prefab wellStructure;
+
+    private Prefab houseStructure;
 
     @Override
     public void initialize() {
         chest = CoreRegistry.get(BlockManager.class).getBlock("MetalRenegades:hiddenChest.RIGHT");
-        structure = Objects.requireNonNull(CoreRegistry.get(PrefabManager.class)).getPrefab("MetalRenegades:wellTemplate");
+        houseStructure = Objects.requireNonNull(CoreRegistry.get(PrefabManager.class)).getPrefab("MetalRenegades:abandonedHouse");
+        wellStructure = Objects.requireNonNull(CoreRegistry.get(PrefabManager.class)).getPrefab("MetalRenegades:driedWell");
 
         entityManager = CoreRegistry.get(EntityManager.class);
     }
@@ -49,22 +52,32 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         DiscoverablesFacet discoverablesFacet = chunkRegion.getFacet(DiscoverablesFacet.class);
 
-        SpawnBlockRegionsComponent spawnBlockRegionsComponent =
-                structure.getComponent(SpawnBlockRegionsComponent.class);
-
-        for (Map.Entry<BaseVector3i, DiscoverablesChest> entry : discoverablesFacet.getWorldEntries().entrySet()) {
+        for (Map.Entry<BaseVector3i, DiscoverableLocation> entry : discoverablesFacet.getWorldEntries().entrySet()) {
             Vector3i structurePosition = new Vector3i(entry.getKey());
+            Prefab structure;
+            switch (entry.getValue().locationType) {
+                case WELL:
+                    structure = wellStructure;
+                    break;
+                case HOUSE:
+                    structure = houseStructure;
+                    break;
+                default:
+                    return;
+            }
+            SpawnBlockRegionsComponent spawnBlockRegionsComponent =
+                    structure.getComponent(SpawnBlockRegionsComponent.class);
 
             for (SpawnBlockRegionsComponent.RegionToFill regionToFill : spawnBlockRegionsComponent.regionsToFill) {
-                  Block block = regionToFill.blockType;
+                Block block = regionToFill.blockType;
 
-                  Region3i region = regionToFill.region;
-                  for (Vector3i pos : region) {
-                      pos.add(structurePosition);
-                      if (chunkRegion.getRegion().encompasses(pos)) {
-                          chunk.setBlock(ChunkMath.calcRelativeBlockPos(pos), block);
-                      }
-                  }
+                Region3i region = regionToFill.region;
+                for (Vector3i pos : region) {
+                    pos.add(structurePosition);
+                    if (chunkRegion.getRegion().encompasses(pos)) {
+                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(pos), block);
+                    }
+                }
             }
         }
     }

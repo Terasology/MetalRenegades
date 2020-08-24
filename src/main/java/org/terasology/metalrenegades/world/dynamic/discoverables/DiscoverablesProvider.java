@@ -14,13 +14,13 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
  * Places chests into {@link DiscoverablesFacet} across the surface of the game world
  */
 @Produces(DiscoverablesFacet.class)
-@Requires(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 10)))
+@Requires(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(bottom = 10, top = 10, sides = 10)))
 public class DiscoverablesProvider implements FacetProvider {
 
     /**
      * The probability out of one that a chest will be placed on any particular surface block.
      */
-    public static final float CHEST_PROBABILITY = 0.0005f;
+    public static final float CHEST_PROBABILITY = 0.00002f;
 
     /**
      * A noise provider that determines the positions of discoverables.
@@ -34,7 +34,7 @@ public class DiscoverablesProvider implements FacetProvider {
 
     @Override
     public void process(GeneratingRegion region) {
-        Border3D border = region.getBorderForFacet(DiscoverablesFacet.class).extendBy(0, 0, 10);
+        Border3D border = region.getBorderForFacet(DiscoverablesFacet.class).extendBy(10, 10, 10);
 
         SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
         DiscoverablesFacet facet = new DiscoverablesFacet(region.getRegion(), border);
@@ -48,7 +48,14 @@ public class DiscoverablesProvider implements FacetProvider {
                 if (surfaceHeight > facet.getWorldRegion().minY() &&
                     surfaceHeight < facet.getWorldRegion().maxY()) {
                     if (noise.noise(wx, wz) < (CHEST_PROBABILITY * 2) - 1) {
-                        facet.setWorld(wx, surfaceHeight + 1, wz, new DiscoverablesChest());
+                        DiscoverableLocation.Type[] typeList = DiscoverableLocation.Type.values();
+                        int typeIndex = (int) (Math.abs(noise.noise(wx, surfaceHeight, wz)) * typeList.length);
+                        if (typeIndex > typeList.length) { // incredibly rare, but still possible with the noise range
+                            typeIndex = 0;
+                        }
+
+                        DiscoverableLocation.Type type = typeList[typeIndex];
+                        facet.setWorld(wx, surfaceHeight, wz, new DiscoverableLocation(type));
                     }
                 }
             }
