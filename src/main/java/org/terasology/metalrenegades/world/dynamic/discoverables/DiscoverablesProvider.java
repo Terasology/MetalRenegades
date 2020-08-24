@@ -35,19 +35,20 @@ public class DiscoverablesProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         Border3D border = region.getBorderForFacet(DiscoverablesFacet.class).extendBy(1, 0, 1);
 
-        SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
         DiscoverablesFacet facet = new DiscoverablesFacet(region.getRegion(), border);
+        SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
 
         Rect2i worldRegion = surfaceHeightFacet.getWorldRegion();
 
         for (int wz = worldRegion.minY(); wz <= worldRegion.maxY(); wz++) {
             for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
-                int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz));
+                int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz)) + 1;
 
                 if (surfaceHeight >= facet.getWorldRegion().minY() &&
-                    surfaceHeight <= facet.getWorldRegion().maxY()) {
+                    surfaceHeight <= facet.getWorldRegion().maxY() &&
+                    facet.getWorldRegion().encompasses(wx, surfaceHeight, wz)) {
                     if (noise.noise(wx, wz) < (CHEST_PROBABILITY * 2) - 1) {
-                        facet.setWorld(wx, surfaceHeight + 1, wz, new DiscoverablesChest());
+                        facet.setWorld(wx, surfaceHeight, wz, new DiscoverablesChest());
                     }
                 }
             }
