@@ -27,7 +27,6 @@
             { sleep: {time: 0.1f }},
             followCharacter,
             { lookup: {tree: "Behaviors:hostile" }}
-
           ]
         }
       }
