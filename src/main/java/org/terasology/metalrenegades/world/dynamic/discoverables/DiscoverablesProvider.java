@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
-import org.terasology.math.Region3i;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.Noise;
@@ -39,14 +38,15 @@ public class DiscoverablesProvider implements FacetProvider {
         SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
         DiscoverablesFacet facet = new DiscoverablesFacet(region.getRegion(), border);
 
-        Region3i worldRegion = facet.getWorldRegion();
+        Rect2i worldRegion = surfaceHeightFacet.getWorldRegion();
 
-        for (int wz = worldRegion.minZ(); wz <= worldRegion.maxZ(); wz++) {
+        for (int wz = worldRegion.minY(); wz <= worldRegion.maxY(); wz++) {
             for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
-                int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz));
+                int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz)) + 1;
 
-                if (surfaceHeight > facet.getWorldRegion().minY() &&
-                    surfaceHeight < facet.getWorldRegion().maxY()) {
+                if (surfaceHeight >= facet.getWorldRegion().minY() &&
+                    surfaceHeight <= facet.getWorldRegion().maxY() &&
+                    facet.getWorldRegion().encompasses(wx, surfaceHeight, wz)) {
                     if (noise.noise(wx, wz) < (CHEST_PROBABILITY * 2) - 1) {
                         DiscoverableLocation.Type[] typeList = DiscoverableLocation.Type.values();
                         int typeIndex = (int) (Math.abs(noise.noise(wx, surfaceHeight, wz)) * typeList.length);
