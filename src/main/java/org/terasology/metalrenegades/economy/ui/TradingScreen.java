@@ -15,19 +15,16 @@
  */
 package org.terasology.metalrenegades.economy.ui;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.metalrenegades.economy.events.TradeRequest;
-import org.terasology.metalrenegades.economy.events.TradeResponse;
+import org.terasology.nui.databinding.ReadOnlyBinding;
+import org.terasology.nui.itemRendering.StringTextRenderer;
+import org.terasology.nui.widgets.UIButton;
+import org.terasology.nui.widgets.UILabel;
+import org.terasology.nui.widgets.UIList;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.NUIManager;
-import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
-import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
-import org.terasology.rendering.nui.widgets.UIButton;
-import org.terasology.rendering.nui.widgets.UILabel;
-import org.terasology.rendering.nui.widgets.UIList;
 
 import java.util.ArrayList;
 import java.util.List;

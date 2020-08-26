@@ -16,22 +16,24 @@
 package org.terasology.metalrenegades.minimap;
 
 
-import com.google.common.collect.Maps;
+import org.joml.Rectanglei;
+import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Rect2f;
-import org.terasology.math.geom.Rect2fTransformer;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2f;
-import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.minimap.overlays.MinimapOverlay;
+import org.terasology.nui.Canvas;
+import org.terasology.nui.util.RectUtility;
 import org.terasology.rendering.assets.texture.Texture;
-import org.terasology.rendering.nui.Canvas;
 import org.terasology.utilities.Assets;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class is used to add character overlays to the minimap based on the citizen type
@@ -40,9 +42,9 @@ import java.util.*;
 
 
 public class CharacterOverlay implements MinimapOverlay {
-    private static final float ICON_SIZE = 16f;
+    private static final int ICON_SIZE = 16;
 
-    private Vector2f iconSize = new Vector2f(ICON_SIZE, ICON_SIZE);
+    private Vector2i iconSize = new Vector2i(ICON_SIZE, ICON_SIZE);
 
     private Logger logger = LoggerFactory.getLogger(CharacterOverlay.class);
 
@@ -54,8 +56,6 @@ public class CharacterOverlay implements MinimapOverlay {
     /**
      * This constructor sets creates the list of citizens
      */
-
-
     public CharacterOverlay() {
         this.Citizens = new ArrayList<EntityRef>();
         this.map.put("MetalRenegades:marketCitizen", Assets.getTexture("MetalRenegades:marketGooey"));
@@ -71,35 +71,24 @@ public class CharacterOverlay implements MinimapOverlay {
     }
 
     @Override
-    public void render(Canvas canvas, Rect2f worldRect) {
+    public void render(Canvas canvas, Rectanglei worldRect) {
 
         Collection<EntityRef> citizens = this.Citizens;
 
-        Rect2f screenRect = Rect2f.createFromMinAndSize(
-                new Vector2f(canvas.getRegion().minX(), canvas.getRegion().minY()),
-                new Vector2f(canvas.getRegion().maxX(), canvas.getRegion().maxY())
-        );
-
-        Rect2fTransformer transformer = new Rect2fTransformer(worldRect, screenRect);
-
-
-        for (EntityRef CitizenEntity : citizens) {
-            LocationComponent locationComponent = CitizenEntity.getComponent(LocationComponent.class);
+        for (EntityRef entity : citizens) {
+            LocationComponent locationComponent = entity.getComponent(LocationComponent.class);
             if (locationComponent == null) {
                 logger.error("Cannot find location component for Citizen: ");
                 return;
             }
 
             Vector2f location = new Vector2f(locationComponent.getLocalPosition().x(), locationComponent.getLocalPosition().z());
-            Vector2f mapPoint = new Vector2f(
-                    transformer.applyX(location.x),
-                    transformer.applyY(location.y)
-            );
-            Vector2f iconCenter = new Vector2f(mapPoint.x - iconSize.x / 2, mapPoint.y - iconSize.y / 2);
+            Vector2i mapPoint = RectUtility.map(worldRect, canvas.getRegion(), new Vector2i((int) location.x, (int) location.y), new Vector2i());
+            Vector2i iconCenter = new Vector2i((int) (mapPoint.x - (iconSize.x / 2.0f)), (int) (mapPoint.y - (iconSize.y / 2.0f)));
 
-            if (isInside(iconCenter, screenRect)) {
-                Rect2i region = Rect2i.createFromMinAndSize((int) iconCenter.x, (int) iconCenter.y, (int) iconSize.x, (int) iconSize.y);
-                String citizenType = CitizenEntity.getParentPrefab().getName();
+            if (isInside(iconCenter, canvas.getRegion())) {
+                Rectanglei region = RectUtility.createFromMinAndSize((int) iconCenter.x, (int) iconCenter.y, (int) iconSize.x, (int) iconSize.y);
+                String citizenType = entity.getParentPrefab().getName();
                 if (this.map.get(citizenType) != null) {
                     Optional<Texture> icon = this.map.get(citizenType);
                     if (icon.isPresent()) {
@@ -110,7 +99,6 @@ public class CharacterOverlay implements MinimapOverlay {
                 }
             }
         }
-
     }
 
     /**
@@ -120,11 +108,9 @@ public class CharacterOverlay implements MinimapOverlay {
      * @param box:   limits
      * @return whether point is to be drawn or not
      */
-    private boolean isInside(Vector2f point, Rect2f box) {
-
-        Rect2f iconRegion = Rect2f.createFromMinAndSize(point, iconSize);
-        return box.contains(iconRegion);
-
+    private boolean isInside(Vector2i point, Rectanglei box) {
+        Rectanglei iconRegion = RectUtility.createFromMinAndSize(point, iconSize);
+        return box.containsRectangle(iconRegion);
     }
 
     /**
@@ -133,7 +119,7 @@ public class CharacterOverlay implements MinimapOverlay {
      * @param entityRef citizen to be added
      */
 
-    public void AddCitizen(EntityRef entityRef) {
+    public void addCitizen(EntityRef entityRef) {
         this.Citizens.add(entityRef);
     }
 

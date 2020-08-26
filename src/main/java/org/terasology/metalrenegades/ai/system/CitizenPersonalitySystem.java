@@ -13,7 +13,7 @@ import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.namegenerator.creature.CreatureAssetTheme;
 import org.terasology.namegenerator.creature.CreatureNameProvider;
 import org.terasology.rendering.logic.SkeletalMeshComponent;
-import org.terasology.rendering.nui.Color;
+import org.terasology.nui.Color;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.utilities.random.Random;
 
