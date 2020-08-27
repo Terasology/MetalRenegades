@@ -128,7 +128,8 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
 
             LocationComponent locComp = enemy.getComponent(LocationComponent.class);
             Vector3f enemyLoc = locComp.getWorldPosition();
-            if (settlementEntityManager.checkOutsideAllSettlements(new Vector2i(enemyLoc.getX(), enemyLoc.getZ())) && enemy.isActive()) {
+
+            if (enemy.isActive()) {
                 return false;
             }
             removeEnemy(enemy);
@@ -244,7 +245,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
      * @param pos The position to spawn a character on top of.
      */
     private void spawnOnPosition(Vector3i pos) {
-        EntityBuilder entityBuilder = entityManager.newBuilder("MawGooey:mawGooey");
+        EntityBuilder entityBuilder = entityManager.newBuilder("MetalRenegades:enemyGooey");
         LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
 
         locationComponent.setWorldPosition(pos.toVector3f());

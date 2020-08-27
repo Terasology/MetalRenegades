@@ -67,7 +67,7 @@ public class CharacterOverlay implements MinimapOverlay {
         this.map.put("MetalRenegades:scaredGooey", Assets.getTexture("MetalRenegades:scaredGooey"));
         this.map.put("MetalRenegades:angryGooey", Assets.getTexture("MetalRenegades:angryGooey"));
         this.map.put("MetalRenegades:friendlyGooey", Assets.getTexture("MetalRenegades:friendlyGooey"));
-        this.map.put("Mawgooey:mawgooey", Assets.getTexture("MetalRenegades:enemyIcon"));
+        this.map.put("MetalRenegades:enemyGooey", Assets.getTexture("MetalRenegades:enemyIcon"));
     }
 
     @Override
