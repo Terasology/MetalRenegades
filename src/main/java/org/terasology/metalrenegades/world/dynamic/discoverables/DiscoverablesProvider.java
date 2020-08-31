@@ -19,7 +19,7 @@ public class DiscoverablesProvider implements FacetProvider {
     /**
      * The probability out of one that a chest will be placed on any particular surface block.
      */
-    public static final float CHEST_PROBABILITY = 0.00002f;
+    public static final float CHEST_PROBABILITY = 0.00001f;
 
     /**
      * A noise provider that determines the positions of discoverables.
