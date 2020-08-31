@@ -22,6 +22,7 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
+import org.terasology.metalrenegades.ai.system.NeedsSystem;
 
 /**
  * Restores the need value of a provided need type.
@@ -36,22 +37,9 @@ public class FulfillNeedAction extends BaseAction {
         CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
 
         NeedsComponent needsComponent = actor.getComponent(NeedsComponent.class);
-
-        switch (needTypeValue) {
-            case FOOD:
-                needsComponent.hungerNeed.restoreNeed();
-                break;
-            case WATER:
-                needsComponent.thirstNeed.restoreNeed();
-                break;
-            case SOCIAL:
-                needsComponent.socialNeed.restoreNeed();
-                break;
-            case REST:
-                needsComponent.restNeed.restoreNeed();
-                break;
-            default:
-                return BehaviorState.FAILURE;
+        CitizenNeed currentNeed = NeedsSystem.getNeedFromType(needsComponent, needTypeValue);
+        if (currentNeed != null) {
+            currentNeed.restoreNeed();
         }
 
         actor.save(needsComponent);

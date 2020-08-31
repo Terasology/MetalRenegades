@@ -24,10 +24,10 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
+import org.terasology.nui.widgets.TooltipLine;
 import org.terasology.registry.In;
 import org.terasology.rendering.assets.texture.TextureRegionAsset;
 import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
-import org.terasology.rendering.nui.widgets.TooltipLine;
 import org.terasology.worldlyTooltipAPI.events.GetTooltipIconEvent;
 import org.terasology.worldlyTooltipAPI.events.GetTooltipNameEvent;
 
@@ -47,10 +47,9 @@ public class CitizenTooltipSystem extends BaseComponentSystem {
 
     @ReceiveEvent(components = NeedsComponent.class)
     public void addNeedsToTooltip(GetItemTooltip event, EntityRef entity, NeedsComponent needsComponent) {
-        event.getTooltipLines().add(new TooltipLine("Hunger: " + needsComponent.hungerNeed.toString()));
-        event.getTooltipLines().add(new TooltipLine("Thirst: " + needsComponent.thirstNeed.toString()));
-        event.getTooltipLines().add(new TooltipLine("Social: " + needsComponent.socialNeed.toString()));
-        event.getTooltipLines().add(new TooltipLine("Rest: " + needsComponent.restNeed.toString()));
+        needsComponent.needs.stream()
+                .forEach(need -> event.getTooltipLines()
+                        .add(new TooltipLine(need.getNeedType().toString() + " " + need.toString())));
     }
 
     @ReceiveEvent(components = CitizenComponent.class)
