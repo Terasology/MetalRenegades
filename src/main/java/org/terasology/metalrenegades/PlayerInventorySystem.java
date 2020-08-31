@@ -30,6 +30,7 @@ import org.terasology.logic.inventory.events.DropItemRequest;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.LocalPlayer;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockManager;
@@ -42,6 +43,11 @@ import java.util.Random;
  */
 @RegisterSystem
 public class PlayerInventorySystem extends BaseComponentSystem {
+    /**
+     * Parameters for item drop position
+     */
+    private static final Vector3f OFFSET = new Vector3f(1, 1, 1);
+    private static final float BOUND = 2f;
 
     @In
     private ItemCommands itemCommands;
@@ -60,12 +66,6 @@ public class PlayerInventorySystem extends BaseComponentSystem {
 
     @In
     private LocalPlayer localPlayer;
-    
-    /**
-     * Parameters for item drop position
-     */
-    private final Vector3f OFFSET = new Vector3f(1, 1, 1);
-    private final float BOUND = 2f;
 
     private HashMap<String, Integer> testingItems = new HashMap<>();
 
@@ -100,11 +100,11 @@ public class PlayerInventorySystem extends BaseComponentSystem {
                     currentItemPos.addZ(rnd.nextFloat() * BOUND);
 
                     character.send(new DropItemRequest(
-                            current,
-                            character,
-                            Vector3f.zero(),
-                            currentItemPos,
-                            inventoryManager.getStackSize(current)
+                        current,
+                        character,
+                        new org.joml.Vector3f(),
+                        JomlUtil.from(currentItemPos),
+                        inventoryManager.getStackSize(current)
                     ));
                 }
             }
