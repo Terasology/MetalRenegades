@@ -15,12 +15,12 @@
  */
 package org.terasology.metalrenegades.ai.system;
 
-import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;

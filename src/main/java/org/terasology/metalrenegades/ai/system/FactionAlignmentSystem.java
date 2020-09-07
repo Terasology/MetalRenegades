@@ -15,7 +15,6 @@
  */
 package org.terasology.metalrenegades.ai.system;
 
-import org.terasology.assets.management.AssetManager;
 import org.terasology.dynamicCities.settlements.events.SettlementRegisterEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -24,6 +23,7 @@ import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;

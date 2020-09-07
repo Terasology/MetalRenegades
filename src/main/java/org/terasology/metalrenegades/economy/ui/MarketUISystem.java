@@ -17,7 +17,6 @@ package org.terasology.metalrenegades.economy.ui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.assets.ResourceUrn;
 import org.terasology.economy.events.MarketInfoClientRequestEvent;
 import org.terasology.economy.events.MarketInfoClientResponseEvent;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -26,6 +25,7 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.logic.characters.interactions.InteractionUtil;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.players.LocalPlayer;
