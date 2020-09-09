@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.ui;
 
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.prefab.PrefabManager;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.registry.Share;
 import org.terasology.metalrenegades.economy.component.MarketPriceConfigurationComponent;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
-import org.terasology.registry.Share;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,16 +25,15 @@ import java.util.Random;
 @Share(MarketItemRegistry.class)
 public class MarketItemRegistry extends BaseComponentSystem {
 
+    private final String EMPTY = "empty";
+    private final Map<String, MarketItem> details = new HashMap<>();
     @In
     private PrefabManager prefabManager;
-
-    private final String EMPTY = "empty";
-    private Map<String, MarketItem> details = new HashMap<>();
     private boolean isInitialised = false;
 
     /**
-     * Initializes all items present inside prefabs with {@link MarketPriceConfigurationComponent}. An item is initialized
-     * using an array of four strings in the form [itemURI, displayName, description, cost].
+     * Initializes all items present inside prefabs with {@link MarketPriceConfigurationComponent}. An item is
+     * initialized using an array of four strings in the form [itemURI, displayName, description, cost].
      */
     public void initialiseItems() {
         details.put(EMPTY, new MarketItem(
@@ -49,7 +48,8 @@ public class MarketItemRegistry extends BaseComponentSystem {
         }
 
         for (Prefab prefab : prefabManager.listPrefabs(MarketPriceConfigurationComponent.class)) {
-            MarketPriceConfigurationComponent priceConfig = prefab.getComponent(MarketPriceConfigurationComponent.class);
+            MarketPriceConfigurationComponent priceConfig =
+                    prefab.getComponent(MarketPriceConfigurationComponent.class);
             List<List<String>> configs = priceConfig.items;
 
             configs.forEach(config -> {
@@ -99,8 +99,8 @@ public class MarketItemRegistry extends BaseComponentSystem {
     }
 
     /**
-     * Creates a generic market item with the provided name and quantity, for when the registry has no information
-     * about this item URI.
+     * Creates a generic market item with the provided name and quantity, for when the registry has no information about
+     * this item URI.
      *
      * @param name The URI of this item.
      * @return A market item object with generic values for this URI.

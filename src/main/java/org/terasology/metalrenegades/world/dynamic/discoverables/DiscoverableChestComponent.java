@@ -1,12 +1,16 @@
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
+
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 
 /**
  * Attached to a discoverable chest that is yet to be filled with items.
  */
 public class DiscoverableChestComponent implements Component {
 
-    public DiscoverableChestComponent() { }
+    public DiscoverableChestComponent() {
+    }
 
 }

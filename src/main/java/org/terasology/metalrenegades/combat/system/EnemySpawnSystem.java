@@ -9,83 +9,71 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.system.NightTrackerSystem;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.EventPriority;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.health.BeforeDestroyEvent;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.utilities.random.FastRandom;
+import org.terasology.engine.utilities.random.Random;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.ChunkConstants;
+import org.terasology.engine.world.chunks.event.BeforeChunkUnload;
+import org.terasology.engine.world.chunks.event.OnChunkLoaded;
+import org.terasology.engine.world.sun.OnDawnEvent;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.metalrenegades.combat.component.NightEnemyComponent;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.metalrenegades.minimap.events.RemoveCharacterFromOverlayEvent;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
-import org.terasology.utilities.random.FastRandom;
-import org.terasology.utilities.random.Random;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.ChunkConstants;
-import org.terasology.world.chunks.event.BeforeChunkUnload;
-import org.terasology.world.chunks.event.OnChunkLoaded;
-import org.terasology.world.sun.OnDawnEvent;
 
 import java.util.List;
 import java.util.Queue;
 
 /**
- * Spawns enemies outside the area of settlements at nighttime. These enemies are destroyed if they go inside a city,
- * or the sun rises.
+ * Spawns enemies outside the area of settlements at nighttime. These enemies are destroyed if they go inside a city, or
+ * the sun rises.
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
-
-    private final Logger logger = LoggerFactory.getLogger(EnemySpawnSystem.class);
-
-    @In
-    private EntityManager entityManager;
-
-    @In
-    private WorldProvider worldProvider;
-
-    @In
-    private BlockManager blockManager;
-
-    @In
-    private NightTrackerSystem nightTrackerSystem;
-
-    @In
-    private SettlementEntityManager settlementEntityManager;
-
-    /**
-     * The number of update cycles left until enemies are spawned/destroyed again.
-     */
-    private int cyclesLeft;
-
-    /**
-     * Contains all enemies currently in the world. Used to remove enemies in spawn order when the maximum number of
-     * enemies is reached.
-     */
-    private Queue<EntityRef> enemyQueue;
-
-    /**
-     * A list of positions of loaded chunks that enemies can be spawned in
-     */
-    private List<Vector3i> chunkPositions;
 
     /**
      * The maximum number of enemies that can spawn in the world.
      */
     private static final int MAX_ENEMIES = 30;
-
+    private final Logger logger = LoggerFactory.getLogger(EnemySpawnSystem.class);
+    @In
+    private EntityManager entityManager;
+    @In
+    private WorldProvider worldProvider;
+    @In
+    private BlockManager blockManager;
+    @In
+    private NightTrackerSystem nightTrackerSystem;
+    @In
+    private SettlementEntityManager settlementEntityManager;
+    /**
+     * The number of update cycles left until enemies are spawned/destroyed again.
+     */
+    private int cyclesLeft;
+    /**
+     * Contains all enemies currently in the world. Used to remove enemies in spawn order when the maximum number of
+     * enemies is reached.
+     */
+    private Queue<EntityRef> enemyQueue;
+    /**
+     * A list of positions of loaded chunks that enemies can be spawned in
+     */
+    private List<Vector3i> chunkPositions;
     /**
      * True if this system is initialised, false otherwise.
      */
@@ -185,7 +173,8 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         }
 
         Vector3i chunkPosition = chunkPositions.get(random.nextInt(chunkPositions.size()));
-        Vector3i chunkWorldPosition = chunkPosition.mul(ChunkConstants.SIZE_X, ChunkConstants.SIZE_Y, ChunkConstants.SIZE_Z);
+        Vector3i chunkWorldPosition = chunkPosition.mul(ChunkConstants.SIZE_X, ChunkConstants.SIZE_Y,
+                ChunkConstants.SIZE_Z);
         Vector2i randomColumn = new Vector2i(chunkWorldPosition.x + random.nextInt(ChunkConstants.SIZE_X),
                 chunkWorldPosition.z + random.nextInt(ChunkConstants.SIZE_Z));
 
@@ -232,11 +221,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
 
         Vector3i above = new Vector3i(pos.x, pos.y + 1, pos.z);
         Block blockAbove = worldProvider.getBlock(above);
-        if (!blockAbove.isPenetrable()) {
-            return false;
-        }
-
-        return true;
+        return blockAbove.isPenetrable();
     }
 
     /**

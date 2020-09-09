@@ -1,133 +1,133 @@
 {
-    "type": "marketScreen",
-    "skin": "engine:default",
-    "contents": {
-        "type": "relativeLayout",
-        "contents": [
+  "type": "marketScreen",
+  "skin": "engine:default",
+  "contents": {
+    "type": "relativeLayout",
+    "contents": [
+      {
+        "type": "UIBox",
+        "id": "inventory",
+        "layoutInfo": {
+          "width": 500,
+          "height": 500,
+          "position-horizontal-center": {
+            "offset": -150
+          }
+        },
+        "content": {
+          "type": "UIList",
+          "id": "itemList",
+          "layoutInfo": {
+            "width": 450,
+            "height": 450,
+            "position-horizontal-center": {},
+            "position-vertical-center": {}
+          }
+        }
+      },
+      {
+        "type": "UIBox",
+        "id": "details",
+        "content": {
+          "type": "relativeLayout",
+          "contents": [
             {
-                "type": "UIBox",
-                "id": "inventory",
-                "layoutInfo": {
-                    "width": 500,
-                    "height": 500,
-                    "position-horizontal-center": {
-                        "offset": -150
-                    }
+              "type": "UILabel",
+              "id": "itemName",
+              "text": "Item Name",
+              "layoutInfo": {
+                "position-top": {
+                  "target": "TOP",
+                  "offset": 25
                 },
-                "content": {
-                    "type": "UIList",
-                    "id": "itemList",
-                    "layoutInfo": {
-                        "width": 450,
-                        "height": 450,
-                        "position-horizontal-center": {},
-                        "position-vertical-center": {}
-                    }
-                }
+                "position-horizontal-center": {},
+                "use-content-width": true,
+                "use-content-height": true
+              }
             },
             {
-                "type": "UIBox",
-                "id": "details",
-                "content": {
-                    "type": "relativeLayout",
-                    "contents": [
-                        {
-                            "type": "UILabel",
-                            "id": "itemName",
-                            "text": "Item Name",
-                            "layoutInfo": {
-                                "position-top": {
-                                    "target": "TOP",
-                                    "offset": 25
-                                },
-                                "position-horizontal-center": {},
-                                "use-content-width": true,
-                                "use-content-height": true
-                            }
-                        },
-                        {
-                            "type": "UIText",
-                            "id": "description",
-                            "text": "Item Description that goes on and o and on and on and on and on",
-                            "multiline": true,
-                            "layoutInfo": {
-                                "position-vertical-center": {},
-                                "height": 300
-                            }
-                        },
-                        {
-                            "type": "UILabel",
-                            "id": "cost",
-                            "text": "Cost",
-                            "layoutInfo": {
-                                "position-vertical-center": {
-                                    "offset": 175
-                                },
-                                "position-left": {},
-                                "use-content-width": true,
-                                "use-content-height": true
-                            }
-                        },
-                        {
-                            "type": "UILabel",
-                            "id": "quantity",
-                            "text": "In Stock",
-                            "layoutInfo": {
-                                "position-top": {
-                                    "target": "TOP",
-                                    "offset": 25
-                                },
-                                "position-vertical-center": {
-                                    "offset": 200
-                                },
-                                "position-left": {},
-                                "use-content-width": true,
-                                "use-content-height": true
-                            }
-                        },
-                        {
-                            "type": "UIButton",
-                            "id": "confirm",
-                            "text": "Confirm",
-                            "layoutInfo": {
-                                "use-content-height": true,
-                                "position-bottom": {
-                                    "target": "BOTTOM"
-                                },
-                                "width": 120
-                            }
-                        },
-                        {
-                            "type": "UIButton",
-                            "id": "back",
-                            "text": "Back",
-                            "layoutInfo": {
-                                "use-content-height": true,
-                                "position-bottom": {
-                                    "target": "BOTTOM"
-                                },
-                                "position-right": {},
-                                "width": 120
-                            }
-                        }
-                    ],
-                    "layoutInfo": {
-                        "use-content-width": true,
-                        "use-content-height": true
-                    }
+              "type": "UIText",
+              "id": "description",
+              "text": "Item Description that goes on and o and on and on and on and on",
+              "multiline": true,
+              "layoutInfo": {
+                "position-vertical-center": {},
+                "height": 300
+              }
+            },
+            {
+              "type": "UILabel",
+              "id": "cost",
+              "text": "Cost",
+              "layoutInfo": {
+                "position-vertical-center": {
+                  "offset": 175
                 },
-                "layoutInfo": {
-                    "width": 300,
-                    "height": 500,
-                    "position-horizontal-center": {
-                        "offset": 250
-                    }
-                }
+                "position-left": {},
+                "use-content-width": true,
+                "use-content-height": true
+              }
+            },
+            {
+              "type": "UILabel",
+              "id": "quantity",
+              "text": "In Stock",
+              "layoutInfo": {
+                "position-top": {
+                  "target": "TOP",
+                  "offset": 25
+                },
+                "position-vertical-center": {
+                  "offset": 200
+                },
+                "position-left": {},
+                "use-content-width": true,
+                "use-content-height": true
+              }
+            },
+            {
+              "type": "UIButton",
+              "id": "confirm",
+              "text": "Confirm",
+              "layoutInfo": {
+                "use-content-height": true,
+                "position-bottom": {
+                  "target": "BOTTOM"
+                },
+                "width": 120
+              }
+            },
+            {
+              "type": "UIButton",
+              "id": "back",
+              "text": "Back",
+              "layoutInfo": {
+                "use-content-height": true,
+                "position-bottom": {
+                  "target": "BOTTOM"
+                },
+                "position-right": {},
+                "width": 120
+              }
             }
-        ],
+          ],
+          "layoutInfo": {
+            "use-content-width": true,
+            "use-content-height": true
+          }
+        },
         "layoutInfo": {
-            "height": 100000,
-            "position-vertical-center": {}
+          "width": 300,
+          "height": 500,
+          "position-horizontal-center": {
+            "offset": 250
+          }
         }
+      }
+    ],
+    "layoutInfo": {
+      "height": 100000,
+      "position-vertical-center": {}
     }
+  }
 }

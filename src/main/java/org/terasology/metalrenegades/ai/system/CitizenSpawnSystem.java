@@ -1,18 +1,5 @@
-/*
- * Copyright 2018 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.system;
 
 import org.terasology.dialogs.action.CloseDialogAction;
@@ -20,29 +7,28 @@ import org.terasology.dialogs.components.DialogComponent;
 import org.terasology.dialogs.components.DialogPage;
 import org.terasology.dialogs.components.DialogResponse;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.events.GiveItemEvent;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.metalrenegades.ai.CitizenNeed;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.prefab.PrefabManager;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.inventory.events.GiveItemEvent;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.inventory.logic.InventoryManager;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
-import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.metalrenegades.ai.component.PotentialHomeComponent;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.metalrenegades.economy.TraderComponent;
 import org.terasology.metalrenegades.economy.actions.ShowTradingScreenAction;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
-import org.terasology.registry.In;
+
 import java.util.ArrayList;
 
 /**
@@ -108,9 +94,11 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
      */
     private EntityRef spawnCitizen(EntityRef homeEntity) {
         SettlementRefComponent settlementRefComponent = homeEntity.getComponent(SettlementRefComponent.class);
-        FactionAlignmentComponent settlementAlignmentComponent = settlementRefComponent.settlement.getComponent(FactionAlignmentComponent.class);
+        FactionAlignmentComponent settlementAlignmentComponent =
+                settlementRefComponent.settlement.getComponent(FactionAlignmentComponent.class);
 
-        EntityBuilder entityBuilder = entityManager.newBuilder(citizenAlignmentSystem.getPrefab(settlementAlignmentComponent.alignment));
+        EntityBuilder entityBuilder =
+                entityManager.newBuilder(citizenAlignmentSystem.getPrefab(settlementAlignmentComponent.alignment));
 
         LocationComponent homeLocationComponent = homeEntity.getComponent(LocationComponent.class);
         LocationComponent citizenLocationComponent = entityBuilder.getComponent(LocationComponent.class);

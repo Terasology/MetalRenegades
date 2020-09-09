@@ -7,14 +7,14 @@ package org.terasology.metalrenegades.world.dynamic.discoverables;
  */
 public class DiscoverableLocation {
 
-    public enum Type {
-            WELL, HOUSE
-    }
-
     public Type locationType;
 
     public DiscoverableLocation(Type locationType) {
         this.locationType = locationType;
+    }
+
+    public enum Type {
+        WELL, HOUSE
     }
 
 }

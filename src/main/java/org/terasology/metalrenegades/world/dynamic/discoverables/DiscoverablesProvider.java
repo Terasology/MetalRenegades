@@ -2,12 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
+import org.terasology.engine.utilities.procedural.Noise;
+import org.terasology.engine.utilities.procedural.WhiteNoise;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.FacetBorder;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.WhiteNoise;
-import org.terasology.world.generation.*;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 /**
  * Places chests into {@link DiscoverablesFacet} across the surface of the game world
@@ -45,8 +51,8 @@ public class DiscoverablesProvider implements FacetProvider {
                 int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz)) + 1;
 
                 if (surfaceHeight >= facet.getWorldRegion().minY() &&
-                    surfaceHeight <= facet.getWorldRegion().maxY() &&
-                    facet.getWorldRegion().encompasses(wx, surfaceHeight, wz)) {
+                        surfaceHeight <= facet.getWorldRegion().maxY() &&
+                        facet.getWorldRegion().encompasses(wx, surfaceHeight, wz)) {
                     if (noise.noise(wx, wz) < (CHEST_PROBABILITY * 2) - 1) {
                         DiscoverableLocation.Type[] typeList = DiscoverableLocation.Type.values();
                         int typeIndex = (int) (Math.abs(noise.noise(wx, surfaceHeight, wz)) * typeList.length);

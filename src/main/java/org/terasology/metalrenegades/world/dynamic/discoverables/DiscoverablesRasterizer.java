@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.math.ChunkMath;
-import org.terasology.math.Region3i;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.prefab.PrefabManager;
+import org.terasology.engine.math.ChunkMath;
+import org.terasology.engine.math.Region3i;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.generation.WorldRasterizer;
 import org.terasology.math.geom.BaseVector3i;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
 import org.terasology.structureTemplates.components.SpawnBlockRegionsComponent;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.WorldRasterizer;
 
 import java.util.Map;
 import java.util.Objects;
@@ -42,8 +42,10 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
     @Override
     public void initialize() {
         chest = CoreRegistry.get(BlockManager.class).getBlock("MetalRenegades:hiddenChest.RIGHT");
-        houseStructure = Objects.requireNonNull(CoreRegistry.get(PrefabManager.class)).getPrefab("MetalRenegades:abandonedHouse");
-        wellStructure = Objects.requireNonNull(CoreRegistry.get(PrefabManager.class)).getPrefab("MetalRenegades:driedWell");
+        houseStructure = Objects.requireNonNull(CoreRegistry.get(PrefabManager.class)).getPrefab("MetalRenegades" +
+                ":abandonedHouse");
+        wellStructure = Objects.requireNonNull(CoreRegistry.get(PrefabManager.class)).getPrefab("MetalRenegades" +
+                ":driedWell");
 
         entityManager = CoreRegistry.get(EntityManager.class);
     }

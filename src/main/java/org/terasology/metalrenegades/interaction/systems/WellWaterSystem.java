@@ -1,32 +1,21 @@
-/*
- * Copyright 2018 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.interaction.systems;
 
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.characters.CharacterHeldItemComponent;
-import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.inventory.events.GiveItemEvent;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.core.Time;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.characters.CharacterHeldItemComponent;
+import org.terasology.engine.logic.common.ActivateEvent;
+import org.terasology.engine.logic.inventory.events.GiveItemEvent;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.time.WorldTimeEvent;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.metalrenegades.interaction.component.WaterCupComponent;
@@ -35,35 +24,28 @@ import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
 import org.terasology.metalrenegades.interaction.events.CupFilledEvent;
 import org.terasology.metalrenegades.interaction.events.WellDrinkEvent;
 import org.terasology.metalrenegades.interaction.events.WellRefilledEvent;
-import org.terasology.registry.In;
 import org.terasology.thirst.component.ThirstComponent;
 import org.terasology.thirst.event.DrinkConsumedEvent;
-import org.terasology.world.time.WorldTimeEvent;
 
 import java.util.stream.StreamSupport;
 
 /**
- * Tracks water source blocks inside of wells, fills player's water cups upon interaction, and empties
- * water cups upon consumption.
+ * Tracks water source blocks inside of wells, fills player's water cups upon interaction, and empties water cups upon
+ * consumption.
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class WellWaterSystem extends BaseComponentSystem {
-
-    @In
-    private EntityManager entityManager;
-
-    @In
-    private Time time;
 
     /**
      * The number of world time cycles it takes for all wells to replenish with one refill.
      */
     private static final int CYCLES_UNTIL_REFILL = 20;
-
     private static final String EMPTY_CUP_URI = "MetalRenegades:emptyCup";
-
     private static final String FULL_CUP_URI = "MetalRenegades:filledCup";
-
+    @In
+    private EntityManager entityManager;
+    @In
+    private Time time;
     /**
      * A timer counting the current number of cycles until all wells are replenished.
      */
@@ -117,8 +99,8 @@ public class WellWaterSystem extends BaseComponentSystem {
     }
 
     /**
-     * Fills a player's held empty cup with water. This is done by destroying the old cup entity, and giving the
-     * player a new cup entity.
+     * Fills a player's held empty cup with water. This is done by destroying the old cup entity, and giving the player
+     * a new cup entity.
      *
      * @param gatheringCharacter The player entity that is collecting water.
      * @param oldCup The old cup entity that the player is holding.
@@ -176,9 +158,9 @@ public class WellWaterSystem extends BaseComponentSystem {
     }
 
     /**
-     * Checks if a building entity contains a particular world location. Used to determine which well entity
-     * a water source block belongs to. The building area is considered infinite in the y-axis, only x and z
-     * coordinates are checked.
+     * Checks if a building entity contains a particular world location. Used to determine which well entity a water
+     * source block belongs to. The building area is considered infinite in the y-axis, only x and z coordinates are
+     * checked.
      *
      * @param building The dynamic cities building entity to check.
      * @param location The world position that will be checked.

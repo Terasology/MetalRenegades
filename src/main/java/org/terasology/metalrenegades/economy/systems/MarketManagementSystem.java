@@ -1,18 +1,5 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.systems;
 
 
@@ -38,28 +25,28 @@ import org.terasology.economy.events.WalletTransactionEvent;
 import org.terasology.economy.handler.MultiInvStorageHandler;
 import org.terasology.economy.systems.MarketLogisticSystem;
 import org.terasology.economy.systems.WalletAuthoritySystem;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.engine.network.NetworkComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.registry.Share;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.block.entity.BlockCommands;
+import org.terasology.engine.world.block.items.BlockItemComponent;
 import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.gestalt.assets.management.AssetManager;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.inventory.logic.InventoryManager;
 import org.terasology.metalrenegades.economy.events.MarketTransactionRequest;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
-import org.terasology.network.NetworkComponent;
-import org.terasology.registry.In;
-import org.terasology.registry.Share;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.entity.BlockCommands;
-import org.terasology.world.block.items.BlockItemComponent;
 
 import java.util.Set;
 
@@ -70,37 +57,27 @@ import java.util.Set;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class MarketManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
+    private final int COOLDOWN = 200;
+    private final Logger logger = LoggerFactory.getLogger(MarketManagementSystem.class);
     @In
     private EntityManager entityManager;
-
     @In
     private MarketLogisticSystem marketLogisticSystem;
-
     @In
     private AssetManager assetManager;
-
     @In
     private PlayerTracker playerTracker;
-
     @In
     private InventoryManager inventoryManager;
-
     @In
     private BlockCommands blockCommands;
-
     @In
     private BlockManager blockManager;
-
     @In
     private MultiInvStorageHandler handler;
-
     @In
     private WalletAuthoritySystem walletAuthoritySystem;
-
-    private final int COOLDOWN = 200;
     private int counter = 0;
-
-    private Logger logger = LoggerFactory.getLogger(MarketManagementSystem.class);
 
     @ReceiveEvent
     public void onPlayerJoin(OnPlayerSpawnedEvent onPlayerSpawnedEvent, EntityRef player) {
@@ -118,7 +95,8 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
             return;
         }
 
-        Iterable<EntityRef> bldgsWithChests = entityManager.getEntitiesWith(MultiInvStorageComponent.class, SettlementRefComponent.class);
+        Iterable<EntityRef> bldgsWithChests = entityManager.getEntitiesWith(MultiInvStorageComponent.class,
+                SettlementRefComponent.class);
         for (EntityRef bldg : bldgsWithChests) {
             if (!bldg.isActive() || !bldg.exists()) {
                 continue;
@@ -130,7 +108,8 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
                 for (String resource : requestEvent.resources.keySet()) {
                     if (requestEvent.resources.get(resource) != 0) {
                         logger.info("Storing resources in the market...");
-                        bldg.send(new ResourceStoreEvent(resource, requestEvent.resources.get(resource), settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
+                        bldg.send(new ResourceStoreEvent(resource, requestEvent.resources.get(resource),
+                                settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
                     }
                 }
             }
@@ -161,8 +140,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
     /**
-     * Initiate a transaction and delegate to an appropriate method depending
-     * on the nature of the transaction
+     * Initiate a transaction and delegate to an appropriate method depending on the nature of the transaction
      */
     @ReceiveEvent
     public void onMarketTransactionRequest(MarketTransactionRequest request, EntityRef character) {
@@ -176,7 +154,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
     private MarketItem buy(EntityRef character, MarketItem item) {
-        if (!walletAuthoritySystem.isValidTransaction(character,-1 * item.cost)) {
+        if (!walletAuthoritySystem.isValidTransaction(character, -1 * item.cost)) {
             logger.warn("Insufficient funds");
             return item;
         } else if (item.quantity > 0) {
@@ -188,7 +166,8 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
 
             SettlementRefComponent playerSettlementRef = character.getComponent(SettlementRefComponent.class);
             EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
-            playerResourceStore.send(new ResourceDrawEvent(item.name, 1, playerSettlementRef.settlement.getComponent(MarketComponent.class).market));
+            playerResourceStore.send(new ResourceDrawEvent(item.name, 1,
+                    playerSettlementRef.settlement.getComponent(MarketComponent.class).market));
 
             character.send(new WalletTransactionEvent(-1 * item.cost));
             item.quantity--;
@@ -198,13 +177,14 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
     private MarketItem sell(EntityRef character, MarketItem item) {
-        if (item.quantity <=0 || !destroyItemOrBlock(character, item.name)) {
+        if (item.quantity <= 0 || !destroyItemOrBlock(character, item.name)) {
             logger.warn("Failed to destroy entity");
             return item;
         }
         EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
         SettlementRefComponent settlementRefComponent = character.getComponent(SettlementRefComponent.class);
-        playerResourceStore.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
+        playerResourceStore.send(new ResourceStoreEvent(item.name, 1,
+                settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
 
         character.send(new WalletTransactionEvent(item.cost));
         item.quantity--;
@@ -215,13 +195,15 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
 
     /**
      * Handles creating of actual inventory entity/block from the item bought
+     *
      * @param name Name of the item bought
      * @return Boolean indication whether the creating was a success or a failure
      */
     private boolean createItemOrBlock(EntityRef character, String name) {
         Set<ResourceUrn> matches = assetManager.resolve(name, Prefab.class);
         SettlementRefComponent playerSettlementRef = character.getComponent(SettlementRefComponent.class);
-        ResourceInfoRequestEvent request = playerSettlementRef.settlement.getComponent(MarketComponent.class).market.send(new ResourceInfoRequestEvent());
+        ResourceInfoRequestEvent request =
+                playerSettlementRef.settlement.getComponent(MarketComponent.class).market.send(new ResourceInfoRequestEvent());
 
         if (!request.isHandled || request.resources.get(name) <= 0) {
             return false;
@@ -240,15 +222,12 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
 
         String blockURI = matches.iterator().next().getModuleName() + ":" + matches.iterator().next().getResourceName();
         String message = blockCommands.giveBlock(character.getOwner(), blockURI, 1, null);
-        if (message != null) {
-            return true;
-        }
-
-        return false;
+        return message != null;
     }
 
     /**
      * Handles removing entities/blocks from inventory when an item is sold
+     *
      * @param name Name of the item sold
      * @return Boolean indication whether the removal was a success or a failure
      */

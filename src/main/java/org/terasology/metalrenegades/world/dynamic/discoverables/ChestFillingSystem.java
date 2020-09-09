@@ -4,19 +4,19 @@ package org.terasology.metalrenegades.world.dynamic.discoverables;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.inventory.InventoryComponent;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.registry.In;
-import org.terasology.utilities.random.FastRandom;
-import org.terasology.utilities.random.Random;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.prefab.PrefabManager;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.utilities.random.FastRandom;
+import org.terasology.engine.utilities.random.Random;
+import org.terasology.inventory.logic.InventoryComponent;
+import org.terasology.inventory.logic.InventoryManager;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,14 +29,12 @@ import java.util.Map;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class ChestFillingSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
-    private Logger logger = LoggerFactory.getLogger(ChestFillingSystem.class);
-
     /**
      * The chance out of one that any particular chest slot will contain an item.
      */
     private static final float ITEM_CHANCE = 0.08f;
-
-    private Map<String, Integer> hiddenItemsRegistry = new HashMap<>();
+    private final Logger logger = LoggerFactory.getLogger(ChestFillingSystem.class);
+    private final Map<String, Integer> hiddenItemsRegistry = new HashMap<>();
 
     /**
      * The random number provider that determines the items generated inside a discoverable chest.

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
-import org.terasology.math.Region3i;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.SparseObjectFacet3D;
+import org.terasology.engine.math.Region3i;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.facets.base.SparseObjectFacet3D;
 
 /**
  * Contains information about discoverable chest locations.

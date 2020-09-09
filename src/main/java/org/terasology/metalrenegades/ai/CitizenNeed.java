@@ -1,18 +1,5 @@
-/*
- * Copyright 2018 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai;
 
 /**
@@ -21,36 +8,25 @@ package org.terasology.metalrenegades.ai;
 public class CitizenNeed {
 
     /**
-     * A type of need the citizen can possess.
-     */
-    public enum Type {
-            FOOD, WATER, SOCIAL, REST
-    }
-
-    /**
      * The maximum value of this need.
      */
-    private float capacity;
-
+    private final float capacity;
     /**
      * The rate at which the need value reduces, per need cycle.
      */
-    private float reductionRate;
-
+    private final float reductionRate;
     /**
      * The value that the citizen must keep this need above.
      */
-    private float goal;
-
+    private final float goal;
     /**
      * The current need value.
      */
     private float value;
-
     /**
      * The type of this CitizenNeed
      */
-    private Type needType;
+    private final Type needType;
 
     /**
      * Creates a CitizenNeed with provided settings.
@@ -77,7 +53,8 @@ public class CitizenNeed {
     }
 
     /**
-     * Runs an iteration of the need cycle, subtracting {@link CitizenNeed#reductionRate} from {@link CitizenNeed#value}.
+     * Runs an iteration of the need cycle, subtracting {@link CitizenNeed#reductionRate} from {@link
+     * CitizenNeed#value}.
      */
     public void runNeedCycle() {
         this.value -= this.reductionRate;
@@ -102,6 +79,13 @@ public class CitizenNeed {
     @Override
     public String toString() {
         return Math.round(this.value) + "/" + Math.round(this.capacity);
+    }
+
+    /**
+     * A type of need the citizen can possess.
+     */
+    public enum Type {
+        FOOD, WATER, SOCIAL, REST
     }
 
 }

@@ -2,20 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.system;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.nameTags.NameTagComponent;
-import org.terasology.math.geom.Vector3f;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.nameTags.NameTagComponent;
+import org.terasology.engine.rendering.logic.SkeletalMeshComponent;
+import org.terasology.engine.utilities.random.FastRandom;
+import org.terasology.engine.utilities.random.Random;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.namegenerator.creature.CreatureAssetTheme;
 import org.terasology.namegenerator.creature.CreatureNameProvider;
-import org.terasology.rendering.logic.SkeletalMeshComponent;
 import org.terasology.nui.Color;
-import org.terasology.utilities.random.FastRandom;
-import org.terasology.utilities.random.Random;
 
 /**
  * Randomizes particular characteristics for city NPC characters.
@@ -29,8 +28,8 @@ public class CitizenPersonalitySystem extends BaseComponentSystem {
     public static final float SCALE_RANGE = 0.5f;
 
     /**
-     * The ratio of model scale change to height offset change. This is included to prevent characters from hovering
-     * or sinking into the ground when grown/shrunk.
+     * The ratio of model scale change to height offset change. This is included to prevent characters from hovering or
+     * sinking into the ground when grown/shrunk.
      */
     public static final float HEIGHT_OFFSET_RATIO = 2f;
 

@@ -1,140 +1,140 @@
 {
-    "type": "tradingScreen",
-    "skin": "engineDefault",
-    "contents": {
-        "type": "relativeLayout",
-        "contents": [
+  "type": "tradingScreen",
+  "skin": "engineDefault",
+  "contents": {
+    "type": "relativeLayout",
+    "contents": [
+      {
+        "type": "UIBox",
+        "layoutInfo": {
+          "width": 850,
+          "height": 850,
+          "position-horizontal-center": {},
+          "position-vertical-center": {}
+        },
+        "content": {
+          "type": "relativeLayout",
+          "contents": [
             {
-                "type": "UIBox",
-                "layoutInfo": {
-                    "width": 850,
-                    "height": 850,
-                    "position-horizontal-center": {},
-                    "position-vertical-center": {}
-                },
-                "content": {
-                    "type": "relativeLayout",
-                    "contents": [
-                        {
-                            "type": "UILabel",
-                            "text": "Citizen",
-                            "layoutInfo": {
-                                "use-content-width": true,
-                                "use-content-height": true,
-                                "position-left": {},
-                                "position-top": {
-                                    "offset": 20
-                                }
-                            }
-                        },
-                        {
-                            "type": "UIList",
-                            "id": "citizenList",
-                            "layoutInfo": {
-                                "width": 400,
-                                "use-content-height": true,
-                                "position-left": {},
-                                "position-top": {
-                                    "offset": 50
-                                }
-                            }
-                        },
-                        {
-                            "type": "UILabel",
-                            "id": "citizenCost",
-                            "text": "Cost",
-                            "layoutInfo": {
-                                "use-content-width": true,
-                                "use-content-height": true,
-                                "position-left": {},
-                                "position-bottom": {
-                                    "offset": 10
-                                }
-                            }
-                        },
-                        {
-                            "type": "UILabel",
-                            "text": "Player",
-                            "layoutInfo": {
-                                "use-content-width": true,
-                                "use-content-height": true,
-                                "position-right": {},
-                                "position-top": {
-                                    "offset": 20
-                                }
-                            }
-                        },
-                        {
-                            "type": "UIList",
-                            "id": "playerList",
-                            "layoutInfo": {
-                                "width": 400,
-                                "use-content-height": true,
-                                "position-right": {},
-                                "position-top": {
-                                    "offset": 50
-                                }
-                            }
-                        },
-                        {
-                            "type": "UILabel",
-                            "id": "playerCost",
-                            "text": "Cost",
-                            "layoutInfo": {
-                                "use-content-width": true,
-                                "use-content-height": true,
-                                "position-right": {},
-                                "position-bottom": {
-                                    "offset": 10
-                                }
-                            }
-                        },
-                        {
-                            "type": "UILabel",
-                            "id": "message",
-                            "text": "label",
-                            "layoutInfo": {
-                                "use-content-width": true,
-                                "use-content-height": true,
-                                "position-horizontal-center": {},
-                                "position-bottom": {
-                                    "offset": 60
-                                }
-                            }
-                        },
-                        {
-                            "type": "UIButton",
-                            "id": "tradeButton",
-                            "text": "Trade",
-                            "layoutInfo": {
-                                "width": 90,
-                                "use-content-height": true,
-                                "position-horizontal-center": {
-                                    "offset": -50
-                                },
-                                "position-bottom": {
-                                    "offset": 20
-                                }
-                            }
-                        },
-                        {
-                            "type": "UIButton",
-                            "id": "cancelButton",
-                            "text": "Cancel",
-                            "layoutInfo": {
-                                "width": 90,
-                                "use-content-height": true,
-                                "position-horizontal-center": {
-                                    "offset": 50
-                                },
-                                "position-bottom": {
-                                    "offset": 20
-                                }
-                            }
-                        }
-                    ]
+              "type": "UILabel",
+              "text": "Citizen",
+              "layoutInfo": {
+                "use-content-width": true,
+                "use-content-height": true,
+                "position-left": {},
+                "position-top": {
+                  "offset": 20
                 }
+              }
+            },
+            {
+              "type": "UIList",
+              "id": "citizenList",
+              "layoutInfo": {
+                "width": 400,
+                "use-content-height": true,
+                "position-left": {},
+                "position-top": {
+                  "offset": 50
+                }
+              }
+            },
+            {
+              "type": "UILabel",
+              "id": "citizenCost",
+              "text": "Cost",
+              "layoutInfo": {
+                "use-content-width": true,
+                "use-content-height": true,
+                "position-left": {},
+                "position-bottom": {
+                  "offset": 10
+                }
+              }
+            },
+            {
+              "type": "UILabel",
+              "text": "Player",
+              "layoutInfo": {
+                "use-content-width": true,
+                "use-content-height": true,
+                "position-right": {},
+                "position-top": {
+                  "offset": 20
+                }
+              }
+            },
+            {
+              "type": "UIList",
+              "id": "playerList",
+              "layoutInfo": {
+                "width": 400,
+                "use-content-height": true,
+                "position-right": {},
+                "position-top": {
+                  "offset": 50
+                }
+              }
+            },
+            {
+              "type": "UILabel",
+              "id": "playerCost",
+              "text": "Cost",
+              "layoutInfo": {
+                "use-content-width": true,
+                "use-content-height": true,
+                "position-right": {},
+                "position-bottom": {
+                  "offset": 10
+                }
+              }
+            },
+            {
+              "type": "UILabel",
+              "id": "message",
+              "text": "label",
+              "layoutInfo": {
+                "use-content-width": true,
+                "use-content-height": true,
+                "position-horizontal-center": {},
+                "position-bottom": {
+                  "offset": 60
+                }
+              }
+            },
+            {
+              "type": "UIButton",
+              "id": "tradeButton",
+              "text": "Trade",
+              "layoutInfo": {
+                "width": 90,
+                "use-content-height": true,
+                "position-horizontal-center": {
+                  "offset": -50
+                },
+                "position-bottom": {
+                  "offset": 20
+                }
+              }
+            },
+            {
+              "type": "UIButton",
+              "id": "cancelButton",
+              "text": "Cancel",
+              "layoutInfo": {
+                "width": 90,
+                "use-content-height": true,
+                "position-horizontal-center": {
+                  "offset": 50
+                },
+                "position-bottom": {
+                  "offset": 20
+                }
+              }
             }
-        ]
-    }
+          ]
+        }
+      }
+    ]
+  }
 }
