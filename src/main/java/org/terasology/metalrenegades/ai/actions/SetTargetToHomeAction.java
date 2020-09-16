@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.actions;
 
+import org.terasology.behaviors.minion.move.MinionMoveComponent;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
@@ -9,7 +10,6 @@ import org.terasology.engine.logic.behavior.core.BehaviorState;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
-import org.terasology.minion.move.MinionMoveComponent;
 
 /**
  * Action which sets this agent's move target to the building entity defined in {@link HomeComponent}.
