@@ -5,16 +5,10 @@
     },
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",
-        "heightOffset": -2.0,
+        "heightOffset": -0.75,
         "material": "MetalRenegades:marketGooey",
         "animationPool": [
             "gooey#ArmatureAction"
-        ],
-        "loop": true,
-        "scale": [
-            0.25,
-            0.25,
-            0.25
         ]
     },
     "Behavior" : {

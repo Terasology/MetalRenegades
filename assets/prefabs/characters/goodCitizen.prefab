@@ -5,17 +5,21 @@
     },
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",
-        "heightOffset": -2.0,
+        "heightOffset": -0.75,
         "material": "MetalRenegades:goodCitizen",
         "animationPool": [
             "gooey#ArmatureAction"
         ],
-        "loop": true,
-        "scale": [
-            0.25,
-            0.25,
-            0.25
-        ]
+        "loop": true
+    },
+    "Stand" :{
+      "animationPool": ["MetalRenegades:gooey#ArmatureAction"]
+    },
+    "Walk" :{
+      "animationPool": []
+    },
+    "Die" :{
+      "animationPool": []
     },
     "Behavior": {
         "tree": "MetalRenegades:citizen"
