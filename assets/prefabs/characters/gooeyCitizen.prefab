@@ -5,40 +5,12 @@
     },
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",
-        "heightOffset": -2.0,
+        "heightOffset": -0.75,
         "material": "MetalRenegades:gooeyCitizen",
         "animationPool": [
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyLookRightLeft",
-            "gooeyLookRightLeft",
-            "gooeyLookRightUp"
+            "gooey#ArmatureAction"
         ],
-        "loop": true,
-        "scale": [
-            0.25,
-            0.25,
-            0.25
-        ]
+        "loop": true
     },
     "Behavior": {
         "tree": "MetalRenegades:citizen"
