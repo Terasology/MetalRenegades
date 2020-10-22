@@ -66,9 +66,14 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
     private SettlementEntityManager settlementEntityManager;
 
     /**
-     * The number of update cycles left until enemies are spawned/destroyed again.
+     * The amount of time elapsed since the last processed update (spawned/destroyed enemies).
      */
-    private int cyclesLeft;
+    private float elapsedTime;
+
+    /**
+     * The time period between processing updates in seconds.
+     */
+    private static final float UPDATE_PERIOD = 1;
 
     /**
      * Contains all enemies currently in the world. Used to remove enemies in spawn order when the maximum number of
@@ -109,13 +114,21 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
 
     @Override
     public void update(float delta) {
-        if (cyclesLeft < 30 || !nightTrackerSystem.isNight() || !ready) {
-            cyclesLeft++;
+        // Don't spawn enemies during the day or before system is ready
+        if (!nightTrackerSystem.isNight() || !ready) {
             return;
         }
-        cyclesLeft = 0;
 
-        spawnEnemyInWorld();
+        // TODO: Consider using `DelayManager`'s periodic actions
+        elapsedTime += delta;
+        if (elapsedTime < UPDATE_PERIOD) {
+            return;
+        }
+        elapsedTime -= UPDATE_PERIOD;
+
+        if (enemyQueue.size() < MAX_ENEMIES) {
+            spawnEnemyInWorld();
+        }
 
         // Removes enemies that have entered a settlement
         enemyQueue.removeIf(enemy -> {
@@ -136,12 +149,6 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
             logger.debug("Removed inactive enemy at ({}, {}, {}).", enemyLoc.getX(), enemyLoc.getY(), enemyLoc.getZ());
             return true;
         });
-
-        // If there are too many enemies in the world, remove the oldest enemies to make room.
-        while (enemyQueue.size() > MAX_ENEMIES) {
-            removeEnemy(enemyQueue.remove());
-            logger.debug("Too many enemies in world, removed oldest enemy from queue.");
-        }
     }
 
     @ReceiveEvent
