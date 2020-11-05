@@ -9,7 +9,8 @@
         "material": "MetalRenegades:marketGooey",
         "animationPool": [
             "gooey#ArmatureAction"
-        ]
+        ],
+        "loop": true
     },
     "Behavior" : {
         "tree" : "Behaviors:restrictedStray"
