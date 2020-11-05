@@ -1,7 +1,7 @@
 {
     "parent": "baseCitizen",
     "displayName": {
-        "name": "shopkeeper"
+        "name": "Shopkeeper"
     },
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",
@@ -11,6 +11,16 @@
             "gooey#ArmatureAction"
         ],
         "loop": true
+    },
+    "Stand": {
+        "animationPool": [
+            "gooey#ArmatureAction"
+        ]
+    },
+    "Walk": {
+        "animationPool": [
+            "gooey#ArmatureAction"
+        ]
     },
     "Behavior" : {
         "tree" : "Behaviors:restrictedStray"

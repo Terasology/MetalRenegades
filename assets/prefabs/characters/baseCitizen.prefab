@@ -1,16 +1,6 @@
 {
     "alwaysRelevant": true,
     "persisted": true,
-    "Stand": {
-        "animationPool": [
-            "gooey#ArmatureAction"
-        ]
-    },
-    "Walk": {
-        "animationPool": [
-          "gooey#ArmatureAction"
-        ]
-    },
     "Location": {},
     "Character": {},
     "AliveCharacter": {},
