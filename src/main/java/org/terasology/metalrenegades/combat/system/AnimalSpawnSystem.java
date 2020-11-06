@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.metalrenegades.combat;
+package org.terasology.metalrenegades.combat.system;
 
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
