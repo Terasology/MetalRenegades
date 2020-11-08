@@ -5,12 +5,17 @@
     },
     "skeletalmesh": {
         "mesh": "MetalRenegades:gooey",
-        "heightOffset": -0.75,
+        "heightOffset": -0.5,
         "material": "MetalRenegades:gooeyCitizen",
         "animationPool": [
             "gooey#ArmatureAction"
         ],
-        "loop": true
+        "loop": true,
+        "scale": [
+            0.45,
+            0.45,
+            0.45
+        ]
     },
     "Stand": {
         "animationPool": [
