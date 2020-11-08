@@ -52,7 +52,7 @@ import java.util.ArrayList;
 public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
     private static final int SPAWN_CHECK_DELAY = 30;
-    private static final int VERTICAL_SPAWN_OFFSET = 2;
+    private static final int VERTICAL_SPAWN_OFFSET = 1;
 
     private float spawnTimer;
 
