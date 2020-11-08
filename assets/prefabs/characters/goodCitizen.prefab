@@ -4,11 +4,11 @@
     "name": "Good Citizen"
   },
   "skeletalMesh": {
-    "mesh": "MetalRenegades:goodRobot",
+    "mesh": "MetalRenegades:goodCitizen",
     "heightOffset": -0.5,
-    "material": "MetalRenegades:goodRobot",
+    "material": "MetalRenegades:goodCitizen",
     "animationPool": [
-      "MetalRenegades:goodRobot#Idle"
+      "MetalRenegades:goodCitizen#Idle"
     ],
     "loop": true,
     "scale": [
@@ -19,12 +19,12 @@
   },
   "Stand": {
     "animationPool": [
-      "MetalRenegades:goodRobot#Robot_Idle"
+      "MetalRenegades:goodCitizen#Robot_Idle"
     ]
   },
   "Walk": {
     "animationPool": [
-      "MetalRenegades:goodRobot#Robot_Walk"
+      "MetalRenegades:goodCitizen#Robot_Walk"
     ]
   },
   "Die": {

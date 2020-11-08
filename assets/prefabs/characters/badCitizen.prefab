@@ -4,11 +4,11 @@
     "name": "Bad Citizen"
   },
   "skeletalMesh": {
-    "mesh": "MetalRenegades:badRobot",
+    "mesh": "MetalRenegades:badCitizen",
     "heightOffset": -0.5,
-    "material": "MetalRenegades:badRobot",
+    "material": "MetalRenegades:badCitizen",
     "animationPool": [
-      "MetalRenegades:badRobot#ArmatureAction"
+      "MetalRenegades:badCitizen#ArmatureAction"
     ],
     "loop": true,
     "scale": [
@@ -19,12 +19,12 @@
   },
   "Stand": {
     "animationPool": [
-      "MetalRenegades:badRobot#Idle"
+      "MetalRenegades:badCitizen#Idle"
     ]
   },
   "Walk": {
     "animationPool": [
-      "MetalRenegades:badRobot#Walk"
+      "MetalRenegades:badCitizen#Walk"
     ]
   },
   "Die": {

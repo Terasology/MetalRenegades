@@ -54,7 +54,7 @@ public class CitizenPersonalitySystem extends BaseComponentSystem {
 
         nameTagComponent.text = nameProvider.generateName();
         nameTagComponent.textColor = Color.GREEN;
-        nameTagComponent.yOffset = 0.5f;
+        nameTagComponent.yOffset = 1.7f;
         nameTagComponent.scale = 1f;
 
         target.saveComponent(nameTagComponent);
