@@ -1,23 +1,34 @@
 {
-    "parent": "baseCitizen",
-    "displayName": {
-        "name": "shopkeeper"
-    },
-    "skeletalmesh": {
-        "mesh": "MetalRenegades:gooey",
-        "heightOffset": -0.5,
-        "material": "MetalRenegades:marketGooey",
-        "animationPool": [
-            "gooey#ArmatureAction"
-        ],
-        "scale": [
-            0.45,
-            0.45,
-            0.45
-        ]
-    },
-    "Behavior" : {
-        "tree" : "Behaviors:restrictedStray"
-    },
-    "MarketCitizen": {}
+  "parent": "baseCitizen",
+  "displayName": {
+    "name": "Shopkeeper"
+  },
+  "skeletalMesh": {
+    "mesh": "MetalRenegades:gooey",
+    "heightOffset": -0.5,
+    "material": "MetalRenegades:marketGooey",
+    "animationPool": [
+      "gooey#ArmatureAction"
+    ],
+    "loop": true,
+    "scale": [
+      0.45,
+      0.45,
+      0.45
+    ]
+  },
+  "Stand": {
+    "animationPool": [
+      "gooey#ArmatureAction"
+    ]
+  },
+  "Walk": {
+    "animationPool": [
+      "gooey#ArmatureAction"
+    ]
+  },
+  "Behavior": {
+    "tree": "Behaviors:restrictedStray"
+  },
+  "MarketCitizen": {}
 }

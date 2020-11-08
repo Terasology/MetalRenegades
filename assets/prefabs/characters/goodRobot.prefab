@@ -1,0 +1,40 @@
+{
+  "parent": "baseCitizen",
+  "displayName": {
+    "name": "Good Citizen"
+  },
+  "skeletalMesh": {
+    "mesh": "MetalRenegades:goodRobot",
+    "heightOffset": -0.5,
+    "material": "MetalRenegades:goodRobot",
+    "animationPool": [
+      "MetalRenegades:goodRobot#Idle"
+    ],
+    "loop": true,
+    "scale": [
+      0.3,
+      0.3,
+      0.3
+    ]
+  },
+  "Stand": {
+    "animationPool": [
+      "MetalRenegades:goodRobot#Robot_Idle"
+    ]
+  },
+  "Walk": {
+    "animationPool": [
+      "MetalRenegades:goodRobot#Robot_Walk"
+    ]
+  },
+  "Die": {
+    "animationPool": []
+  },
+  "Behavior": {
+    "tree": "MetalRenegades:citizen"
+  },
+  "Trader": {},
+  "FactionAlignment": {
+    "alignment": "GOOD"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "parent": "baseCitizen",
+  "displayName": {
+    "name": "Bad Citizen"
+  },
+  "skeletalMesh": {
+    "mesh": "MetalRenegades:badRobot",
+    "heightOffset": -0.5,
+    "material": "MetalRenegades:badRobot",
+    "animationPool": [
+      "MetalRenegades:badRobot#ArmatureAction"
+    ],
+    "loop": true,
+    "scale": [
+      0.3,
+      0.3,
+      0.3
+    ]
+  },
+  "Stand": {
+    "animationPool": [
+      "MetalRenegades:badRobot#Idle"
+    ]
+  },
+  "Walk": {
+    "animationPool": [
+      "MetalRenegades:badRobot#Walk"
+    ]
+  },
+  "Die": {
+    "animationPool": []
+  },
+  "Behavior": {
+    "tree": "MetalRenegades:citizen"
+  },
+  "Trader": {},
+  "FactionAlignment": {
+    "alignment": "BAD"
+  }
+}

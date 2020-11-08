@@ -17,6 +17,16 @@
             0.45
         ]
     },
+    "Stand": {
+        "animationPool": [
+            "gooey#ArmatureAction"
+        ]
+    },
+    "Walk": {
+        "animationPool": [
+            "gooey#ArmatureAction"
+        ]
+    },
     "Behavior": {
         "tree": "MetalRenegades:citizen"
     },
