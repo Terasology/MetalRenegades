@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.metalrenegades.combat;
+package org.terasology.metalrenegades.combat.system;
 
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector3i;
+import org.joml.Vector2i;
+import org.joml.Vector3i;
+import org.terasology.math.JomlUtil;
 import org.terasology.registry.In;
 import org.terasology.wildAnimals.AnimalSpawnConfig;
 import org.terasology.wildAnimals.system.WildAnimalsSpawnSystem;
@@ -50,10 +51,10 @@ public class AnimalSpawnSystem extends BaseComponentSystem {
         spawnSystem.setSpawnCondition(this::isValidSpawnPosition);
 
         AnimalSpawnConfig configuration = new AnimalSpawnConfig();
-        configuration.SPAWN_CHANCE_IN_PERCENT = 1;
-        configuration.MAX_DEER_GROUP_SIZE = 5;
-        configuration.MIN_DEER_GROUP_SIZE = 2;
-        configuration.MIN_GROUND_PER_DEER = 10;
+        configuration.spawnChanceInPercent = 1;
+        configuration.maxDeerGroupSize = 5;
+        configuration.minDeerGroupSize = 2;
+        configuration.minGroundPerDeer = 10;
 
         spawnSystem.setConfig(configuration);
 
@@ -62,7 +63,7 @@ public class AnimalSpawnSystem extends BaseComponentSystem {
     }
 
     private boolean isValidSpawnPosition(Vector3i pos) {
-        if (!settlementEntityManager.checkOutsideAllSettlements(new Vector2i(pos.x, pos.z))) {
+        if (!settlementEntityManager.checkOutsideAllSettlements(JomlUtil.from(new Vector2i(pos.x(), pos.z())))) {
             return false;
         }
 

@@ -24,6 +24,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.metalrenegades.interaction.component.CityCropComponent;
 import org.terasology.metalrenegades.interaction.component.FarmComponent;
@@ -99,7 +100,7 @@ public class FarmManagementSystem extends BaseComponentSystem {
                 EntityRef plantEntity = entityManager.create(event.plantName);
                 Vector3i plantLocation = new Vector3i(farmLocation.getWorldPosition().add(x, PLANT_OFFSET, y));
 
-                plantEntity.send(new OnSeedPlanted(plantLocation));
+                plantEntity.send(new OnSeedPlanted(JomlUtil.from(plantLocation)));
             }
         }
     }
