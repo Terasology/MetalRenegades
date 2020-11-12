@@ -21,9 +21,9 @@ import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
 
-@Produces(SurfaceHeightFacet.class)
+@Produces(ElevationFacet.class)
 public class BaseFlatSurfaceProvider implements FacetProvider {
     @Override
     public void setSeed(long seed) {
@@ -32,8 +32,8 @@ public class BaseFlatSurfaceProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         // Create our surface height facet (we will get into borders later)
-        Border3D border = region.getBorderForFacet(SurfaceHeightFacet.class);
-        SurfaceHeightFacet facet = new SurfaceHeightFacet(region.getRegion(), border);
+        Border3D border = region.getBorderForFacet(ElevationFacet.class);
+        ElevationFacet facet = new ElevationFacet(region.getRegion(), border);
 
         // Loop through every position in our 2d array
         Rect2i processRegion = facet.getWorldRegion();
@@ -42,6 +42,6 @@ public class BaseFlatSurfaceProvider implements FacetProvider {
         }
 
         // Pass our newly created and populated facet to the region
-        region.setRegionFacet(SurfaceHeightFacet.class, facet);
+        region.setRegionFacet(ElevationFacet.class, facet);
     }
 }
