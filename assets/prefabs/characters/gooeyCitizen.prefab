@@ -6,7 +6,7 @@
     "skeletalmesh": {
         "mesh": "MawGooey:gooey",
         "heightOffset": -0.5,
-        "material": "MetalRenegades:gooeyCitizen",
+        "material": "MawGooey:gooeySkinGreen",
         "animationPool": [
             "MawGooey:gooey#ArmatureAction"
         ],
