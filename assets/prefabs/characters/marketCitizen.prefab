@@ -4,11 +4,11 @@
     "name": "Shopkeeper"
   },
   "skeletalMesh": {
-    "mesh": "MetalRenegades:gooey",
+    "mesh": "MawGooey:gooey",
     "heightOffset": -0.5,
     "material": "MetalRenegades:marketGooey",
     "animationPool": [
-      "gooey#ArmatureAction"
+      "MawGooey:gooey#ArmatureAction"
     ],
     "loop": true,
     "scale": [
@@ -19,12 +19,12 @@
   },
   "Stand": {
     "animationPool": [
-      "gooey#ArmatureAction"
+      "MawGooey:gooey#ArmatureAction"
     ]
   },
   "Walk": {
     "animationPool": [
-      "gooey#ArmatureAction"
+      "MawGooey:gooey#ArmatureAction"
     ]
   },
   "Behavior": {
