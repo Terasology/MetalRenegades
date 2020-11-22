@@ -52,9 +52,9 @@ public class AnimalSpawnSystem extends BaseComponentSystem {
 
         AnimalSpawnConfig configuration = new AnimalSpawnConfig();
         configuration.spawnChanceInPercent = 1;
-        configuration.maxDeerGroupSize = 5;
-        configuration.minDeerGroupSize = 2;
-        configuration.minGroundPerDeer = 10;
+        configuration.maxFlockSize = 5;
+        configuration.minFlockSize = 2;
+        configuration.minGroundPerFlockAnimal = 10;
 
         spawnSystem.setConfig(configuration);
 
