@@ -15,6 +15,7 @@
  */
 package org.terasology.metalrenegades.quests;
 
+import org.joml.Vector3f;
 import org.terasology.dynamicCities.buildings.GenericBuildingComponent;
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
@@ -33,7 +34,6 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.nameTags.NameTagComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
 import org.terasology.nui.Color;
@@ -76,10 +76,10 @@ public class FetchQuestSystem extends BaseComponentSystem {
     private EntityRef activeQuestEntity;
     private Map<String, Integer> amounts = new HashMap<>();
 
-    private final String HOME_TASK_ID = "returnHome";
-    private final String FETCH_QUEST_ID = "FetchQuest";
-    private final String ITEM_ID = "WildAnimals:Meat";
-    private final int REWARD = 50;
+    private static final String HOME_TASK_ID = "returnHome";
+    private static final String FETCH_QUEST_ID = "FetchQuest";
+    private static final String ITEM_ID = "WildAnimals:Meat";
+    private static final int REWARD = 50;
 
     @Override
     public void postBegin() {
@@ -147,7 +147,7 @@ public class FetchQuestSystem extends BaseComponentSystem {
         LocationComponent locationComponent = activeQuestEntity.getComponent(LocationComponent.class);
         Optional<Prefab> beaconOptional = Assets.getPrefab("Tasks:BeaconMark");
         if (beaconOptional.isPresent()) {
-            EntityRef beacon = entityManager.create(beaconOptional.get(), locationComponent.getWorldPosition());
+            EntityRef beacon = entityManager.create(beaconOptional.get(), locationComponent.getWorldPosition(new Vector3f()));
             activeQuestEntity.destroy();
             activeQuestEntity = beacon;
         }
