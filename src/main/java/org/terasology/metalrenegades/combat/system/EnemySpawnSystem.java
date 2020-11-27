@@ -5,6 +5,9 @@ package org.terasology.metalrenegades.combat.system;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
+import org.joml.Vector2i;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.system.NightTrackerSystem;
@@ -12,17 +15,13 @@ import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.health.BeforeDestroyEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.combat.component.NightEnemyComponent;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.metalrenegades.minimap.events.RemoveCharacterFromOverlayEvent;
@@ -140,13 +139,13 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
             }
 
             LocationComponent locComp = enemy.getComponent(LocationComponent.class);
-            Vector3f enemyLoc = locComp.getWorldPosition();
+            Vector3f enemyLoc = locComp.getWorldPosition(new Vector3f());
 
             if (enemy.isActive()) {
                 return false;
             }
             removeEnemy(enemy);
-            logger.debug("Removed inactive enemy at ({}, {}, {}).", enemyLoc.getX(), enemyLoc.getY(), enemyLoc.getZ());
+            logger.debug("Removed inactive enemy at ({}, {}, {}).", enemyLoc.x(), enemyLoc.y(), enemyLoc.z());
             return true;
         });
     }
@@ -161,7 +160,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
 
     @ReceiveEvent
     public void chunkLoadedEvent(OnChunkLoaded event, EntityRef entity) {
-        chunkPositions.add(event.getChunkPos());
+        chunkPositions.add(JomlUtil.from(event.getChunkPos()));
     }
 
     @ReceiveEvent
@@ -222,7 +221,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
      * @return If the position is valid or not.
      */
     private boolean isValidSpawnPosition(Vector3i pos) {
-        if (!settlementEntityManager.checkOutsideAllSettlements(new Vector2i(pos.x, pos.z))) {
+        if (!settlementEntityManager.checkOutsideAllSettlements(JomlUtil.from(new Vector2i(pos.x, pos.z)))) {
             return false;
         }
 
@@ -255,7 +254,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         EntityBuilder entityBuilder = entityManager.newBuilder("MetalRenegades:enemyGooey");
         LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
 
-        locationComponent.setWorldPosition(pos.toVector3f());
+        locationComponent.setWorldPosition(new Vector3f(pos));
         entityBuilder.saveComponent(locationComponent);
         entityBuilder.addComponent(new NightEnemyComponent());
 

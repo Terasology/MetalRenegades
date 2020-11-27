@@ -15,6 +15,7 @@
  */
 package org.terasology.metalrenegades.economy.systems;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.StrayRestrictionComponent;
@@ -36,8 +37,6 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.metalrenegades.economy.actions.ShowMarketScreenAction;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
@@ -67,7 +66,8 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
             Optional<Prefab> traderGooeyOptional = Assets.getPrefab("MetalRenegades:marketCitizen");
             if (traderGooeyOptional.isPresent()) {
                 Rect2i rect2i = dynParcel.shape;
-                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 1, rect2i.minY() + rect2i.sizeY() / 2);
+                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 1,
+                    rect2i.minY() + rect2i.sizeY() / 2);
                 EntityRef trader = entityManager.create(traderGooeyOptional.get(), spawnPosition);
                 trader.send(new AddCharacterToOverlayEvent());
 
@@ -85,12 +85,14 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
 
                 DialogResponse buyResponse = new DialogResponse();
                 buyResponse.action = new ArrayList<>();
-                buyResponse.action.add(new ShowMarketScreenAction(marketComponent.getMarketId(), TransactionType.BUYING));
+                buyResponse.action.add(new ShowMarketScreenAction(marketComponent.getMarketId(),
+                    TransactionType.BUYING));
                 buyResponse.text = "Buy";
 
                 DialogResponse sellResponse = new DialogResponse();
                 sellResponse.action = new ArrayList<>();
-                sellResponse.action.add(new ShowMarketScreenAction(marketComponent.getMarketId(), TransactionType.SELLING));
+                sellResponse.action.add(new ShowMarketScreenAction(marketComponent.getMarketId(),
+                    TransactionType.SELLING));
                 sellResponse.text = "Sell";
 
                 DialogResponse closeResponse = new DialogResponse();
