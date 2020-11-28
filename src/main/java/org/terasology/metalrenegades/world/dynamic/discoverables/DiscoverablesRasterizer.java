@@ -2,18 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
+import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.math.ChunkMath;
-import org.terasology.math.Region3i;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.BaseVector3i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.components.SpawnBlockRegionsComponent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockRegionIterable;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
@@ -53,7 +55,7 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
         DiscoverablesFacet discoverablesFacet = chunkRegion.getFacet(DiscoverablesFacet.class);
 
         for (Map.Entry<BaseVector3i, DiscoverableLocation> entry : discoverablesFacet.getWorldEntries().entrySet()) {
-            Vector3i structurePosition = new Vector3i(entry.getKey());
+            Vector3i structurePosition = new Vector3i(JomlUtil.from(entry.getKey()));
             Prefab structure;
             switch (entry.getValue().locationType) {
                 case WELL:
@@ -66,16 +68,16 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
                     return;
             }
             SpawnBlockRegionsComponent spawnBlockRegionsComponent =
-                    structure.getComponent(SpawnBlockRegionsComponent.class);
+                structure.getComponent(SpawnBlockRegionsComponent.class);
 
             for (SpawnBlockRegionsComponent.RegionToFill regionToFill : spawnBlockRegionsComponent.regionsToFill) {
                 Block block = regionToFill.blockType;
 
-                Region3i region = regionToFill.region;
-                for (Vector3i pos : region) {
-                    pos.add(structurePosition);
-                    if (chunkRegion.getRegion().encompasses(pos)) {
-                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(pos), block);
+                Vector3i value = new Vector3i();
+                for (Vector3ic pos : BlockRegionIterable.region(regionToFill.region).build()) {
+                    value.set(pos).add(structurePosition);
+                    if (chunkRegion.getRegion().encompasses(JomlUtil.from(value))) {
+                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(value, new Vector3i()), block);
                     }
                 }
             }

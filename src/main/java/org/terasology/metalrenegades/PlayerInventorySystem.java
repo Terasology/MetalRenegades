@@ -1,20 +1,8 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades;
 
+import org.joml.Vector3f;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -30,8 +18,6 @@ import org.terasology.logic.inventory.events.DropItemRequest;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.JomlUtil;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockManager;
 
@@ -85,7 +71,7 @@ public class PlayerInventorySystem extends BaseComponentSystem {
     public void onPlayerDeath(PlayerDeathEvent event, EntityRef character) {
         if (character.equals(localPlayer.getCharacterEntity())) {
             LocationComponent locationComponent = character.getComponent(LocationComponent.class);
-            Vector3f position = locationComponent.getWorldPosition();
+            Vector3f position = locationComponent.getWorldPosition(new Vector3f());
             position.add(OFFSET);
 
             Random rnd = new Random();
@@ -96,14 +82,13 @@ public class PlayerInventorySystem extends BaseComponentSystem {
                     // Get a random position near the position calculated above
                     // so that the items don't all drop at the same point
                     Vector3f currentItemPos = new Vector3f(position);
-                    currentItemPos.addX(rnd.nextFloat() * BOUND);
-                    currentItemPos.addZ(rnd.nextFloat() * BOUND);
+                    currentItemPos.add(rnd.nextFloat() * BOUND,0,rnd.nextFloat() * BOUND);
 
                     character.send(new DropItemRequest(
                         current,
                         character,
                         new org.joml.Vector3f(),
-                        JomlUtil.from(currentItemPos),
+                        currentItemPos,
                         inventoryManager.getStackSize(current)
                     ));
                 }
