@@ -2,7 +2,7 @@
   "skeletalmesh": {
     "mesh": "MawGooey:mawgooey",
     "heightOffset": -0.8,
-    "material": "MawGooey:mawgooeySkin",
+    "material": "MawGooey:mawgooeySkinGreen",
     "animation": "MawGooey:mawgooeyIdleFinal",
     "loop": true
   },
