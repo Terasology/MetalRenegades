@@ -15,7 +15,7 @@
  */
 package org.terasology.metalrenegades.quests;
 
-import org.joml.Rectanglei;
+import org.joml.primitives.Rectanglei;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;

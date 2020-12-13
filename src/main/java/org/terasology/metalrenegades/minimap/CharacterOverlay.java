@@ -3,7 +3,7 @@
 package org.terasology.metalrenegades.minimap;
 
 
-import org.joml.Rectanglei;
+import org.joml.primitives.Rectanglei;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.slf4j.Logger;
