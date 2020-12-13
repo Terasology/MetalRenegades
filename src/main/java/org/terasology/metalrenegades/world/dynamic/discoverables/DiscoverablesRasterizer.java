@@ -55,8 +55,8 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         DiscoverablesFacet discoverablesFacet = chunkRegion.getFacet(DiscoverablesFacet.class);
 
-        for (Map.Entry<BaseVector3i, DiscoverableLocation> entry : discoverablesFacet.getWorldEntries().entrySet()) {
-            Vector3i structurePosition = new Vector3i(JomlUtil.from(entry.getKey()));
+        for (Map.Entry<Vector3ic, DiscoverableLocation> entry : discoverablesFacet.getWorldEntries().entrySet()) {
+            Vector3i structurePosition = new Vector3i(entry.getKey());
             Prefab structure;
             switch (entry.getValue().locationType) {
                 case WELL:
@@ -77,7 +77,7 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
                 Vector3i value = new Vector3i();
                 for (Vector3ic pos : BlockRegions.iterable(regionToFill.region)) {
                     value.set(pos).add(structurePosition);
-                    if (chunkRegion.getRegion().encompasses(JomlUtil.from(value))) {
+                    if (chunkRegion.getRegion().containsBlock(value)) {
                         chunk.setBlock(ChunkMath.calcRelativeBlockPos(value, new Vector3i()), block);
                     }
                 }
