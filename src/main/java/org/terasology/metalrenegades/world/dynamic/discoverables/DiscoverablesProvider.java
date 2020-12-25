@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
-import org.terasology.math.Region3i;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.WhiteNoise;
 import org.terasology.world.block.BlockRegion;
@@ -46,10 +45,10 @@ public class DiscoverablesProvider implements FacetProvider {
 
         BlockRegion worldRegion = surfacesFacet.getWorldRegion();
 
-        for (int wx = worldRegion.getMinX(); wx <= worldRegion.getMaxX(); wx++) {
-            for (int wz = worldRegion.getMinZ(); wz <= worldRegion.getMaxZ(); wz++) {
+        for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
+            for (int wz = worldRegion.minZ(); wz <= worldRegion.maxZ(); wz++) {
                 for (int surfaceHeight : surfacesFacet.getWorldColumn(wx, wz)) {
-                    if (facet.getWorldRegion().containsBlock(wx, surfaceHeight + 1, wz)) {
+                    if (facet.getWorldRegion().contains(wx, surfaceHeight + 1, wz)) {
                         if (noise.noise(wx, wz) < (CHEST_PROBABILITY * 2) - 1) {
                             DiscoverableLocation.Type[] typeList = DiscoverableLocation.Type.values();
                             int typeIndex = (int) (Math.abs(noise.noise(wx, surfaceHeight, wz)) * typeList.length);
