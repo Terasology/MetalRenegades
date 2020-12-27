@@ -15,7 +15,7 @@
         { "id": "CoreAdvancedAssets", "minVersion": "1.1.0" },
         { "id": "CoreAssets", "minVersion": "2.0.1" },
         { "id": "CoreRendering", "minVersion": "1.0.0" },
-        { "id": "CoreWorlds", "minVersion": "1.1.0" },
+        { "id": "CoreWorlds", "minVersion": "2.0.0-SNAPSHOT" },
         { "id": "Dialogs", "minVersion": "1.0.0" },
         { "id": "DynamicCities", "minVersion": "1.0.0" },
         { "id": "Economy", "minVersion": "1.0.0" },
