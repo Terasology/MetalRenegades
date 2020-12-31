@@ -15,12 +15,12 @@
  */
 package org.terasology.metalrenegades.ai.actions;
 
+import org.joml.Vector3f;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.minion.move.MinionMoveComponent;
@@ -36,7 +36,7 @@ public class SetTargetToHomeAction extends BaseAction {
         HomeComponent homeComponent = actor.getComponent(HomeComponent.class);
         LocationComponent homeLocationComponent = homeComponent.building.getComponent(LocationComponent.class);
 
-        Vector3f position = homeLocationComponent.getWorldPosition();
+        Vector3f position = homeLocationComponent.getWorldPosition(new Vector3f());
 
         if (position != null) {
             MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
