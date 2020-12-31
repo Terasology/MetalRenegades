@@ -4,8 +4,8 @@ package org.terasology.metalrenegades.world.dynamic;
 
 import org.terasology.core.world.generator.facetProviders.BiomeProvider;
 import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
-import org.terasology.core.world.generator.facetProviders.SimplexHillsAndMountainsProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexRoughnessProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.dynamicCities.region.RegionEntityProvider;
@@ -17,6 +17,7 @@ import org.terasology.dynamicCities.world.SolidRasterizer;
 import org.terasology.dynamicCities.world.TreeRasterizer;
 import org.terasology.dynamicCities.world.trees.DefaultTreeProvider;
 import org.terasology.engine.SimpleUri;
+import org.terasology.metalrenegades.world.SimplexHillsAndMountainsProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesRasterizer;
 import org.terasology.oreGeneration.generation.OreRasterizer;
@@ -46,6 +47,7 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new TemperatureProvider())
                 .addProvider(new SurfaceToDensityProvider())
                 .addProvider(new SimplexHillsAndMountainsProvider())
+                .addProvider(new SimplexRoughnessProvider())
                 .addProvider(new BiomeProvider())
                 .addProvider(new DefaultFloraProvider())
                 .addProvider(new DefaultTreeProvider())

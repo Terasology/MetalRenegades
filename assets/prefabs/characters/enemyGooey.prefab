@@ -1,9 +1,9 @@
 {
   "skeletalmesh": {
-    "mesh": "MawGooey:mawgooey",
+    "mesh": "Gooey:mawgooey",
     "heightOffset": -0.8,
-    "material": "MawGooey:mawgooeySkin",
-    "animation": "MawGooey:mawgooeyIdleFinal",
+    "material": "Gooey:mawgooeySkinGreen",
+    "animation": "Gooey:mawgooeyIdleFinal",
     "loop": true
   },
   "DropGrammar": {
@@ -14,22 +14,22 @@
   },
   "Stand": {
     "animationPool": [
-      "MawGooey:mawgooeyIdleFinal"
+      "Gooey:mawgooeyIdleFinal"
     ]
   },
   "Walk": {
     "animationPool": [
-      "MawGooey:mawgooeyWalk"
+      "Gooey:mawgooeyWalk"
     ]
   },
   "MeleeAttack": {
     "animationPool": [
-      "MawGooey:mawgooeyAttack"
+      "Gooey:mawgooeyAttack"
     ]
   },
   "Die": {
     "animationPool": [
-      "MawGooey:mawgooeyDeath"
+      "Gooey:mawgooeyDeath"
     ]
   },
   "persisted": true,

@@ -4,11 +4,11 @@
         "name": "Gooey Citizen"
     },
     "skeletalmesh": {
-        "mesh": "MetalRenegades:gooey",
+        "mesh": "Gooey:gooey",
         "heightOffset": -0.5,
-        "material": "MetalRenegades:gooeyCitizen",
+        "material": "Gooey:gooeySkinGreen",
         "animationPool": [
-            "gooey#ArmatureAction"
+            "Gooey:gooey#ArmatureAction"
         ],
         "loop": true,
         "scale": [
@@ -19,12 +19,12 @@
     },
     "Stand": {
         "animationPool": [
-            "gooey#ArmatureAction"
+            "Gooey:gooey#ArmatureAction"
         ]
     },
     "Walk": {
         "animationPool": [
-            "gooey#ArmatureAction"
+            "Gooey:gooey#ArmatureAction"
         ]
     },
     "Behavior": {
