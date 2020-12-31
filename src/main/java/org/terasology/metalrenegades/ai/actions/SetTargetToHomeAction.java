@@ -21,6 +21,7 @@ import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.minion.move.MinionMoveComponent;
 
@@ -39,7 +40,7 @@ public class SetTargetToHomeAction extends BaseAction {
 
         if (position != null) {
             MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
-            minionMoveComponent.target = position;
+            minionMoveComponent.target = JomlUtil.from(position);
             actor.save(minionMoveComponent);
         }
 
