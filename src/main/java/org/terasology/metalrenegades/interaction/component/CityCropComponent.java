@@ -18,10 +18,4 @@ public class CityCropComponent implements Component {
      * The prefab name of the block form of this crop.
      */
     public String plantName;
-
-    public CityCropComponent(String item, String plant) {
-        this.itemName = item;
-        this.plantName = plant;
-    }
-
 }

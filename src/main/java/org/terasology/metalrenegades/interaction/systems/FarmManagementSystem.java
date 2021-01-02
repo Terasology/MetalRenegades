@@ -71,7 +71,9 @@ public class FarmManagementSystem extends BaseComponentSystem {
     public void onSettlementRegisterEvent(SettlementRegisterEvent buildingEntitySpawnedEvent, EntityRef entityRef) {
         String[] cityCrop = CROPS[(int) (Math.random() * CROPS.length)];
 
-        CityCropComponent cityCropComponent = new CityCropComponent(cityCrop[0], cityCrop[1]);
+        CityCropComponent cityCropComponent = new CityCropComponent();
+        cityCropComponent.itemName = cityCrop[0];
+        cityCropComponent.plantName = cityCrop[1];
         entityRef.addComponent(cityCropComponent);
     }
 
@@ -92,5 +94,4 @@ public class FarmManagementSystem extends BaseComponentSystem {
             }
         }
     }
-
 }

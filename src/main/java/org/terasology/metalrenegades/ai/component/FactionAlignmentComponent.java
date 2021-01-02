@@ -22,15 +22,5 @@ import org.terasology.metalrenegades.ai.system.FactionAlignmentSystem.Alignment;
  * Defines the faction alignment of a particular character, building, or settlement.
  */
 public class FactionAlignmentComponent implements Component {
-
-    public Alignment alignment;
-
-    public FactionAlignmentComponent() {
-        this.alignment = Alignment.NEUTRAL;
-    }
-
-    public FactionAlignmentComponent(Alignment alignment) {
-        this.alignment = alignment;
-    }
-
+    public Alignment alignment = Alignment.NEUTRAL;
 }
