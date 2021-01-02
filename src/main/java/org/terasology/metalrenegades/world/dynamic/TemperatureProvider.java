@@ -3,6 +3,7 @@
 package org.terasology.metalrenegades.world.dynamic;
 
 import org.joml.Vector2f;
+import org.joml.Vector2ic;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.BrownianNoise;
@@ -37,8 +38,7 @@ public class TemperatureProvider implements FacetProvider {
         SurfaceTemperatureFacet facet = new SurfaceTemperatureFacet(region.getRegion(), border);
 
         // TODO: Set temperature
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position: processRegion.contents()) {
+        for (Vector2ic position: facet.getWorldArea()) {
             double temp = getRandomTemp(position);
             facet.setWorld(position, (float) temp);
         }
@@ -50,7 +50,7 @@ public class TemperatureProvider implements FacetProvider {
         return 0;
     }
 
-    private double getRandomTemp(BaseVector2i pos) {
+    private double getRandomTemp(Vector2ic pos) {
 //        float sumOfWeights = 10; // TODO
 //        Random random = new Random();
 ////        float f = random.nextFloat() * sumOfWeights;
