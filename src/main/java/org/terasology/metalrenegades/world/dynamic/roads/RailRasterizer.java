@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.roads;
 
+import org.joml.Vector3i;
 import org.terasology.cities.raster.RasterTarget;
 import org.terasology.commonworld.heightmap.HeightMap;
 import org.terasology.dynamicCities.parcels.RoadParcel;
@@ -10,7 +11,6 @@ import org.terasology.dynamicCities.roads.RoadSegment;
 import org.terasology.math.Side;
 import org.terasology.math.geom.ImmutableVector2f;
 import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.minecarts.blocks.RailBlockFamily;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.family.BlockFamily;
@@ -61,7 +61,7 @@ public class RailRasterizer extends RoadRasterizer {
     private void placeRail(RasterTarget target, Vector3i pos) {
         Set<Side> connections = new HashSet<>();
         for (Side side : Side.getAllSides()) {
-            BlockFamily family = worldProvider.getBlock(side.getAdjacentPos(pos)).getBlockFamily();
+            BlockFamily family = worldProvider.getBlock(side.getAdjacentPos(pos, new Vector3i())).getBlockFamily();
             if (family instanceof RailBlockFamily) {
                 connections.add(side);
             }
