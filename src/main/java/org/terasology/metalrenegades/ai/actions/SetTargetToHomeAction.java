@@ -40,7 +40,7 @@ public class SetTargetToHomeAction extends BaseAction {
 
         if (position != null) {
             MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
-            minionMoveComponent.target = JomlUtil.from(position);
+            minionMoveComponent.target = position;
             actor.save(minionMoveComponent);
         }
 
