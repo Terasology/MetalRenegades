@@ -4,8 +4,6 @@ package org.terasology.metalrenegades.world.dynamic;
 
 import org.joml.Vector2f;
 import org.joml.Vector2ic;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.PerlinNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;

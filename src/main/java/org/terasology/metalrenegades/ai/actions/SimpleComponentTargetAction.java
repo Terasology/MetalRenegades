@@ -15,8 +15,6 @@
  */
 package org.terasology.metalrenegades.ai.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -28,7 +26,6 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.SimpleSourceComponent;
-import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.registry.In;
 
 /**

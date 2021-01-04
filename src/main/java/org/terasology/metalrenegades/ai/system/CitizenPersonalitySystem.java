@@ -8,12 +8,11 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.nameTags.NameTagComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.namegenerator.creature.CreatureAssetTheme;
 import org.terasology.namegenerator.creature.CreatureNameProvider;
-import org.terasology.rendering.logic.SkeletalMeshComponent;
 import org.terasology.nui.Color;
+import org.terasology.rendering.logic.SkeletalMeshComponent;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.utilities.random.Random;
 

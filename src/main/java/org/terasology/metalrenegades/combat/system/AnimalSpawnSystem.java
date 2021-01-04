@@ -15,12 +15,12 @@
  */
 package org.terasology.metalrenegades.combat.system;
 
+import org.joml.Vector2i;
+import org.joml.Vector3i;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.joml.Vector2i;
-import org.joml.Vector3i;
 import org.terasology.math.JomlUtil;
 import org.terasology.registry.In;
 import org.terasology.wildAnimals.AnimalSpawnConfig;
