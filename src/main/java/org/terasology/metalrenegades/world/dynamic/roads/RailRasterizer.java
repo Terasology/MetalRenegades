@@ -8,6 +8,7 @@ import org.terasology.commonworld.heightmap.HeightMap;
 import org.terasology.dynamicCities.parcels.RoadParcel;
 import org.terasology.dynamicCities.rasterizer.RoadRasterizer;
 import org.terasology.dynamicCities.roads.RoadSegment;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.Side;
 import org.terasology.math.geom.ImmutableVector2f;
 import org.terasology.math.geom.Vector2i;
@@ -66,7 +67,7 @@ public class RailRasterizer extends RoadRasterizer {
                 connections.add(side);
             }
         }
-        target.setBlock(pos, RailBlockType.RAIL, connections);
+        target.setBlock(JomlUtil.from(pos), RailBlockType.RAIL, connections);
     }
 
     /**
