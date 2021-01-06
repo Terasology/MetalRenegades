@@ -13,8 +13,8 @@ import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
 import org.terasology.metalrenegades.interaction.events.CupFilledEvent;
 import org.terasology.metalrenegades.interaction.events.WellDrinkEvent;
 import org.terasology.metalrenegades.interaction.events.WellRefilledEvent;
-import org.terasology.registry.In;
 import org.terasology.nui.Color;
+import org.terasology.registry.In;
 import org.terasology.world.time.WorldTimeEvent;
 
 /**

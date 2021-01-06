@@ -21,7 +21,6 @@ import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.ai.component.HomeComponent;
 import org.terasology.minion.move.MinionMoveComponent;
 

@@ -3,8 +3,7 @@
 package org.terasology.metalrenegades.world.dynamic;
 
 import org.joml.Vector2f;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
+import org.joml.Vector2ic;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
@@ -28,8 +27,7 @@ public class SurfaceProvider implements FacetProvider {
         Border3D border = region.getBorderForFacet(ElevationFacet.class);
         ElevationFacet facet = new ElevationFacet(region.getRegion(), border);
 
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position: processRegion.contents()) {
+        for (Vector2ic position: facet.getWorldArea()) {
             facet.setWorld(position, surfaceNoise.noise(position.x(), position.y()) * 3 + 10);
         }
 

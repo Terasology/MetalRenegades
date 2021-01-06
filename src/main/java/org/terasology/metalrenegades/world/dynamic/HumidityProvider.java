@@ -3,9 +3,8 @@
 package org.terasology.metalrenegades.world.dynamic;
 
 import org.joml.Vector2f;
+import org.joml.Vector2ic;
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
 import org.terasology.nui.properties.Range;
 import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.PerlinNoise;
@@ -50,8 +49,7 @@ public class HumidityProvider implements ConfigurableFacetProvider {
         SurfaceHumidityFacet facet = new SurfaceHumidityFacet(region.getRegion(), border);
 
         // TODO: Setup humidity
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position: processRegion.contents()) {
+        for (Vector2ic position: facet.getWorldArea()) {
             double hum = getRandomHumidity(position);
             facet.setWorld(position, (float) hum);
         }
@@ -85,7 +83,7 @@ public class HumidityProvider implements ConfigurableFacetProvider {
         noise = new SubSampledNoise(brown, scale, SAMPLE_RATE);
     }
 
-    private float getRandomHumidity(BaseVector2i pos) {
+    private float getRandomHumidity(Vector2ic pos) {
         return 0.1f;
     }
 
