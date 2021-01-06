@@ -67,7 +67,7 @@ public class RailRasterizer extends RoadRasterizer {
                 connections.add(side);
             }
         }
-        target.setBlock(JomlUtil.from(pos), RailBlockType.RAIL, connections);
+        target.setBlock(pos, RailBlockType.RAIL, connections);
     }
 
     /**
