@@ -160,7 +160,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
 
     @ReceiveEvent
     public void chunkLoadedEvent(OnChunkLoaded event, EntityRef entity) {
-        chunkPositions.add(JomlUtil.from(event.getChunkPos()));
+        chunkPositions.add(new Vector3i(event.getChunkPos()));
     }
 
     @ReceiveEvent
