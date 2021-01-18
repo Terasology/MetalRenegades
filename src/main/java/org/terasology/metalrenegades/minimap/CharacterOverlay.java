@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.minimap;
 
-
-import org.joml.Rectanglei;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.joml.geom.Rectanglei;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.minimap.overlays.MinimapOverlay;
 import org.terasology.nui.Canvas;
