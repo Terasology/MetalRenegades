@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.interaction.systems;
 
+import org.joml.RoundingMode;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -15,7 +18,6 @@ import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.metalrenegades.interaction.component.WaterCupComponent;
 import org.terasology.metalrenegades.interaction.component.WellBlockComponent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
@@ -154,7 +156,7 @@ public class WellWaterSystem extends BaseComponentSystem {
      */
     private EntityRef getWellEntity(EntityRef sourceBlock) {
         LocationComponent blockLocComp = sourceBlock.getComponent(LocationComponent.class);
-        Vector3i blockLocation = new Vector3i(blockLocComp.getWorldPosition());
+        Vector3i blockLocation = new Vector3i(blockLocComp.getWorldPosition(new Vector3f()), RoundingMode.FLOOR);
 
         return StreamSupport.stream(entityManager.getEntitiesWith(WellSourceComponent.class).spliterator(), false)
                 .filter(wellEntity -> buildingContainsPosition(wellEntity, blockLocation))
