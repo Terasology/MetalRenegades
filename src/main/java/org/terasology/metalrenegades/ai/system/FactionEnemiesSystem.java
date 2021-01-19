@@ -93,7 +93,7 @@ public class FactionEnemiesSystem extends BaseComponentSystem implements UpdateS
 
             if (distanceApart < minDistance) {
                 enemiesComponent.closestEnemy = otherCitizen;
-                minDistance = otherLocationComponent.getWorldPosition(new Vector3f()).distanceSquared(actorPosition);
+                minDistance = distanceApart;
             }
 
             enemiesComponent.enemiesWithinRange.add(otherCitizen);
