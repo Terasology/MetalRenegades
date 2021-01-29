@@ -1,18 +1,5 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.quests;
 
 import org.joml.Vector3f;
@@ -33,7 +20,7 @@ import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.nameTags.NameTagComponent;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.geom.Rect2i;
+import org.terasology.math.JomlUtil;
 import org.terasology.network.ClientComponent;
 import org.terasology.nui.Color;
 import org.terasology.registry.In;
@@ -48,6 +35,7 @@ import org.terasology.tasks.events.QuestCompleteEvent;
 import org.terasology.tasks.events.StartTaskEvent;
 import org.terasology.tasks.systems.QuestSystem;
 import org.terasology.utilities.Assets;
+import org.terasology.world.block.BlockArea;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,8 +82,8 @@ public class FetchQuestSystem extends BaseComponentSystem {
 
             Optional<Prefab> questPointOptional = Assets.getPrefab("Tasks:QuestPoint");
             if (questPointOptional.isPresent()) {
-                Rect2i rect2i = dynParcel.shape;
-                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 2, rect2i.minY() + rect2i.sizeY() / 2);
+                BlockArea area = new BlockArea(JomlUtil.from(dynParcel.getShape().min()), JomlUtil.from(dynParcel.getShape().max()));
+                Vector3f spawnPosition = new Vector3f(area.minX() + area.getSizeX() / 2, dynParcel.getHeight() + 2, area.minY() + area.getSizeY() / 2);
                 EntityRef questPoint = entityManager.create(questPointOptional.get(), spawnPosition);
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 questPoint.addComponent(settlementRefComponent);

@@ -1,7 +1,11 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.roads;
 
+import org.joml.RoundingMode;
+import org.joml.Vector2f;
+import org.joml.Vector2fc;
+import org.joml.Vector2i;
 import org.joml.Vector3i;
 import org.terasology.cities.raster.RasterTarget;
 import org.terasology.commonworld.heightmap.HeightMap;
@@ -10,8 +14,6 @@ import org.terasology.dynamicCities.rasterizer.RoadRasterizer;
 import org.terasology.dynamicCities.roads.RoadSegment;
 import org.terasology.math.JomlUtil;
 import org.terasology.math.Side;
-import org.terasology.math.geom.ImmutableVector2f;
-import org.terasology.math.geom.Vector2i;
 import org.terasology.minecarts.blocks.RailBlockFamily;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.family.BlockFamily;
@@ -33,25 +35,25 @@ public class RailRasterizer extends RoadRasterizer {
     public void raster(RasterTarget rasterTarget, RoadSegment roadSegment, HeightMap heightMap) {
 
         // Draw rails from start to end
-        ImmutableVector2f direction = roadSegment.getRoadDirection();
+        Vector2fc direction = JomlUtil.from(roadSegment.getRoadDirection());
 
-        Vector2i i = new Vector2i(roadSegment.start);
-        i.add(new Vector2i(direction.scale(RoadParcel.OVERLAP)));
-
-        do {
-            Vector3i pos = new Vector3i(i.getX(), heightMap.apply(i) + 1, i.getY());
-            placeRail(rasterTarget, pos);
-            i.addX(sgn(direction.x())); // increment X to get to the next horizontal block
-        } while (roadSegment.rect.contains(i) && direction.x() != 0f);
-
-        i.subX(sgn(direction.x())); // decrement to get back into the rect
-        i.addY(sgn(direction.y())); // increment Y now
+        Vector2i i = new Vector2i(JomlUtil.from(roadSegment.start));
+        i.add(new Vector2i(direction.mul(RoadParcel.OVERLAP, new Vector2f()), RoundingMode.FLOOR));
 
         do {
-            Vector3i pos = new Vector3i(i.getX(), heightMap.apply(i) + 1, i.getY());
+            Vector3i pos = new Vector3i(i.x(), heightMap.apply(JomlUtil.from(i)) + 1, i.y());
             placeRail(rasterTarget, pos);
-            i.addY(sgn(direction.y()));
-        } while (roadSegment.rect.contains(i) && direction.y() != 0f);
+            i.add(sgn(direction.x()), 0); // increment X to get to the next horizontal block
+        } while (roadSegment.rect.contains(JomlUtil.from(i)) && direction.x() != 0f);
+
+        i.sub(sgn(direction.x()), 0); // decrement to get back into the rect
+        i.add(0, sgn(direction.y())); // increment Y now
+
+        do {
+            Vector3i pos = new Vector3i(i.x(), heightMap.apply(JomlUtil.from(i)) + 1, i.y());
+            placeRail(rasterTarget, pos);
+            i.add(0, sgn(direction.y()));
+        } while (roadSegment.rect.contains(JomlUtil.from(i)) && direction.y() != 0f);
     }
 
     /**
