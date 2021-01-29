@@ -1,16 +1,16 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 
 package org.terasology.metalrenegades.ai.actions;
 
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.logic.behavior.BehaviorAction;
 import org.terasology.logic.behavior.core.Actor;
 import org.terasology.logic.behavior.core.BaseAction;
 import org.terasology.logic.behavior.core.BehaviorState;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 
@@ -32,9 +32,9 @@ public class InsideCityCheckAction extends BaseAction {
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
         LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
-        Vector3f pos = locationComponent.getWorldPosition();
+        Vector3fc pos = locationComponent.getWorldPosition(new Vector3f());
 
-        if (settlementEntityManager.checkOutsideAllSettlements(new Vector2i(pos.x, pos.z))) {
+        if (settlementEntityManager.checkOutsideAllSettlements(new org.terasology.math.geom.Vector2i(pos.x(), pos.z()))) {
             return BehaviorState.FAILURE;
         }
 

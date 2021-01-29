@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.interaction.systems;
 
@@ -17,7 +17,7 @@ import org.terasology.logic.characters.CharacterHeldItemComponent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Rect2i;
+import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.interaction.component.WaterCupComponent;
 import org.terasology.metalrenegades.interaction.component.WellBlockComponent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
@@ -27,13 +27,14 @@ import org.terasology.metalrenegades.interaction.events.WellRefilledEvent;
 import org.terasology.registry.In;
 import org.terasology.thirst.component.ThirstComponent;
 import org.terasology.thirst.event.DrinkConsumedEvent;
+import org.terasology.world.block.BlockArea;
 import org.terasology.world.time.WorldTimeEvent;
 
 import java.util.stream.StreamSupport;
 
 /**
- * Tracks water source blocks inside of wells, fills player's water cups upon interaction, and empties
- * water cups upon consumption.
+ * Tracks water source blocks inside of wells, fills player's water cups upon interaction, and empties water cups upon
+ * consumption.
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class WellWaterSystem extends BaseComponentSystem {
@@ -106,8 +107,8 @@ public class WellWaterSystem extends BaseComponentSystem {
     }
 
     /**
-     * Fills a player's held empty cup with water. This is done by destroying the old cup entity, and giving the
-     * player a new cup entity.
+     * Fills a player's held empty cup with water. This is done by destroying the old cup entity, and giving the player
+     * a new cup entity.
      *
      * @param gatheringCharacter The player entity that is collecting water.
      * @param oldCup The old cup entity that the player is holding.
@@ -165,9 +166,9 @@ public class WellWaterSystem extends BaseComponentSystem {
     }
 
     /**
-     * Checks if a building entity contains a particular world location. Used to determine which well entity
-     * a water source block belongs to. The building area is considered infinite in the y-axis, only x and z
-     * coordinates are checked.
+     * Checks if a building entity contains a particular world location. Used to determine which well entity a water
+     * source block belongs to. The building area is considered infinite in the y-axis, only x and z coordinates are
+     * checked.
      *
      * @param building The dynamic cities building entity to check.
      * @param location The world position that will be checked.
@@ -175,7 +176,8 @@ public class WellWaterSystem extends BaseComponentSystem {
      */
     private boolean buildingContainsPosition(EntityRef building, Vector3i location) {
         DynParcelRefComponent dynParcelRefComponent = building.getComponent(DynParcelRefComponent.class);
-        Rect2i parcelRect = dynParcelRefComponent.dynParcel.getShape();
+        BlockArea parcelRect = new BlockArea(JomlUtil.from(dynParcelRefComponent.dynParcel.getShape().min()),
+                JomlUtil.from(dynParcelRefComponent.dynParcel.getShape().max()));
         return parcelRect.contains(location.x, location.z);
     }
 

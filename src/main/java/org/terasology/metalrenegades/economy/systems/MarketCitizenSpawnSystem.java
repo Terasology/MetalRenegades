@@ -1,18 +1,5 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.systems;
 
 import org.joml.Vector3f;
@@ -36,12 +23,13 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.math.geom.Rect2i;
+import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.economy.actions.ShowMarketScreenAction;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.registry.In;
 import org.terasology.utilities.Assets;
+import org.terasology.world.block.BlockArea;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -65,16 +53,17 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
 
             Optional<Prefab> traderGooeyOptional = Assets.getPrefab("MetalRenegades:marketCitizen");
             if (traderGooeyOptional.isPresent()) {
-                Rect2i rect2i = dynParcel.shape;
-                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 1,
-                    rect2i.minY() + rect2i.sizeY() / 2);
+                BlockArea area = new BlockArea(JomlUtil.from(dynParcel.getShape().min()), JomlUtil.from(dynParcel.getShape().max()));
+                Vector3f spawnPosition = new Vector3f(area.minX() + area.getSizeX() / 2, dynParcel.getHeight() + 1,
+                        area.minY() + area.getSizeY() / 2);
                 EntityRef trader = entityManager.create(traderGooeyOptional.get(), spawnPosition);
                 trader.send(new AddCharacterToOverlayEvent());
 
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 trader.addComponent(settlementRefComponent);
                 MarketComponent marketComponent = settlementRefComponent.settlement.getComponent(MarketComponent.class);
-                trader.addComponent(new StrayRestrictionComponent(dynParcel.getShape()));
+                BlockArea dynParcelShape = new BlockArea(JomlUtil.from(dynParcel.getShape().min()), JomlUtil.from(dynParcel.getShape().max()));
+                trader.addComponent(new StrayRestrictionComponent(dynParcelShape));
 
                 DialogComponent dialogComponent = new DialogComponent();
                 dialogComponent.pages = new ArrayList<>();
