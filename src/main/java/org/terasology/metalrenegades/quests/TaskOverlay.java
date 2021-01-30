@@ -7,7 +7,6 @@ import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.joml.geom.Rectanglei;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.minimap.overlays.MinimapOverlay;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.util.RectUtility;
@@ -31,7 +30,7 @@ public class TaskOverlay implements MinimapOverlay {
     @Override
     public void render(Canvas canvas, Rectanglei worldRect) {
 
-        Vector3f localPosition = JomlUtil.from(beaconEntity.getComponent(LocationComponent.class).getWorldPosition());
+        Vector3f localPosition = beaconEntity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
         Vector2i mapPoint = RectUtility.map(worldRect, canvas.getRegion(), new Vector2i((int) localPosition.x, (int) localPosition.y), new Vector2i());
         Vector2i min = clamp(mapPoint, canvas.getRegion());
 
