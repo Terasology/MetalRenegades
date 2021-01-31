@@ -221,7 +221,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
      * @return If the position is valid or not.
      */
     private boolean isValidSpawnPosition(Vector3i pos) {
-        if (!settlementEntityManager.checkOutsideAllSettlements(JomlUtil.from(new Vector2i(pos.x, pos.z)))) {
+        if (!settlementEntityManager.checkOutsideAllSettlements(new Vector2i(pos.x, pos.z))) {
             return false;
         }
 

@@ -3,6 +3,7 @@
 package org.terasology.metalrenegades.interaction.systems;
 
 import org.joml.RoundingMode;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
@@ -17,7 +18,6 @@ import org.terasology.logic.characters.CharacterHeldItemComponent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.events.GiveItemEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.interaction.component.WaterCupComponent;
 import org.terasology.metalrenegades.interaction.component.WellBlockComponent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
@@ -176,8 +176,8 @@ public class WellWaterSystem extends BaseComponentSystem {
      */
     private boolean buildingContainsPosition(EntityRef building, Vector3i location) {
         DynParcelRefComponent dynParcelRefComponent = building.getComponent(DynParcelRefComponent.class);
-        BlockArea parcelRect = new BlockArea(JomlUtil.from(dynParcelRefComponent.dynParcel.getShape().min()),
-                JomlUtil.from(dynParcelRefComponent.dynParcel.getShape().max()));
+        BlockArea parcelRect = new BlockArea(dynParcelRefComponent.dynParcel.getShape().getMin(new Vector2i()),
+                dynParcelRefComponent.dynParcel.getShape().getMax(new Vector2i()));
         return parcelRect.contains(location.x, location.z);
     }
 
