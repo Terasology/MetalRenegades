@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.quests;
 
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.terasology.dynamicCities.buildings.GenericBuildingComponent;
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
@@ -82,7 +83,7 @@ public class FetchQuestSystem extends BaseComponentSystem {
 
             Optional<Prefab> questPointOptional = Assets.getPrefab("Tasks:QuestPoint");
             if (questPointOptional.isPresent()) {
-                BlockArea area = new BlockArea(JomlUtil.from(dynParcel.getShape().min()), JomlUtil.from(dynParcel.getShape().max()));
+                BlockArea area = new BlockArea(dynParcel.getShape());
                 Vector3f spawnPosition = new Vector3f(area.minX() + area.getSizeX() / 2, dynParcel.getHeight() + 2, area.minY() + area.getSizeY() / 2);
                 EntityRef questPoint = entityManager.create(questPointOptional.get(), spawnPosition);
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);

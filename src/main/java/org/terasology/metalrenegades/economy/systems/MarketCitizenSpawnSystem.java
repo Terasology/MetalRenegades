@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.systems;
 
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,6 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.economy.actions.ShowMarketScreenAction;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
@@ -53,7 +53,7 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
 
             Optional<Prefab> traderGooeyOptional = Assets.getPrefab("MetalRenegades:marketCitizen");
             if (traderGooeyOptional.isPresent()) {
-                BlockArea area = new BlockArea(JomlUtil.from(dynParcel.getShape().min()), JomlUtil.from(dynParcel.getShape().max()));
+                BlockArea area = new BlockArea(dynParcel.getShape().getMin(new Vector2i()), dynParcel.getShape().getMax(new Vector2i()));
                 Vector3f spawnPosition = new Vector3f(area.minX() + area.getSizeX() / 2, dynParcel.getHeight() + 1,
                         area.minY() + area.getSizeY() / 2);
                 EntityRef trader = entityManager.create(traderGooeyOptional.get(), spawnPosition);
@@ -62,7 +62,7 @@ public class MarketCitizenSpawnSystem extends BaseComponentSystem {
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 trader.addComponent(settlementRefComponent);
                 MarketComponent marketComponent = settlementRefComponent.settlement.getComponent(MarketComponent.class);
-                BlockArea dynParcelShape = new BlockArea(JomlUtil.from(dynParcel.getShape().min()), JomlUtil.from(dynParcel.getShape().max()));
+                BlockArea dynParcelShape = new BlockArea(dynParcel.getShape().getMin(new Vector2i()), dynParcel.getShape().getMax(new Vector2i()));
                 trader.addComponent(new StrayRestrictionComponent(dynParcelShape));
 
                 DialogComponent dialogComponent = new DialogComponent();

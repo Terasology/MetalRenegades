@@ -3,6 +3,8 @@
 
 package org.terasology.metalrenegades.ai.actions;
 
+import org.joml.RoundingMode;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
@@ -34,7 +36,7 @@ public class InsideCityCheckAction extends BaseAction {
         LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
         Vector3fc pos = locationComponent.getWorldPosition(new Vector3f());
 
-        if (settlementEntityManager.checkOutsideAllSettlements(new org.terasology.math.geom.Vector2i(pos.x(), pos.z()))) {
+        if (settlementEntityManager.checkOutsideAllSettlements(new Vector2i(pos.x(), pos.z(), RoundingMode.FLOOR))) {
             return BehaviorState.FAILURE;
         }
 

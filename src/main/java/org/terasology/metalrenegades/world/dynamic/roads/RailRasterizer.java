@@ -12,7 +12,6 @@ import org.terasology.commonworld.heightmap.HeightMap;
 import org.terasology.dynamicCities.parcels.RoadParcel;
 import org.terasology.dynamicCities.rasterizer.RoadRasterizer;
 import org.terasology.dynamicCities.roads.RoadSegment;
-import org.terasology.math.JomlUtil;
 import org.terasology.math.Side;
 import org.terasology.minecarts.blocks.RailBlockFamily;
 import org.terasology.world.WorldProvider;
@@ -35,25 +34,25 @@ public class RailRasterizer extends RoadRasterizer {
     public void raster(RasterTarget rasterTarget, RoadSegment roadSegment, HeightMap heightMap) {
 
         // Draw rails from start to end
-        Vector2fc direction = JomlUtil.from(roadSegment.getRoadDirection());
+        Vector2fc direction = roadSegment.getRoadDirection();
 
-        Vector2i i = new Vector2i(JomlUtil.from(roadSegment.start));
+        Vector2i i = new Vector2i(roadSegment.start);
         i.add(new Vector2i(direction.mul(RoadParcel.OVERLAP, new Vector2f()), RoundingMode.FLOOR));
 
         do {
-            Vector3i pos = new Vector3i(i.x(), heightMap.apply(JomlUtil.from(i)) + 1, i.y());
+            Vector3i pos = new Vector3i(i.x(), heightMap.apply(i) + 1, i.y());
             placeRail(rasterTarget, pos);
             i.add(sgn(direction.x()), 0); // increment X to get to the next horizontal block
-        } while (roadSegment.rect.contains(JomlUtil.from(i)) && direction.x() != 0f);
+        } while (roadSegment.rect.contains(i) && direction.x() != 0f);
 
         i.sub(sgn(direction.x()), 0); // decrement to get back into the rect
         i.add(0, sgn(direction.y())); // increment Y now
 
         do {
-            Vector3i pos = new Vector3i(i.x(), heightMap.apply(JomlUtil.from(i)) + 1, i.y());
+            Vector3i pos = new Vector3i(i.x(), heightMap.apply(i) + 1, i.y());
             placeRail(rasterTarget, pos);
             i.add(0, sgn(direction.y()));
-        } while (roadSegment.rect.contains(JomlUtil.from(i)) && direction.y() != 0f);
+        } while (roadSegment.rect.contains(i) && direction.y() != 0f);
     }
 
     /**
