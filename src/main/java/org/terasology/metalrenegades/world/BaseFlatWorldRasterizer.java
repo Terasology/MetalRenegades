@@ -4,10 +4,10 @@ package org.terasology.metalrenegades.world;
 
 import org.joml.Vector3i;
 import org.joml.Vector3ic;
-import org.terasology.math.ChunkMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.chunks.Chunks;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
@@ -27,7 +27,7 @@ public class BaseFlatWorldRasterizer implements WorldRasterizer {
         for (Vector3ic position : chunkRegion.getRegion()) {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             if (position.y() < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, new Vector3i()), dirt);
+                chunk.setBlock(Chunks.toRelative(position, new Vector3i()), dirt);
             }
         }
     }

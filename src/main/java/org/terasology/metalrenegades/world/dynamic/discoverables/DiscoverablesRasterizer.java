@@ -7,12 +7,12 @@ import org.joml.Vector3ic;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.math.ChunkMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.components.SpawnBlockRegionsComponent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.chunks.Chunks;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
@@ -74,7 +74,7 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
                 for (Vector3ic pos : regionToFill.region) {
                     value.set(pos).add(structurePosition);
                     if (chunkRegion.getRegion().contains(value)) {
-                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(value, new Vector3i()), block);
+                        chunk.setBlock(Chunks.toRelative(value, new Vector3i()), block);
                     }
                 }
             }
