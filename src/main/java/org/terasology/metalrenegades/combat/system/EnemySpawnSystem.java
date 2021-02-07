@@ -21,7 +21,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.metalrenegades.combat.component.NightEnemyComponent;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.metalrenegades.minimap.events.RemoveCharacterFromOverlayEvent;
@@ -32,7 +31,7 @@ import org.terasology.utilities.random.Random;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.ChunkConstants;
+import org.terasology.world.chunks.Chunks;
 import org.terasology.world.chunks.event.BeforeChunkUnload;
 import org.terasology.world.chunks.event.OnChunkLoaded;
 import org.terasology.world.sun.OnDawnEvent;
@@ -191,9 +190,9 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         }
 
         Vector3i chunkPosition = chunkPositions.get(random.nextInt(chunkPositions.size()));
-        Vector3i chunkWorldPosition = chunkPosition.mul(ChunkConstants.SIZE_X, ChunkConstants.SIZE_Y, ChunkConstants.SIZE_Z);
-        Vector2i randomColumn = new Vector2i(chunkWorldPosition.x + random.nextInt(ChunkConstants.SIZE_X),
-                chunkWorldPosition.z + random.nextInt(ChunkConstants.SIZE_Z));
+        Vector3i chunkWorldPosition = chunkPosition.mul(Chunks.SIZE_X, Chunks.SIZE_Y, Chunks.SIZE_Z);
+        Vector2i randomColumn = new Vector2i(chunkWorldPosition.x + random.nextInt(Chunks.SIZE_X),
+                chunkWorldPosition.z + random.nextInt(Chunks.SIZE_Z));
 
         if (!worldProvider.isBlockRelevant(chunkWorldPosition)) {
             // 2nd line of defense in case chunk load/unload events are skipped.
@@ -202,7 +201,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
             return null;
         }
 
-        for (int y = chunkWorldPosition.y - ChunkConstants.SIZE_Y; y < chunkWorldPosition.y + ChunkConstants.SIZE_Y; y++) {
+        for (int y = chunkWorldPosition.y - Chunks.SIZE_Y; y < chunkWorldPosition.y + Chunks.SIZE_Y; y++) {
             Vector3i possiblePosition = new Vector3i(randomColumn.x, y, randomColumn.y);
             if (isValidSpawnPosition(possiblePosition)) {
                 return possiblePosition;
