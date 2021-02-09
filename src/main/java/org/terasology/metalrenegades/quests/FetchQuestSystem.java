@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.quests;
 
-import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.terasology.dynamicCities.buildings.GenericBuildingComponent;
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
@@ -21,7 +20,6 @@ import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.nameTags.NameTagComponent;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.JomlUtil;
 import org.terasology.network.ClientComponent;
 import org.terasology.nui.Color;
 import org.terasology.registry.In;
