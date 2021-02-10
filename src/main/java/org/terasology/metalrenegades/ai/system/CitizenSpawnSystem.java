@@ -95,9 +95,11 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
      */
     private EntityRef spawnCitizen(EntityRef homeEntity) {
         SettlementRefComponent settlementRefComponent = homeEntity.getComponent(SettlementRefComponent.class);
-        FactionAlignmentComponent settlementAlignmentComponent = settlementRefComponent.settlement.getComponent(FactionAlignmentComponent.class);
+        FactionAlignmentComponent settlementAlignmentComponent =
+                settlementRefComponent.settlement.getComponent(FactionAlignmentComponent.class);
 
-        EntityBuilder entityBuilder = entityManager.newBuilder(citizenAlignmentSystem.getPrefab(settlementAlignmentComponent.alignment));
+        EntityBuilder entityBuilder =
+                entityManager.newBuilder(citizenAlignmentSystem.getPrefab(settlementAlignmentComponent.alignment));
 
         LocationComponent homeLocationComponent = homeEntity.getComponent(LocationComponent.class);
         LocationComponent citizenLocationComponent = entityBuilder.getComponent(LocationComponent.class);
@@ -117,7 +119,7 @@ public class CitizenSpawnSystem extends BaseComponentSystem implements UpdateSub
             setupStartInventory(entityRef);
         }
 
-        entityRef.send(new CitizenSpawnedEvent());
+        entityRef.send(new CitizenSpawnedEvent(settlementRefComponent.settlement));
 
         return entityRef;
     }
