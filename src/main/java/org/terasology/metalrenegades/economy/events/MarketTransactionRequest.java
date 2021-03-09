@@ -3,9 +3,9 @@
 
 package org.terasology.metalrenegades.economy.events;
 
-import org.terasology.entitySystem.event.Event;
+import org.terasology.engine.entitySystem.event.Event;
+import org.terasology.engine.network.ServerEvent;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
-import org.terasology.network.ServerEvent;
 
 /**
  * A client-to-server event which requests the transaction of a particular item.

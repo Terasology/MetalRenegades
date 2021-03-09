@@ -16,16 +16,16 @@ import org.terasology.dynamicCities.sites.SiteFacetProvider;
 import org.terasology.dynamicCities.world.SolidRasterizer;
 import org.terasology.dynamicCities.world.TreeRasterizer;
 import org.terasology.dynamicCities.world.trees.DefaultTreeProvider;
-import org.terasology.engine.SimpleUri;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
+import org.terasology.engine.world.generation.WorldBuilder;
+import org.terasology.engine.world.generator.RegisterWorldGenerator;
+import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
 import org.terasology.metalrenegades.world.SimplexHillsAndMountainsProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesRasterizer;
 import org.terasology.oreGeneration.generation.OreRasterizer;
-import org.terasology.registry.In;
-import org.terasology.world.generation.BaseFacetedWorldGenerator;
-import org.terasology.world.generation.WorldBuilder;
-import org.terasology.world.generator.RegisterWorldGenerator;
-import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
 @RegisterWorldGenerator(id = "dynamicWorld", displayName = "Dynamic World")
 public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {

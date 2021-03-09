@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.actions;
 
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.registry.In;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 import org.terasology.metalrenegades.ai.component.SimpleSourceComponent;
-import org.terasology.registry.In;
 
 /**
  * Adds a social component to this citizen, indicating that it is ready for a social meeting.

@@ -5,15 +5,15 @@ package org.terasology.metalrenegades.combat.system;
 import org.joml.Vector2i;
 import org.joml.Vector3i;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.registry.In;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
 import org.terasology.wildAnimals.AnimalSpawnConfig;
 import org.terasology.wildAnimals.system.WildAnimalsSpawnSystem;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class AnimalSpawnSystem extends BaseComponentSystem {

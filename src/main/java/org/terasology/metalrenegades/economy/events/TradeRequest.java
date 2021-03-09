@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.events;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.Event;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.Event;
+import org.terasology.engine.network.ServerEvent;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
-import org.terasology.network.ServerEvent;
 
 /**
  * A client-server request to initiate a trade between a player and an NPC character.

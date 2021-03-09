@@ -3,9 +3,9 @@
 package org.terasology.metalrenegades.ai.component;
 
 import com.google.common.collect.Lists;
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.network.Replicate;
 import org.terasology.metalrenegades.ai.CitizenNeed;
-import org.terasology.network.Replicate;
 
 import java.util.List;
 

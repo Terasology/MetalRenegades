@@ -8,13 +8,13 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
 
 /**
  * Checks if a character currently within the bounds of a city or not. Succeeds if the character is inside a city,

@@ -3,14 +3,14 @@
 package org.terasology.metalrenegades.ai.actions;
 
 import org.terasology.behaviors.components.FollowComponent;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.behavior.BehaviorAction;
-import org.terasology.logic.behavior.core.Actor;
-import org.terasology.logic.behavior.core.BaseAction;
-import org.terasology.logic.behavior.core.BehaviorState;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.behavior.BehaviorAction;
+import org.terasology.engine.logic.behavior.core.Actor;
+import org.terasology.engine.logic.behavior.core.BaseAction;
+import org.terasology.engine.logic.behavior.core.BehaviorState;
+import org.terasology.engine.registry.In;
 import org.terasology.metalrenegades.ai.component.SimpleSourceComponent;
-import org.terasology.registry.In;
 
 /**
  * Prepares this citizen and the determined target citizen for a meeting.

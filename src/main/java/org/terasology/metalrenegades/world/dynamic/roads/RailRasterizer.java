@@ -12,10 +12,10 @@ import org.terasology.commonworld.heightmap.HeightMap;
 import org.terasology.dynamicCities.parcels.RoadParcel;
 import org.terasology.dynamicCities.rasterizer.RoadRasterizer;
 import org.terasology.dynamicCities.roads.RoadSegment;
-import org.terasology.math.Side;
+import org.terasology.engine.math.Side;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.family.BlockFamily;
 import org.terasology.minecarts.blocks.RailBlockFamily;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.family.BlockFamily;
 
 import java.util.HashSet;
 import java.util.Set;
