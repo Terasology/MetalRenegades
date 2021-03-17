@@ -11,7 +11,7 @@ import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.common.DisplayNameComponent;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.rendering.assets.texture.TextureRegionAsset;
-import org.terasology.engine.rendering.nui.layers.ingame.inventory.GetItemTooltip;
+import org.terasology.module.inventory.ui.GetItemTooltip;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.NeedsComponent;
 import org.terasology.nui.widgets.TooltipLine;
