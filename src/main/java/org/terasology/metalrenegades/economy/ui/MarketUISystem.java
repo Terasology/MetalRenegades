@@ -4,7 +4,7 @@ package org.terasology.metalrenegades.economy.ui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.assets.ResourceUrn;
+import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.economy.events.MarketInfoClientRequestEvent;
 import org.terasology.economy.events.MarketInfoClientResponseEvent;
 import org.terasology.engine.entitySystem.entity.EntityManager;
