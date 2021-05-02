@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.system;
 
-import org.terasology.assets.management.AssetManager;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.dynamicCities.settlements.events.SettlementRegisterEvent;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
