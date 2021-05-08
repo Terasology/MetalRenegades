@@ -20,6 +20,10 @@
         "currentHealth": 30,
         "maxHealth": 30
     },
+    "BaseRegen": {
+        "regenRate": 1,
+        "waitBeforeRegen": 10
+    },
     "BoxShape": {
         "extents": [
             1.0,
