@@ -1,37 +1,40 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.interaction.systems;
 
+import org.joml.RoundingMode;
+import org.joml.Vector2i;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.characters.CharacterHeldItemComponent;
-import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.inventory.events.GiveItemEvent;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.engine.core.Time;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.characters.CharacterHeldItemComponent;
+import org.terasology.engine.logic.common.ActivateEvent;
+import org.terasology.engine.logic.inventory.events.GiveItemEvent;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.BlockArea;
+import org.terasology.engine.world.time.WorldTimeEvent;
 import org.terasology.metalrenegades.interaction.component.WaterCupComponent;
 import org.terasology.metalrenegades.interaction.component.WellBlockComponent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
 import org.terasology.metalrenegades.interaction.events.CupFilledEvent;
 import org.terasology.metalrenegades.interaction.events.WellDrinkEvent;
 import org.terasology.metalrenegades.interaction.events.WellRefilledEvent;
-import org.terasology.registry.In;
 import org.terasology.thirst.component.ThirstComponent;
 import org.terasology.thirst.event.DrinkConsumedEvent;
-import org.terasology.world.time.WorldTimeEvent;
 
 import java.util.stream.StreamSupport;
 
 /**
- * Tracks water source blocks inside of wells, fills player's water cups upon interaction, and empties
- * water cups upon consumption.
+ * Tracks water source blocks inside of wells, fills player's water cups upon interaction, and empties water cups upon
+ * consumption.
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class WellWaterSystem extends BaseComponentSystem {
@@ -104,8 +107,8 @@ public class WellWaterSystem extends BaseComponentSystem {
     }
 
     /**
-     * Fills a player's held empty cup with water. This is done by destroying the old cup entity, and giving the
-     * player a new cup entity.
+     * Fills a player's held empty cup with water. This is done by destroying the old cup entity, and giving the player
+     * a new cup entity.
      *
      * @param gatheringCharacter The player entity that is collecting water.
      * @param oldCup The old cup entity that the player is holding.
@@ -154,7 +157,7 @@ public class WellWaterSystem extends BaseComponentSystem {
      */
     private EntityRef getWellEntity(EntityRef sourceBlock) {
         LocationComponent blockLocComp = sourceBlock.getComponent(LocationComponent.class);
-        Vector3i blockLocation = new Vector3i(blockLocComp.getWorldPosition());
+        Vector3i blockLocation = new Vector3i(blockLocComp.getWorldPosition(new Vector3f()), RoundingMode.FLOOR);
 
         return StreamSupport.stream(entityManager.getEntitiesWith(WellSourceComponent.class).spliterator(), false)
                 .filter(wellEntity -> buildingContainsPosition(wellEntity, blockLocation))
@@ -163,9 +166,9 @@ public class WellWaterSystem extends BaseComponentSystem {
     }
 
     /**
-     * Checks if a building entity contains a particular world location. Used to determine which well entity
-     * a water source block belongs to. The building area is considered infinite in the y-axis, only x and z
-     * coordinates are checked.
+     * Checks if a building entity contains a particular world location. Used to determine which well entity a water
+     * source block belongs to. The building area is considered infinite in the y-axis, only x and z coordinates are
+     * checked.
      *
      * @param building The dynamic cities building entity to check.
      * @param location The world position that will be checked.
@@ -173,7 +176,8 @@ public class WellWaterSystem extends BaseComponentSystem {
      */
     private boolean buildingContainsPosition(EntityRef building, Vector3i location) {
         DynParcelRefComponent dynParcelRefComponent = building.getComponent(DynParcelRefComponent.class);
-        Rect2i parcelRect = dynParcelRefComponent.dynParcel.getShape();
+        BlockArea parcelRect = new BlockArea(dynParcelRefComponent.dynParcel.getShape().getMin(new Vector2i()),
+                dynParcelRefComponent.dynParcel.getShape().getMax(new Vector2i()));
         return parcelRect.contains(location.x, location.z);
     }
 

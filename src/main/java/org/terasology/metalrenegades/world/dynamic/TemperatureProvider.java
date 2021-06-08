@@ -1,18 +1,17 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic;
 
 import org.joml.Vector2f;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.PerlinNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.facets.SurfaceTemperatureFacet;
+import org.joml.Vector2ic;
+import org.terasology.engine.utilities.procedural.BrownianNoise;
+import org.terasology.engine.utilities.procedural.PerlinNoise;
+import org.terasology.engine.utilities.procedural.SubSampledNoise;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.facets.SurfaceTemperatureFacet;
 
 @Produces(SurfaceTemperatureFacet.class)
 public class TemperatureProvider implements FacetProvider {
@@ -37,8 +36,7 @@ public class TemperatureProvider implements FacetProvider {
         SurfaceTemperatureFacet facet = new SurfaceTemperatureFacet(region.getRegion(), border);
 
         // TODO: Set temperature
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position: processRegion.contents()) {
+        for (Vector2ic position: facet.getWorldArea()) {
             double temp = getRandomTemp(position);
             facet.setWorld(position, (float) temp);
         }
@@ -50,7 +48,7 @@ public class TemperatureProvider implements FacetProvider {
         return 0;
     }
 
-    private double getRandomTemp(BaseVector2i pos) {
+    private double getRandomTemp(Vector2ic pos) {
 //        float sumOfWeights = 10; // TODO
 //        Random random = new Random();
 ////        float f = random.nextFloat() * sumOfWeights;

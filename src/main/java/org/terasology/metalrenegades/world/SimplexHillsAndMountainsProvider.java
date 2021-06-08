@@ -1,23 +1,23 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world;
 
 import org.joml.Vector2f;
-import org.terasology.entitySystem.Component;
+import org.joml.Vector2ic;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.utilities.procedural.BrownianNoise;
+import org.terasology.engine.utilities.procedural.SimplexNoise;
+import org.terasology.engine.utilities.procedural.SubSampledNoise;
+import org.terasology.engine.world.generation.ConfigurableFacetProvider;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.Updates;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.engine.world.generation.facets.SurfaceTemperatureFacet;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.BaseVector2i;
 import org.terasology.nui.properties.Range;
-import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.ConfigurableFacetProvider;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Requires;
-import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generation.facets.SurfaceHumidityFacet;
-import org.terasology.world.generation.facets.SurfaceTemperatureFacet;
 
 import java.util.Iterator;
 
@@ -47,15 +47,15 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
     public void process(GeneratingRegion region) {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
 
-        float[] mountainData = mountainNoise.noise(facet.getWorldRegion());
-        float[] hillData = hillNoise.noise(facet.getWorldRegion());
+        float[] mountainData = mountainNoise.noise(facet.getWorldArea());
+        float[] hillData = hillNoise.noise(facet.getWorldArea());
         SurfaceTemperatureFacet temperatureData = region.getRegionFacet(SurfaceTemperatureFacet.class);
         SurfaceHumidityFacet humidityData = region.getRegionFacet(SurfaceHumidityFacet.class);
 
         float[] heightData = facet.getInternal();
-        Iterator<BaseVector2i> positionIterator = facet.getRelativeRegion().contents().iterator();
+        Iterator<Vector2ic> positionIterator = facet.getRelativeArea().iterator();
         for (int i = 0; i < heightData.length; ++i) {
-            BaseVector2i pos = positionIterator.next();
+            Vector2ic pos = positionIterator.next();
             float temp = temperatureData.get(pos);
             float tempHumid = temp * humidityData.get(pos);
             Vector2f distanceToMountainBiome = new Vector2f(temp - 0.25f, tempHumid - 0.35f);

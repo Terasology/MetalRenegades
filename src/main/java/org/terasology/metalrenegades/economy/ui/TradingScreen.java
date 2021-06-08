@@ -1,17 +1,17 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.ui;
 
-import org.terasology.logic.players.LocalPlayer;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.nui.CoreScreenLayer;
+import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.metalrenegades.economy.events.TradeRequest;
 import org.terasology.nui.databinding.ReadOnlyBinding;
 import org.terasology.nui.itemRendering.StringTextRenderer;
 import org.terasology.nui.widgets.UIButton;
 import org.terasology.nui.widgets.UILabel;
 import org.terasology.nui.widgets.UIList;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.CoreScreenLayer;
-import org.terasology.rendering.nui.NUIManager;
 
 import java.util.ArrayList;
 import java.util.List;

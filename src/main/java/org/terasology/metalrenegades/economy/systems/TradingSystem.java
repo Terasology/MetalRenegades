@@ -1,28 +1,28 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.systems;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.assets.ResourceUrn;
-import org.terasology.assets.management.AssetManager;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.events.GiveItemEvent;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.module.inventory.systems.InventoryManager;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.logic.inventory.events.GiveItemEvent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.entity.BlockCommands;
+import org.terasology.engine.world.block.items.BlockItemComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.economy.events.TradeRequest;
 import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
-import org.terasology.registry.In;
-import org.terasology.world.block.entity.BlockCommands;
-import org.terasology.world.block.items.BlockItemComponent;
 
 import java.util.Random;
 import java.util.Set;

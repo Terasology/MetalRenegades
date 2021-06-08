@@ -1,21 +1,21 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
 import org.joml.Vector3i;
 import org.joml.Vector3ic;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.math.ChunkMath;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.prefab.PrefabManager;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.Chunk;
+import org.terasology.engine.world.chunks.Chunks;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.generation.WorldRasterizer;
 import org.terasology.structureTemplates.components.SpawnBlockRegionsComponent;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.WorldRasterizer;
 
 import java.util.Map;
 import java.util.Objects;
@@ -48,7 +48,7 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         DiscoverablesFacet discoverablesFacet = chunkRegion.getFacet(DiscoverablesFacet.class);
 
         for (Map.Entry<Vector3ic, DiscoverableLocation> entry : discoverablesFacet.getWorldEntries().entrySet()) {
@@ -74,7 +74,7 @@ public class DiscoverablesRasterizer implements WorldRasterizer {
                 for (Vector3ic pos : regionToFill.region) {
                     value.set(pos).add(structurePosition);
                     if (chunkRegion.getRegion().contains(value)) {
-                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(value, new Vector3i()), block);
+                        chunk.setBlock(Chunks.toRelative(value, new Vector3i()), block);
                     }
                 }
             }

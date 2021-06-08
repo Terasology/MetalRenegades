@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.component;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 
 /**

@@ -1,15 +1,15 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world;
 
 
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
-import org.terasology.engine.SimpleUri;
-import org.terasology.registry.In;
-import org.terasology.world.generation.BaseFacetedWorldGenerator;
-import org.terasology.world.generation.WorldBuilder;
-import org.terasology.world.generator.RegisterWorldGenerator;
-import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
+import org.terasology.engine.world.generation.WorldBuilder;
+import org.terasology.engine.world.generator.RegisterWorldGenerator;
+import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
 
 @RegisterWorldGenerator(id = "baseFlatWorld", displayName = "Base Flat World")
 public class BaseFlatWorldGenerator extends BaseFacetedWorldGenerator {

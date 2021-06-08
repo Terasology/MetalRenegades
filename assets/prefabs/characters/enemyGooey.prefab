@@ -72,6 +72,10 @@
     "currentHealth": 50,
     "destroyEntityOnNoHealth": true
   },
+  "BaseRegen": {
+    "regenRate": 2,
+    "waitBeforeRegen": 10
+  },
   "BoxShape": {
     "extents": [
       1.5,

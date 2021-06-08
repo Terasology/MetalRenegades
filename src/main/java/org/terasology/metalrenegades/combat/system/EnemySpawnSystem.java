@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 
 package org.terasology.metalrenegades.combat.system;
@@ -12,30 +12,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.behaviors.system.NightTrackerSystem;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.utilities.random.FastRandom;
+import org.terasology.engine.utilities.random.Random;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.Chunks;
+import org.terasology.engine.world.chunks.event.BeforeChunkUnload;
+import org.terasology.engine.world.chunks.event.OnChunkLoaded;
+import org.terasology.engine.world.sun.OnDawnEvent;
 import org.terasology.metalrenegades.combat.component.NightEnemyComponent;
 import org.terasology.metalrenegades.minimap.events.AddCharacterToOverlayEvent;
 import org.terasology.metalrenegades.minimap.events.RemoveCharacterFromOverlayEvent;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
-import org.terasology.utilities.random.FastRandom;
-import org.terasology.utilities.random.Random;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.ChunkConstants;
-import org.terasology.world.chunks.event.BeforeChunkUnload;
-import org.terasology.world.chunks.event.OnChunkLoaded;
-import org.terasology.world.sun.OnDawnEvent;
 
 import java.util.List;
 import java.util.Queue;
@@ -160,7 +159,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
 
     @ReceiveEvent
     public void chunkLoadedEvent(OnChunkLoaded event, EntityRef entity) {
-        chunkPositions.add(JomlUtil.from(event.getChunkPos()));
+        chunkPositions.add(new Vector3i(event.getChunkPos()));
     }
 
     @ReceiveEvent
@@ -191,9 +190,9 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
         }
 
         Vector3i chunkPosition = chunkPositions.get(random.nextInt(chunkPositions.size()));
-        Vector3i chunkWorldPosition = chunkPosition.mul(ChunkConstants.SIZE_X, ChunkConstants.SIZE_Y, ChunkConstants.SIZE_Z);
-        Vector2i randomColumn = new Vector2i(chunkWorldPosition.x + random.nextInt(ChunkConstants.SIZE_X),
-                chunkWorldPosition.z + random.nextInt(ChunkConstants.SIZE_Z));
+        Vector3i chunkWorldPosition = chunkPosition.mul(Chunks.SIZE_X, Chunks.SIZE_Y, Chunks.SIZE_Z);
+        Vector2i randomColumn = new Vector2i(chunkWorldPosition.x + random.nextInt(Chunks.SIZE_X),
+                chunkWorldPosition.z + random.nextInt(Chunks.SIZE_Z));
 
         if (!worldProvider.isBlockRelevant(chunkWorldPosition)) {
             // 2nd line of defense in case chunk load/unload events are skipped.
@@ -202,7 +201,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
             return null;
         }
 
-        for (int y = chunkWorldPosition.y - ChunkConstants.SIZE_Y; y < chunkWorldPosition.y + ChunkConstants.SIZE_Y; y++) {
+        for (int y = chunkWorldPosition.y - Chunks.SIZE_Y; y < chunkWorldPosition.y + Chunks.SIZE_Y; y++) {
             Vector3i possiblePosition = new Vector3i(randomColumn.x, y, randomColumn.y);
             if (isValidSpawnPosition(possiblePosition)) {
                 return possiblePosition;
@@ -221,7 +220,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
      * @return If the position is valid or not.
      */
     private boolean isValidSpawnPosition(Vector3i pos) {
-        if (!settlementEntityManager.checkOutsideAllSettlements(JomlUtil.from(new Vector2i(pos.x, pos.z)))) {
+        if (!settlementEntityManager.checkOutsideAllSettlements(new Vector2i(pos.x, pos.z))) {
             return false;
         }
 
