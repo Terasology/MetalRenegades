@@ -25,6 +25,8 @@ import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
 import org.terasology.metalrenegades.world.SimplexHillsAndMountainsProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesRasterizer;
+import org.terasology.metalrenegades.world.rivers.RiverProvider;
+import org.terasology.metalrenegades.world.rivers.RiverToElevationProvider;
 import org.terasology.oreGeneration.generation.OreRasterizer;
 
 @RegisterWorldGenerator(id = "dynamicWorld", displayName = "Dynamic World")
@@ -45,8 +47,10 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SurfaceProvider())
                 .addProvider(new HumidityProvider())
                 .addProvider(new TemperatureProvider())
-                .addProvider(new SurfaceToDensityProvider())
+                .addProvider(new RiverProvider())
                 .addProvider(new SimplexHillsAndMountainsProvider())
+                .addProvider(new RiverToElevationProvider())
+                .addProvider(new SurfaceToDensityProvider())
                 .addProvider(new SimplexRoughnessProvider())
                 .addProvider(new BiomeProvider())
                 .addProvider(new DefaultFloraProvider())
