@@ -22,10 +22,10 @@ public class AddSocialComponentAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        SimpleSourceComponent socialSourceComponent = new SimpleSourceComponent(CitizenNeed.Type.SOCIAL);
+        SimpleSourceComponent socialSourceComponent = new SimpleSourceComponent();
+        socialSourceComponent.needType = CitizenNeed.Type.SOCIAL;
         actor.getEntity().addComponent(socialSourceComponent);
 
         return BehaviorState.SUCCESS;
     }
-
 }

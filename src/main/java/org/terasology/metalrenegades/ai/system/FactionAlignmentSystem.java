@@ -56,7 +56,8 @@ public class FactionAlignmentSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onSettlementRegisterEvent(SettlementRegisterEvent buildingEntitySpawnedEvent, EntityRef entityRef) {
-        entityRef.addComponent(new FactionAlignmentComponent(Alignment.values()[(int) (Math.random() * Alignment.values().length)]));
+        FactionAlignmentComponent factionAlignmentComponent = new FactionAlignmentComponent();
+        factionAlignmentComponent.alignment = Alignment.values()[(int) (Math.random() * Alignment.values().length)];
+        entityRef.addComponent(factionAlignmentComponent);
     }
-
 }

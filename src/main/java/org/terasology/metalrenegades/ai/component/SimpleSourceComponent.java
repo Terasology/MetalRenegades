@@ -9,15 +9,5 @@ import org.terasology.metalrenegades.ai.CitizenNeed;
  * Inidicates an entity that can act as a simple need source.
  */
 public class SimpleSourceComponent implements Component {
-
     public CitizenNeed.Type needType;
-
-    public SimpleSourceComponent(CitizenNeed.Type needType) {
-        this.needType = needType;
-    }
-
-    public SimpleSourceComponent() {
-        this.needType = null;
-    }
-
 }

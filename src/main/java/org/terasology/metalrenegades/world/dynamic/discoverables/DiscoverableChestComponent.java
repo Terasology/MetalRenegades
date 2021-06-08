@@ -10,6 +10,4 @@ import org.terasology.engine.entitySystem.Component;
  */
 public class DiscoverableChestComponent implements Component {
 
-    public DiscoverableChestComponent() { }
-
 }
