@@ -34,7 +34,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
             float riverFac = TeraMath.clamp(riversData[i]);
             float riverBedElevation = seaLevel - rivers.maxDepth * (riversData[i] * 4 - 3);
             surfaceHeights[i] = surfaceHeights[i] * (1 - riverFac) + riverBedElevation * riverFac;
-            humidityData[i] += Math.max(0, 0.2 * (seaLevel - riverBedElevation + 10));
+            humidityData[i] += Math.max(0, 0.1 * (seaLevel - riverBedElevation + 7) * riverFac);
         }
     }
 
