@@ -1,9 +1,9 @@
 {
     "id": "MetalRenegades",
     "version": "1.1.0-SNAPSHOT",
-    "author": "Wabadump & AndyTechGuy",
+    "author": "The Terasology Foundation",
     "displayName": "Metal Renegades",
-    "description": "A harsh western world with a robotic twist. A student project for GSOC 2019.",
+    "description": "A harsh western world with a robotic twist.",
     "dependencies": [
         {
             "id": "AdditionalFruits",
