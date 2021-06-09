@@ -3,7 +3,6 @@
 package org.terasology.metalrenegades.world;
 
 import org.joml.Vector2f;
-import org.joml.Vector2ic;
 import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
@@ -11,36 +10,37 @@ import org.terasology.engine.utilities.procedural.SubSampledNoise;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
-import org.terasology.engine.world.generation.Requires;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
-import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
-import org.terasology.engine.world.generation.facets.SurfaceTemperatureFacet;
-import org.terasology.math.TeraMath;
 import org.terasology.nui.properties.Range;
 
-import java.util.Iterator;
-
 /**
- * Adds surface height for hill and mountain regions. Mountain and hill regions are based off of temperature and humidity.
+ * Adds surface height for hill and mountain regions.
  *
  * This was moved to MetalRenegades from CoreWorlds because the CoreWorlds generator no longer needs it.
  * It would be good to refactor this away at some point, to bring the MetalRenegades world generator
  * more in line with the CoreWorlds one.
  */
-@Requires({@Facet(SurfaceTemperatureFacet.class), @Facet(SurfaceHumidityFacet.class)})
 @Updates(@Facet(ElevationFacet.class))
 public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvider {
 
     private SubSampledNoise mountainNoise;
     private SubSampledNoise hillNoise;
-    private SimplexHillsAndMountainsProviderConfiguration configuration = new SimplexHillsAndMountainsProviderConfiguration();
+    private SubSampledNoise mountainIntensityNoise;
+    private SimplexHillsAndMountainsProviderConfiguration configuration =
+            new SimplexHillsAndMountainsProviderConfiguration();
 
     @Override
     public void setSeed(long seed) {
-        // TODO: reduce the number of octaves in BrownianNoise
-        mountainNoise = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 3)), new Vector2f(0.0002f, 0.0002f), 4);
-        hillNoise = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 4)), new Vector2f(0.0008f, 0.0008f), 4);
+        mountainNoise = new SubSampledNoise(
+                new BrownianNoise(new SimplexNoise(seed + 3), 8),
+                new Vector2f(0.0005f, 0.0005f), 4);
+        hillNoise = new SubSampledNoise(
+                new BrownianNoise(new SimplexNoise(seed + 4), 6),
+                new Vector2f(0.0008f, 0.0008f), 4);
+        mountainIntensityNoise = new SubSampledNoise(
+                new BrownianNoise(new SimplexNoise(seed + 5), 4),
+                new Vector2f(0.00005f, 0.00005f), 4);
     }
 
     @Override
@@ -49,21 +49,16 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
 
         float[] mountainData = mountainNoise.noise(facet.getWorldArea());
         float[] hillData = hillNoise.noise(facet.getWorldArea());
-        SurfaceTemperatureFacet temperatureData = region.getRegionFacet(SurfaceTemperatureFacet.class);
-        SurfaceHumidityFacet humidityData = region.getRegionFacet(SurfaceHumidityFacet.class);
+        float[] mountainIntensityData = mountainIntensityNoise.noise(facet.getWorldArea());
 
         float[] heightData = facet.getInternal();
-        Iterator<Vector2ic> positionIterator = facet.getRelativeArea().iterator();
         for (int i = 0; i < heightData.length; ++i) {
-            Vector2ic pos = positionIterator.next();
-            float temp = temperatureData.get(pos);
-            float tempHumid = temp * humidityData.get(pos);
-            Vector2f distanceToMountainBiome = new Vector2f(temp - 0.25f, tempHumid - 0.35f);
-            float mIntens = TeraMath.clamp(1.0f - distanceToMountainBiome.length() * 3.0f);
-            float densityMountains = Math.max(mountainData[i] * 2.12f, 0) * mIntens * configuration.mountainAmplitude;
-            float densityHills = Math.max(hillData[i] * 2.12f - 0.1f, 0) * (1.0f - mIntens) * configuration.hillAmplitude;
+            float mountainIntensity = mountainIntensityData[i] * 0.5f + 0.5f;
+            float densityMountains = Math.max(mountainData[i] * 2.12f, 0) * mountainIntensity * configuration.mountainAmplitude;
+            float densityHills =
+                    Math.max(hillData[i] * 2.12f - 0.1f, 0) * (1.0f - mountainIntensity) * configuration.hillAmplitude;
 
-            heightData[i] = heightData[i] + 1024 * densityMountains + 128 * densityHills;
+            heightData[i] = heightData[i] + 256 * densityMountains + 64 * densityHills;
         }
     }
 
