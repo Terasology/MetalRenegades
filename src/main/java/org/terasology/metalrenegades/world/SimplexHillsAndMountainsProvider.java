@@ -49,14 +49,14 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
 
         float[] mountainData = mountainNoise.noise(facet.getWorldArea());
         float[] hillData = hillNoise.noise(facet.getWorldArea());
-        float[] mIntensData = mountainIntensityNoise.noise(facet.getWorldArea());
+        float[] mountainIntensityData = mountainIntensityNoise.noise(facet.getWorldArea());
 
         float[] heightData = facet.getInternal();
         for (int i = 0; i < heightData.length; ++i) {
-            float mIntens = mIntensData[i] * 0.5f + 0.5f;
-            float densityMountains = Math.max(mountainData[i] * 2.12f, 0) * mIntens * configuration.mountainAmplitude;
+            float mountainIntensity = mountainIntensityData[i] * 0.5f + 0.5f;
+            float densityMountains = Math.max(mountainData[i] * 2.12f, 0) * mountainIntensity * configuration.mountainAmplitude;
             float densityHills =
-                    Math.max(hillData[i] * 2.12f - 0.1f, 0) * (1.0f - mIntens) * configuration.hillAmplitude;
+                    Math.max(hillData[i] * 2.12f - 0.1f, 0) * (1.0f - mountainIntensity) * configuration.hillAmplitude;
 
             heightData[i] = heightData[i] + 256 * densityMountains + 64 * densityHills;
         }
