@@ -41,4 +41,4 @@ The `RoadManager` passes this rasterizer to the `Construction` system in Dynamic
 
 The `RailRasterizer` creates rails in a zig-zag fashion and lays down rails on two adjacent sides of the provided road segments, something like in the diagram below, which leads to some inconsistencies at segment borders.
 
-<fig src="/_media/rail-rasterizer.png" alt="Mapping of rail blocks to road segements">Mapping of rail blocks to road segements.</fig>
+<fig src="_media/rail-rasterizer.png" alt="Mapping of rail blocks to road segements">Mapping of rail blocks to road segements.</fig>

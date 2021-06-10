@@ -12,13 +12,13 @@ For more control you could use the advanced game setup flow if you wish to use o
   These cities contain a variety of buildings, including regular homes, marketplaces, churches, etc.
   The settlements are dynamic and evolve over time.
 
-  <fig src="/_media/city.png" alt="A city in the desert">The city of Kinhey in the desert.</fig> 
+  <fig src="_media/city.png" alt="A city in the desert">The city of Kinhey in the desert.</fig> 
 
   All the settlements are home to NPCs.
   You may see the citizens of the town roaming about.
   They are found most frequently inside houses, but can be found out and about all throughout the town.
 
-  <fig src="/_media/citizens.png" alt="Citizens are often found inside their houses">Citizens are often found inside their houses.</fig>
+  <fig src="_media/citizens.png" alt="Citizens are often found inside their houses">Citizens are often found inside their houses.</fig>
 
   Settlements are connected by rails.
   To find the next town around, just follow the metal tracks.
