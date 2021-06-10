@@ -1,47 +1,34 @@
 {
-    "parent": "baseCitizen",
-    "displayName": {
-        "name": "shopkeeper"
-    },
-    "skeletalmesh": {
-        "mesh": "MetalRenegades:gooey",
-        "heightOffset": -2.0,
-        "material": "MetalRenegades:marketGooey",
-        "animationPool": [
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyLookRightLeft",
-            "gooeyLookRightLeft",
-            "gooeyLookRightUp"
-        ],
-        "loop": true,
-        "scale": [
-            0.25,
-            0.25,
-            0.25
-        ]
-    },
-    "Behavior" : {
-        "tree" : "Behaviors:stray"
-    },
-    "MarketCitizen": {}
+  "parent": "baseCitizen",
+  "displayName": {
+    "name": "Shopkeeper"
+  },
+  "skeletalMesh": {
+    "mesh": "Gooey:gooey",
+    "heightOffset": -0.5,
+    "material": "Gooey:gooeySkinGrey",
+    "animationPool": [
+      "Gooey:gooey#ArmatureAction"
+    ],
+    "loop": true,
+    "scale": [
+      0.45,
+      0.45,
+      0.45
+    ]
+  },
+  "Stand": {
+    "animationPool": [
+      "Gooey:gooey#ArmatureAction"
+    ]
+  },
+  "Walk": {
+    "animationPool": [
+      "Gooey:gooey#ArmatureAction"
+    ]
+  },
+  "Behavior": {
+    "tree": "Behaviors:restrictedStray"
+  },
+  "MarketCitizen": {}
 }

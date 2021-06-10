@@ -1,50 +1,40 @@
 {
-    "parent": "baseCitizen",
-    "displayName": {
-        "name": "Good Citizen"
-    },
-    "skeletalmesh": {
-        "mesh": "MetalRenegades:gooey",
-        "heightOffset": -2.0,
-        "material": "MetalRenegades:goodCitizen",
-        "animationPool": [
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyLookRightLeft",
-            "gooeyLookRightLeft",
-            "gooeyLookRightUp"
-        ],
-        "loop": true,
-        "scale": [
-            0.25,
-            0.25,
-            0.25
-        ]
-    },
-    "Behavior": {
-        "tree": "MetalRenegades:citizen"
-    },
-    "Trader": {},
-    "FactionAlignment": {
-        "alignment": "GOOD"
-    }
+  "parent": "baseCitizen",
+  "displayName": {
+    "name": "Good Citizen"
+  },
+  "skeletalMesh": {
+    "mesh": "MetalRenegades:goodCitizen",
+    "heightOffset": -0.5,
+    "material": "MetalRenegades:goodCitizen",
+    "animationPool": [
+      "MetalRenegades:goodCitizen#Idle"
+    ],
+    "loop": true,
+    "scale": [
+      0.3,
+      0.3,
+      0.3
+    ]
+  },
+  "Stand": {
+    "animationPool": [
+      "MetalRenegades:goodCitizen#Robot_Idle"
+    ]
+  },
+  "Walk": {
+    "animationPool": [
+      "MetalRenegades:goodCitizen#Robot_Walk"
+    ]
+  },
+  "Die": {
+    "animationPool": []
+  },
+  "Behavior": {
+    "tree": "MetalRenegades:citizen"
+  },
+  "Trader": {},
+  "FactionAlignment": {
+    "alignment": "GOOD"
+  }
 }

@@ -1,33 +1,19 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic;
 
-import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2f;
-import org.terasology.rendering.nui.properties.Range;
-import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.PerlinNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.ConfigurableFacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.facets.SurfaceHumidityFacet;
+import org.joml.Vector2f;
+import org.joml.Vector2ic;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.utilities.procedural.BrownianNoise;
+import org.terasology.engine.utilities.procedural.PerlinNoise;
+import org.terasology.engine.utilities.procedural.SubSampledNoise;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.ConfigurableFacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.nui.properties.Range;
 
 @Produces(SurfaceHumidityFacet.class)
 public class HumidityProvider implements ConfigurableFacetProvider {
@@ -63,8 +49,7 @@ public class HumidityProvider implements ConfigurableFacetProvider {
         SurfaceHumidityFacet facet = new SurfaceHumidityFacet(region.getRegion(), border);
 
         // TODO: Setup humidity
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position: processRegion.contents()) {
+        for (Vector2ic position: facet.getWorldArea()) {
             double hum = getRandomHumidity(position);
             facet.setWorld(position, (float) hum);
         }
@@ -98,7 +83,7 @@ public class HumidityProvider implements ConfigurableFacetProvider {
         noise = new SubSampledNoise(brown, scale, SAMPLE_RATE);
     }
 
-    private float getRandomHumidity(BaseVector2i pos) {
+    private float getRandomHumidity(Vector2ic pos) {
         return 0.1f;
     }
 

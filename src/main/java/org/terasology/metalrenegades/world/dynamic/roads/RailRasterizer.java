@@ -1,32 +1,21 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic.roads;
 
+import org.joml.RoundingMode;
+import org.joml.Vector2f;
+import org.joml.Vector2fc;
+import org.joml.Vector2i;
+import org.joml.Vector3i;
 import org.terasology.cities.raster.RasterTarget;
 import org.terasology.commonworld.heightmap.HeightMap;
 import org.terasology.dynamicCities.parcels.RoadParcel;
 import org.terasology.dynamicCities.rasterizer.RoadRasterizer;
 import org.terasology.dynamicCities.roads.RoadSegment;
-import org.terasology.math.Side;
-import org.terasology.math.geom.ImmutableVector2f;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.engine.math.Side;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.family.BlockFamily;
 import org.terasology.minecarts.blocks.RailBlockFamily;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.family.BlockFamily;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,24 +34,24 @@ public class RailRasterizer extends RoadRasterizer {
     public void raster(RasterTarget rasterTarget, RoadSegment roadSegment, HeightMap heightMap) {
 
         // Draw rails from start to end
-        ImmutableVector2f direction = roadSegment.getRoadDirection();
+        Vector2fc direction = roadSegment.getRoadDirection();
 
         Vector2i i = new Vector2i(roadSegment.start);
-        i.add(new Vector2i(direction.scale(RoadParcel.OVERLAP)));
+        i.add(new Vector2i(direction.mul(RoadParcel.OVERLAP, new Vector2f()), RoundingMode.FLOOR));
 
         do {
-            Vector3i pos = new Vector3i(i.getX(), heightMap.apply(i) + 1, i.getY());
+            Vector3i pos = new Vector3i(i.x(), heightMap.apply(i) + 1, i.y());
             placeRail(rasterTarget, pos);
-            i.addX(sgn(direction.x())); // increment X to get to the next horizontal block
+            i.add(sgn(direction.x()), 0); // increment X to get to the next horizontal block
         } while (roadSegment.rect.contains(i) && direction.x() != 0f);
 
-        i.subX(sgn(direction.x())); // decrement to get back into the rect
-        i.addY(sgn(direction.y())); // increment Y now
+        i.sub(sgn(direction.x()), 0); // decrement to get back into the rect
+        i.add(0, sgn(direction.y())); // increment Y now
 
         do {
-            Vector3i pos = new Vector3i(i.getX(), heightMap.apply(i) + 1, i.getY());
+            Vector3i pos = new Vector3i(i.x(), heightMap.apply(i) + 1, i.y());
             placeRail(rasterTarget, pos);
-            i.addY(sgn(direction.y()));
+            i.add(0, sgn(direction.y()));
         } while (roadSegment.rect.contains(i) && direction.y() != 0f);
     }
 
@@ -74,7 +63,7 @@ public class RailRasterizer extends RoadRasterizer {
     private void placeRail(RasterTarget target, Vector3i pos) {
         Set<Side> connections = new HashSet<>();
         for (Side side : Side.getAllSides()) {
-            BlockFamily family = worldProvider.getBlock(side.getAdjacentPos(pos)).getBlockFamily();
+            BlockFamily family = worldProvider.getBlock(side.getAdjacentPos(pos, new Vector3i())).getBlockFamily();
             if (family instanceof RailBlockFamily) {
                 connections.add(side);
             }

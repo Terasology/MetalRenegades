@@ -1,24 +1,11 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic;
 
 import org.terasology.core.world.generator.facetProviders.BiomeProvider;
 import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
-import org.terasology.core.world.generator.facetProviders.SimplexHillsAndMountainsProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexRoughnessProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.dynamicCities.region.RegionEntityProvider;
@@ -29,15 +16,18 @@ import org.terasology.dynamicCities.sites.SiteFacetProvider;
 import org.terasology.dynamicCities.world.SolidRasterizer;
 import org.terasology.dynamicCities.world.TreeRasterizer;
 import org.terasology.dynamicCities.world.trees.DefaultTreeProvider;
-import org.terasology.engine.SimpleUri;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
+import org.terasology.engine.world.generation.WorldBuilder;
+import org.terasology.engine.world.generator.RegisterWorldGenerator;
+import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
+import org.terasology.metalrenegades.world.SimplexHillsAndMountainsProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesRasterizer;
+import org.terasology.metalrenegades.world.rivers.RiverProvider;
+import org.terasology.metalrenegades.world.rivers.RiverToElevationProvider;
 import org.terasology.oreGeneration.generation.OreRasterizer;
-import org.terasology.registry.In;
-import org.terasology.world.generation.BaseFacetedWorldGenerator;
-import org.terasology.world.generation.WorldBuilder;
-import org.terasology.world.generator.RegisterWorldGenerator;
-import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
 @RegisterWorldGenerator(id = "dynamicWorld", displayName = "Dynamic World")
 public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
@@ -57,8 +47,11 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SurfaceProvider())
                 .addProvider(new HumidityProvider())
                 .addProvider(new TemperatureProvider())
-                .addProvider(new SurfaceToDensityProvider())
+                .addProvider(new RiverProvider())
                 .addProvider(new SimplexHillsAndMountainsProvider())
+                .addProvider(new RiverToElevationProvider())
+                .addProvider(new SurfaceToDensityProvider())
+                .addProvider(new SimplexRoughnessProvider())
                 .addProvider(new BiomeProvider())
                 .addProvider(new DefaultFloraProvider())
                 .addProvider(new DefaultTreeProvider())

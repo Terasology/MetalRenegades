@@ -1,0 +1,20 @@
+{
+    "parent": "engine:iconItem",
+    "DisplayName": {
+        "name": "Ruby"
+    },
+    "Item": {
+        "stackId": "MetalRenegades:ruby",
+        "icon" : "MetalRenegades:ruby"
+    },
+    "MarketPriceConfiguration": {
+        "items": [
+            [
+                "MetalRenegades:ruby",
+                "Ruby",
+                "A valuable gemstone with a magnificant red hue.",
+                "100"
+            ]
+        ]
+    }
+}

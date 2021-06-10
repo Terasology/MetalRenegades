@@ -1,39 +1,6 @@
 {
     "alwaysRelevant": true,
     "persisted": true,
-    "Stand": {
-        "animationPool": [
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyLookRightLeft",
-            "gooeyLookRightLeft",
-            "gooeyLookRightUp"
-        ]
-    },
-    "Walk": {
-        "animationPool": [
-            "gooeyIdleBreathing"
-        ]
-    },
     "Location": {},
     "Character": {},
     "AliveCharacter": {},
@@ -52,6 +19,10 @@
         "destroyEntityOnNoHealth" : true,
         "currentHealth": 30,
         "maxHealth": 30
+    },
+    "BaseRegen": {
+        "regenRate": 1,
+        "waitBeforeRegen": 10
     },
     "BoxShape": {
         "extents": [

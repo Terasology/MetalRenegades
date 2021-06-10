@@ -1,36 +1,25 @@
-/*
- * Copyright 2020 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.interaction.systems;
 
+import org.joml.RoundingMode;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.dynamicCities.settlements.events.SettlementRegisterEvent;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.time.WorldTimeEvent;
 import org.terasology.metalrenegades.interaction.component.CityCropComponent;
 import org.terasology.metalrenegades.interaction.component.FarmComponent;
 import org.terasology.metalrenegades.interaction.event.FarmPlantGenerationEvent;
-import org.terasology.registry.In;
 import org.terasology.simpleFarming.events.OnSeedPlanted;
-import org.terasology.world.time.WorldTimeEvent;
 
 /**
  * This system manages the native crops of settlements, and the generation of crops upon settlement farms.
@@ -82,7 +71,9 @@ public class FarmManagementSystem extends BaseComponentSystem {
     public void onSettlementRegisterEvent(SettlementRegisterEvent buildingEntitySpawnedEvent, EntityRef entityRef) {
         String[] cityCrop = CROPS[(int) (Math.random() * CROPS.length)];
 
-        CityCropComponent cityCropComponent = new CityCropComponent(cityCrop[0], cityCrop[1]);
+        CityCropComponent cityCropComponent = new CityCropComponent();
+        cityCropComponent.itemName = cityCrop[0];
+        cityCropComponent.plantName = cityCrop[1];
         entityRef.addComponent(cityCropComponent);
     }
 
@@ -97,11 +88,10 @@ public class FarmManagementSystem extends BaseComponentSystem {
                 }
 
                 EntityRef plantEntity = entityManager.create(event.plantName);
-                Vector3i plantLocation = new Vector3i(farmLocation.getWorldPosition().add(x, PLANT_OFFSET, y));
+                Vector3i plantLocation = new Vector3i(farmLocation.getWorldPosition(new Vector3f()).add(x, PLANT_OFFSET, y), RoundingMode.FLOOR);
 
                 plantEntity.send(new OnSeedPlanted(plantLocation));
             }
         }
     }
-
 }

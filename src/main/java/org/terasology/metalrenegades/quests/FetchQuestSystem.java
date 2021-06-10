@@ -1,42 +1,30 @@
-/*
- * Copyright 2019 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.quests;
 
+import org.joml.Vector3f;
 import org.terasology.dynamicCities.buildings.GenericBuildingComponent;
 import org.terasology.dynamicCities.buildings.components.DynParcelRefComponent;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
 import org.terasology.dynamicCities.parcels.DynParcel;
 import org.terasology.economy.events.WalletTransactionEvent;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.nameTags.NameTagComponent;
-import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.network.ClientComponent;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.Color;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.module.inventory.systems.InventoryManager;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.nameTags.NameTagComponent;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.network.ClientComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.utilities.Assets;
+import org.terasology.engine.world.block.BlockArea;
+import org.terasology.nui.Color;
 import org.terasology.tasks.CollectBlocksTask;
 import org.terasology.tasks.Task;
 import org.terasology.tasks.TaskGraph;
@@ -47,7 +35,6 @@ import org.terasology.tasks.events.BeforeQuestEvent;
 import org.terasology.tasks.events.QuestCompleteEvent;
 import org.terasology.tasks.events.StartTaskEvent;
 import org.terasology.tasks.systems.QuestSystem;
-import org.terasology.utilities.Assets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,10 +63,10 @@ public class FetchQuestSystem extends BaseComponentSystem {
     private EntityRef activeQuestEntity;
     private Map<String, Integer> amounts = new HashMap<>();
 
-    private final String HOME_TASK_ID = "returnHome";
-    private final String FETCH_QUEST_ID = "FetchQuest";
-    private final String ITEM_ID = "WildAnimals:Meat";
-    private final int REWARD = 50;
+    private static final String HOME_TASK_ID = "returnHome";
+    private static final String FETCH_QUEST_ID = "FetchQuest";
+    private static final String ITEM_ID = "WildAnimals:Meat";
+    private static final int REWARD = 50;
 
     @Override
     public void postBegin() {
@@ -94,8 +81,8 @@ public class FetchQuestSystem extends BaseComponentSystem {
 
             Optional<Prefab> questPointOptional = Assets.getPrefab("Tasks:QuestPoint");
             if (questPointOptional.isPresent()) {
-                Rect2i rect2i = dynParcel.shape;
-                Vector3f spawnPosition = new Vector3f(rect2i.minX() + rect2i.sizeX() / 2, dynParcel.getHeight() + 2, rect2i.minY() + rect2i.sizeY() / 2);
+                BlockArea area = new BlockArea(dynParcel.getShape());
+                Vector3f spawnPosition = new Vector3f(area.minX() + area.getSizeX() / 2, dynParcel.getHeight() + 2, area.minY() + area.getSizeY() / 2);
                 EntityRef questPoint = entityManager.create(questPointOptional.get(), spawnPosition);
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 questPoint.addComponent(settlementRefComponent);
@@ -147,7 +134,7 @@ public class FetchQuestSystem extends BaseComponentSystem {
         LocationComponent locationComponent = activeQuestEntity.getComponent(LocationComponent.class);
         Optional<Prefab> beaconOptional = Assets.getPrefab("Tasks:BeaconMark");
         if (beaconOptional.isPresent()) {
-            EntityRef beacon = entityManager.create(beaconOptional.get(), locationComponent.getWorldPosition());
+            EntityRef beacon = entityManager.create(beaconOptional.get(), locationComponent.getWorldPosition(new Vector3f()));
             activeQuestEntity.destroy();
             activeQuestEntity = beacon;
         }

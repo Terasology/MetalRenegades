@@ -1,0 +1,24 @@
+{
+    "MarketPriceConfiguration": {
+        "items": [
+            ["AdditionalFruits:Blueberry", "Blueberries", "Blue/purple berries, perfect for a quick treat!", "10"],
+            ["AdditionalFruits:Cranberry", "Cranberries", "Small berries, with an incredible red hue.", "10"],
+            ["AdditionalFruits:Peach", "Peaches", "A medium-sized pink fruit; nice and juicy!", "10"],
+            ["AdditionalFruits:Raspberry", "Raspberries", "A small red berry, or is it really a bunch of smaller berries?", "10"],
+            ["AdditionalFruits:Strawberry", "Strawberries", "A delicious red berry with an outer layer of seeds.", "10"],
+            ["AdditionalFruits:Tomato", "Tomatoes", "A medium-size red vegetable/fruit.", "10"],
+            ["AdditionalVegetables:Cucumber", "Cucumbers", "A long green vegetable, delicious to eat in slices!", "10"],
+            ["AdditionalVegetables:Potato", "Potatoes", "A brownish root vegetable, and a major ingredient in French Fries!", "10"],
+            ["WildAnimals:meat", "Meat", "The meat of a deer found outside the city.", "20"]
+        ]
+    },
+    "DiscoverableItemConfiguration": {
+        "items": [
+            ["AdditionalFruits:Blueberry", "5"],
+            ["AdditionalFruits:Raspberry", "5"],
+            ["AdditionalFruits:Strawberry", "5"],
+            ["AdditionalVegetables:Potato", "5"],
+            ["MetalRenegades:bulletItem", "5"]
+        ]
+    }
+}

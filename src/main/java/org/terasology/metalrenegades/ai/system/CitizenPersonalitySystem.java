@@ -1,21 +1,20 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.system;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.nameTags.NameTagComponent;
-import org.terasology.math.geom.Vector3f;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.nameTags.NameTagComponent;
+import org.terasology.engine.rendering.logic.SkeletalMeshComponent;
+import org.terasology.engine.utilities.random.FastRandom;
+import org.terasology.engine.utilities.random.Random;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.namegenerator.creature.CreatureAssetTheme;
 import org.terasology.namegenerator.creature.CreatureNameProvider;
-import org.terasology.rendering.logic.SkeletalMeshComponent;
-import org.terasology.rendering.nui.Color;
-import org.terasology.utilities.random.FastRandom;
-import org.terasology.utilities.random.Random;
+import org.terasology.nui.Color;
 
 /**
  * Randomizes particular characteristics for city NPC characters.
@@ -54,7 +53,7 @@ public class CitizenPersonalitySystem extends BaseComponentSystem {
 
         nameTagComponent.text = nameProvider.generateName();
         nameTagComponent.textColor = Color.GREEN;
-        nameTagComponent.yOffset = 0.5f;
+        nameTagComponent.yOffset = 1.7f;
         nameTagComponent.scale = 1f;
 
         target.saveComponent(nameTagComponent);

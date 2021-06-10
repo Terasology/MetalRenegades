@@ -1,0 +1,20 @@
+{
+    "parent": "engine:iconItem",
+    "DisplayName": {
+        "name": "Emerald"
+    },
+    "Item": {
+        "stackId": "MetalRenegades:emerald",
+        "icon" : "MetalRenegades:emerald"
+    },
+    "MarketPriceConfiguration": {
+        "items": [
+            [
+                "MetalRenegades:emerald",
+                "Emerald",
+                "A valuable gemstone of radiant green.",
+                "100"
+            ]
+        ]
+    }
+}

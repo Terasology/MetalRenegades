@@ -1,0 +1,24 @@
+{
+    "MarketPriceConfiguration": {
+        "items": [
+            ["CoreAssets:Torch", "Torches", "Great for lighting up a room!", "5"],
+            ["CoreAssets:pickaxe", "Pickaxe", "There's gold in them hills, and this tool will bring you to it.", "25"],
+            ["CoreAssets:shovel", "Shovel", "There's lots of sand, so why not dig it?", "25"],
+            ["CoreAssets:axe", "Axe", "Chop chop!", "25"],
+            ["CoreAdvancedAssets:dynamite", "Dynamite", "Fire in the hole!", "75"],
+            ["MetalRenegades:pistol", "Pistol", "Fires lead faster than the speed of sound.", "75"],
+            ["MetalRenegades:bulletItem", "Bullets", "A gunslinger is useless without a gun, and a gun is useless without its bullets.", "10"],
+            ["MetalRenegades:emptyCup", "Empty Cup", "Take your drinks with you on the go!", "20"],
+            ["MetalRenegades:filledCup", "Filled Cup", "The perfect drink for a thirsty traveller.", "30"]
+        ]
+    },
+    "DiscoverableItemConfiguration": {
+        "items": [
+            ["CoreAssets:pickaxe", "1"],
+            ["CoreAssets:axe", "1"],
+            ["CoreAssets:shovel", "1"],
+            ["MetalRenegades:emptyCup", "1"],
+            ["MetalRenegades:pistol", "1"]
+        ]
+    }
+}

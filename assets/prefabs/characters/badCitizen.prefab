@@ -1,50 +1,40 @@
 {
-    "parent": "baseCitizen",
-    "displayName": {
-        "name": "Bad Citizen"
-    },
-    "skeletalmesh": {
-        "mesh": "MetalRenegades:gooey",
-        "heightOffset": -2.0,
-        "material": "MetalRenegades:badCitizen",
-        "animationPool": [
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyLookRightLeft",
-            "gooeyLookRightLeft",
-            "gooeyLookRightUp"
-        ],
-        "loop": true,
-        "scale": [
-            0.25,
-            0.25,
-            0.25
-        ]
-    },
-    "Behavior": {
-        "tree": "MetalRenegades:citizen"
-    },
-    "Trader": {},
-    "FactionAlignment": {
-        "alignment": "BAD"
-    }
+  "parent": "baseCitizen",
+  "displayName": {
+    "name": "Bad Citizen"
+  },
+  "skeletalMesh": {
+    "mesh": "MetalRenegades:badCitizen",
+    "heightOffset": -0.5,
+    "material": "MetalRenegades:badCitizen",
+    "animationPool": [
+      "MetalRenegades:badCitizen#ArmatureAction"
+    ],
+    "loop": true,
+    "scale": [
+      0.3,
+      0.3,
+      0.3
+    ]
+  },
+  "Stand": {
+    "animationPool": [
+      "MetalRenegades:badCitizen#Idle"
+    ]
+  },
+  "Walk": {
+    "animationPool": [
+      "MetalRenegades:badCitizen#Walk"
+    ]
+  },
+  "Die": {
+    "animationPool": []
+  },
+  "Behavior": {
+    "tree": "MetalRenegades:citizen"
+  },
+  "Trader": {},
+  "FactionAlignment": {
+    "alignment": "BAD"
+  }
 }

@@ -1,28 +1,28 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.systems;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.assets.ResourceUrn;
-import org.terasology.assets.management.AssetManager;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.events.GiveItemEvent;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.module.inventory.systems.InventoryManager;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.logic.inventory.events.GiveItemEvent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.entity.BlockCommands;
+import org.terasology.engine.world.block.items.BlockItemComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.economy.events.TradeRequest;
 import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
-import org.terasology.registry.In;
-import org.terasology.world.block.entity.BlockCommands;
-import org.terasology.world.block.items.BlockItemComponent;
 
 import java.util.Random;
 import java.util.Set;
@@ -36,12 +36,12 @@ public class TradingSystem extends BaseComponentSystem {
     /**
      * Maximum percentage difference between two values for them to be considered about equal
      */
-    private final int MARGIN_PERCENTAGE = 20;
+    private static final int MARGIN_PERCENTAGE = 20;
 
     /**
      * Probability that a trade will be accepted, provided the costs are about equal
      */
-    private final int PROBABILITY = 80;
+    private static final int PROBABILITY = 80;
 
     @In
     private InventoryManager inventoryManager;
@@ -96,6 +96,7 @@ public class TradingSystem extends BaseComponentSystem {
 
     /**
      * Remove an item from the specified entity's inventory
+     *
      * @param item: MarketItem to be removed
      * @param entity: Entity to be removed from
      */
@@ -127,6 +128,7 @@ public class TradingSystem extends BaseComponentSystem {
 
     /**
      * Add an item to the specified entity's inventory
+     *
      * @param item: MarketItem to be added
      * @param entity: Entity to be added to
      * @throws Exception if addition of block to inventory fails
@@ -154,17 +156,19 @@ public class TradingSystem extends BaseComponentSystem {
 
     /**
      * Determines if two costs are about equal, depending on MARGIN_PERCENTAGE
+     *
      * @param pCost: Integer cost of the player's item
      * @param cCost: Integer cost of the citizen's item
      * @return boolean indicating if the two costs are about equal
      */
     private boolean isAboutEqual(int pCost, int cCost) {
         int delta = TeraMath.fastAbs(pCost - cCost);
-        return ((float)(delta / cCost) * 100) < MARGIN_PERCENTAGE;
+        return ((float) (delta / cCost) * 100) < MARGIN_PERCENTAGE;
     }
 
     /**
      * Calculates if the trade is acceptable to the citizen based only on market costs.
+     *
      * @param pItem: MarketItem for the player's item
      * @param cItem: MarketItem for the citizen's item
      * @return boolean indicating if the trade is acceptable or not
@@ -182,5 +186,4 @@ public class TradingSystem extends BaseComponentSystem {
         Random rnd = new Random();
         return rnd.nextInt(100) < PROBABILITY;
     }
-
 }
