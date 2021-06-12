@@ -3,7 +3,11 @@
 
 package org.terasology.metalrenegades.world.rivers;
 
+import org.joml.Vector2f;
 import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.utilities.procedural.BrownianNoise;
+import org.terasology.engine.utilities.procedural.SimplexNoise;
+import org.terasology.engine.utilities.procedural.SubSampledNoise;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
@@ -18,7 +22,17 @@ import org.terasology.math.TeraMath;
 @Requires({@Facet(RiverFacet.class), @Facet(SeaLevelFacet.class)})
 @Updates({@Facet(ElevationFacet.class), @Facet(SurfaceHumidityFacet.class)})
 public class RiverToElevationProvider implements ConfigurableFacetProvider {
+    private static final int SAMPLE_RATE = 4;
+
     private Configuration configuration = new Configuration();
+    private SubSampledNoise steepnessNoise;
+
+    @Override
+    public void setSeed(long seed) {
+        steepnessNoise = new SubSampledNoise(
+                new BrownianNoise(new SimplexNoise(seed + 7), 3),
+                new Vector2f(0.0008f, 0.0008f), SAMPLE_RATE);
+    }
 
     @Override
     public void process(GeneratingRegion region) {
@@ -30,11 +44,20 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
         float[] surfaceHeights = elevation.getInternal();
         float[] riversData = rivers.getInternal();
         float[] humidityData = humidity.getInternal();
+        float[] steepnessData = steepnessNoise.noise(elevation.getWorldArea());
         for (int i = 0; i < surfaceHeights.length; ++i) {
+            float steepness = steepnessData[i];
             float riverFac = TeraMath.clamp(riversData[i]);
-            float riverBedElevation = seaLevel - rivers.maxDepth * (riversData[i] * 4 - 3);
-            surfaceHeights[i] = surfaceHeights[i] * (1 - riverFac) + riverBedElevation * riverFac;
-            humidityData[i] += Math.max(0, 0.1 * (seaLevel - riverBedElevation + 7) * riverFac);
+            float riverBedElevation =
+                    seaLevel - rivers.maxDepth * (riversData[i] * (4 + 4 * steepness) - 3 - 4 * steepness);
+            // Never raise the surface to the river bed, erosion only goes downward
+            if (riverBedElevation < surfaceHeights[i]) {
+                riverFac = (riverFac - 0.7f * steepness) / (1 - 0.9f * steepness);
+                riverFac = TeraMath.clamp(riverFac);
+                riverFac = TeraMath.fadePerlin(riverFac);
+                surfaceHeights[i] = TeraMath.lerp(surfaceHeights[i], riverBedElevation, riverFac);
+            }
+            humidityData[i] += Math.max(0, 0.2 * (seaLevel - surfaceHeights[i] + 10) * riversData[i]);
         }
     }
 

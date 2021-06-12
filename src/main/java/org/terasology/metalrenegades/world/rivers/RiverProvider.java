@@ -37,7 +37,7 @@ public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetPr
         float[] noise = riverNoise.noise(facet.getWorldArea(), scale);
 
         float[] rivers = facet.getInternal();
-        float noiseMult = 50f / (configuration.riverWidth * configuration.riverDensity);
+        float noiseMult = 10f / (configuration.riverWidth * configuration.riverDensity);
         for (int i = 0; i < noise.length; ++i) {
             rivers[i] = -Math.min(0, Math.abs(noise[i]) * noiseMult - 1);
         }
