@@ -4,6 +4,8 @@
 package org.terasology.metalrenegades.world.rivers;
 
 import org.joml.Vector2f;
+import org.terasology.biomesAPI.Biome;
+import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
@@ -17,10 +19,11 @@ import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SeaLevelFacet;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.math.TeraMath;
+import org.terasology.metalrenegades.world.dynamic.MRBiome;
 
 
 @Requires({@Facet(RiverFacet.class), @Facet(SeaLevelFacet.class)})
-@Updates({@Facet(ElevationFacet.class), @Facet(SurfaceHumidityFacet.class)})
+@Updates({@Facet(ElevationFacet.class), @Facet(SurfaceHumidityFacet.class), @Facet(BiomeFacet.class)})
 public class RiverToElevationProvider implements ConfigurableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 
@@ -39,12 +42,14 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
         RiverFacet rivers = region.getRegionFacet(RiverFacet.class);
         ElevationFacet elevation = region.getRegionFacet(ElevationFacet.class);
         SurfaceHumidityFacet humidity = region.getRegionFacet(SurfaceHumidityFacet.class);
+        BiomeFacet biomes = region.getRegionFacet(BiomeFacet.class);
         int seaLevel = region.getRegionFacet(SeaLevelFacet.class).getSeaLevel();
 
         float[] surfaceHeights = elevation.getInternal();
         float[] riversData = rivers.getInternal();
         float[] humidityData = humidity.getInternal();
         float[] steepnessData = steepnessNoise.noise(elevation.getWorldArea());
+        Biome[] biomeData = biomes.getInternal();
         for (int i = 0; i < surfaceHeights.length; ++i) {
             float steepness = steepnessData[i];
             float riverFac = TeraMath.clamp(riversData[i]);
@@ -58,6 +63,9 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
                 surfaceHeights[i] = TeraMath.lerp(surfaceHeights[i], riverBedElevation, riverFac);
             }
             humidityData[i] += Math.max(0, 0.2 * (seaLevel - surfaceHeights[i] + 10) * riversData[i]);
+            if (surfaceHeights[i] < seaLevel + 15 && riversData[i] > 0.72) {
+                biomeData[i] = MRBiome.RIVER;
+            }
         }
     }
 
