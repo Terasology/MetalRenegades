@@ -43,14 +43,13 @@ public enum MRBiome implements Biome {
 
     @Override
     public Block getSurfaceBlock(Vector3ic pos, int seaLevel) {
-        int height = pos.y() - seaLevel;
         switch (this) {
             case ROCKY:
                 return stone;
             case SCRUBLAND:
                 return dirt;
             case RIVER:
-                if (pos.y() <= seaLevel) {
+                if (pos.y() < seaLevel) {
                     // Don't put grass under water
                     return sand;
                 } else {

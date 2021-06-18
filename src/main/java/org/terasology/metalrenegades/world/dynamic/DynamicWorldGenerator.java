@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic;
 
-import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.core.world.generator.facetProviders.SimplexRoughnessProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
@@ -52,7 +51,7 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new RiverToElevationProvider())
                 .addProvider(new SurfaceToDensityProvider())
                 .addProvider(new SimplexRoughnessProvider())
-                .addProvider(new DefaultFloraProvider())
+                .addProvider(new FloraProvider())
                 .addProvider(new DefaultTreeProvider())
                 .addProvider(new ResourceProvider())
                 .addProvider(new RoughnessProvider())
