@@ -4,16 +4,20 @@
 package org.terasology.metalrenegades.world.dynamic;
 
 import org.joml.Vector2f;
+import org.joml.Vector2ic;
 import org.terasology.biomesAPI.Biome;
 import org.terasology.core.world.CoreBiome;
 import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
+import org.terasology.engine.utilities.procedural.WhiteNoise;
 import org.terasology.engine.world.generation.Border3D;
 import org.terasology.engine.world.generation.FacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
+
+import java.util.Iterator;
 
 /**
  * The basic biome provider for Metal Renegades.
@@ -24,12 +28,14 @@ import org.terasology.engine.world.generation.Produces;
 public class BaseBiomeProvider implements FacetProvider {
 
     private SubSampledNoise biomeNoise;
+    private WhiteNoise whiteNoise;
 
     @Override
     public void setSeed(long seed) {
         biomeNoise = new SubSampledNoise(
                 new BrownianNoise(new SimplexNoise(seed + 9), 5),
                 new Vector2f(0.0008f, 0.0008f), 4);
+        whiteNoise = new WhiteNoise((int) (seed % Integer.MAX_VALUE) - 2);
     }
 
     @Override
@@ -39,9 +45,11 @@ public class BaseBiomeProvider implements FacetProvider {
 
         float[] noiseData = biomeNoise.noise(biomes.getWorldArea());
         Biome[] biomeData = biomes.getInternal();
+        Iterator<Vector2ic> positions = biomes.getWorldArea().iterator();
         for (int i = 0; i < biomeData.length; i++) {
+            Vector2ic pos = positions.next();
             // noiseData[i] goes from -1 to 1, so there's a 65% chance of desert
-            if (noiseData[i] > 0.3) {
+            if (noiseData[i] > 0.3 + whiteNoise.noise(pos.x(), pos.y()) * 0.03) {
                 biomeData[i] = MRBiome.SCRUBLAND;
             } else {
                 biomeData[i] = CoreBiome.DESERT;

@@ -10,6 +10,7 @@ import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
+import org.terasology.engine.utilities.procedural.WhiteNoise;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
@@ -37,6 +38,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
     private SubSampledNoise mountainIntensityNoise;
     private SimplexHillsAndMountainsProviderConfiguration configuration =
             new SimplexHillsAndMountainsProviderConfiguration();
+    private WhiteNoise whiteNoise;
 
     @Override
     public void setSeed(long seed) {
@@ -49,6 +51,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         mountainIntensityNoise = new SubSampledNoise(
                 new BrownianNoise(new SimplexNoise(seed + 5), 4),
                 new Vector2f(0.00005f, 0.00005f), 4);
+        whiteNoise = new WhiteNoise((int) (seed % Integer.MAX_VALUE) - 1);
     }
 
     @Override
@@ -71,7 +74,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
 
             heightData[i] = heightData[i] + 256 * densityMountains + 64 * densityHills;
             Vector2ic pos = positions.next();
-            if (densityMountains > 0.1) {
+            if (densityMountains > 0.1 + whiteNoise.noise(pos.x(), pos.y()) * 0.02) {
                 biomeData[i] = MRBiome.ROCKY;
             }
         }
