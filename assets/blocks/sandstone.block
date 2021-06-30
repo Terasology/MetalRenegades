@@ -1,0 +1,9 @@
+/**
+ * This is just Sandstone from GenericRocks with a different texture
+ */
+{
+    "basedOn":"CoreAssets:rock",
+    "categories":["soil", "sand", "sediment"],
+    "mass":100,
+    "hardness":12
+}
