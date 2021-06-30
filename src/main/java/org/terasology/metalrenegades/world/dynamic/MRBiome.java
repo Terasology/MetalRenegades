@@ -43,10 +43,6 @@ public enum MRBiome implements Biome {
         this.id = new Name("MetalRenegades:" + name());
         this.displayName = displayName;
 
-        strataNoise = new SubSampledNoise(
-                new BrownianNoise(new SimplexNoise(2), 4),
-                new Vector3f(0.002f, 0.0005f, 0.002f), 4);
-
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         stone = blockManager.getBlock("CoreAssets:stone");
         sand = blockManager.getBlock("CoreAssets:Sand");
@@ -60,6 +56,12 @@ public enum MRBiome implements Biome {
                 blockManager.getBlock("GenericRocks:Limestone"),
                 blockManager.getBlock("GenericRocks:Slate"),
         };
+    }
+
+    public void setSeed(long seed) {
+        strataNoise = new SubSampledNoise(
+                new BrownianNoise(new SimplexNoise(seed + 17), 4),
+                new Vector3f(0.002f, 0.0005f, 0.002f), 4);
     }
 
     @Override

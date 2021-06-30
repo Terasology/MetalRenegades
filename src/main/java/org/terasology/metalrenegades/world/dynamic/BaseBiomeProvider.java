@@ -36,6 +36,12 @@ public class BaseBiomeProvider implements FacetProvider {
                 new BrownianNoise(new SimplexNoise(seed + 9), 5),
                 new Vector2f(0.0008f, 0.0008f), 4);
         whiteNoise = new WhiteNoise((int) (seed % Integer.MAX_VALUE) - 2);
+
+        // Give the seed to the biomes - this is essentially mutable global state, and only works because there's only one world at a time
+        // To support multi-world, the way this works will need to be changed
+        for (MRBiome b : MRBiome.values()) {
+            b.setSeed(seed);
+        }
     }
 
     @Override
