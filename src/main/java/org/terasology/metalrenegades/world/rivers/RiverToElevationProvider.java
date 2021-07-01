@@ -62,11 +62,16 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
         for (int i = 0; i < surfaceHeights.length; ++i) {
             float steepness = steepnessData[i];
             float riverFac = TeraMath.clamp(riversData[i]);
-            float riverBedElevation =
-                    seaLevel - rivers.maxDepth * (riversData[i] * (4 + 4 * steepness) - 3 - 4 * steepness);
+
+            float narrowness = 10;
+            float riverBedHigh = 1 - Math.abs((1 + steepness) * riverFac - steepness);
+            float lowFac = 0.2f - riverBedHigh + 0.9f * steepness;
+            float riverBedLow = lowFac * TeraMath.fadePerlin(TeraMath.clamp(narrowness * (riverFac - 1) + 1));
+            float riverBedElevation = seaLevel + rivers.maxDepth * (riverBedHigh - riverBedLow);
+
             // Never raise the surface to the river bed, erosion only goes downward
             if (riverBedElevation < surfaceHeights[i]) {
-                riverFac = (riverFac - 0.7f * steepness) / (1 - 0.9f * steepness);
+                riverFac = (riverFac - 0.8f * steepness) / (1 - 0.8f * steepness);
                 riverFac = TeraMath.clamp(riverFac);
                 riverFac = TeraMath.fadePerlin(riverFac);
                 surfaceHeights[i] = TeraMath.lerp(surfaceHeights[i], riverBedElevation, riverFac);
@@ -74,8 +79,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
             humidityData[i] += Math.max(0, 0.2 * (seaLevel - surfaceHeights[i] + 10) * riversData[i]);
 
             Vector2ic pos = positions.next();
-            if (surfaceHeights[i] < seaLevel + 8f + whiteNoiseHeight.noise(pos.x(), pos.y()) * 2
-                    && riversData[i] > 0.7 + whiteNoiseRiver.noise(pos.x(), pos.y()) * 0.04) {
+            if (riversData[i] > 0.86 + 0.03 * whiteNoiseRiver.noise(pos.x(), pos.y())) {
                 biomeData[i] = MRBiome.RIVER;
             }
         }
