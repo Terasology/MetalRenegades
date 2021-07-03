@@ -63,6 +63,9 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
             float steepness = steepnessData[i];
             float riverFac = TeraMath.clamp(riversData[i]);
 
+            // The river bed height is calculated as the sum of two curves, one for below the water and one above
+            // Both are adjusted based on steepness, and the maximum depth also depends on the steepness
+            // You can see the details on this graph: https://www.desmos.com/calculator/ahmr6ttsye
             float narrowness = 10;
             float riverBedHigh = 1 - Math.abs((1 + steepness) * riverFac - steepness);
             float lowFac = 0.2f - riverBedHigh + 0.9f * steepness;
