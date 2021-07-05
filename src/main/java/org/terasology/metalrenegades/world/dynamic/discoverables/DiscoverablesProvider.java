@@ -12,13 +12,17 @@ import org.terasology.engine.world.generation.FacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
 import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.facets.SeaLevelFacet;
 import org.terasology.engine.world.generation.facets.SurfacesFacet;
 
 /**
  * Places chests into {@link DiscoverablesFacet} across the surface of the game world
  */
 @Produces(DiscoverablesFacet.class)
-@Requires(@Facet(value = SurfacesFacet.class, border = @FacetBorder(bottom = 10, top = 10, sides = 10)))
+@Requires({
+        @Facet(value = SurfacesFacet.class, border = @FacetBorder(bottom = 10, top = 10, sides = 10)),
+        @Facet(SeaLevelFacet.class)
+})
 public class DiscoverablesProvider implements FacetProvider {
 
     /**
@@ -40,6 +44,8 @@ public class DiscoverablesProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         Border3D border = region.getBorderForFacet(DiscoverablesFacet.class).extendBy(10, 10, 10);
 
+        SeaLevelFacet seaLevelFacet = region.getRegionFacet(SeaLevelFacet.class);
+        int seaLevel = seaLevelFacet.getSeaLevel();
         SurfacesFacet surfacesFacet = region.getRegionFacet(SurfacesFacet.class);
         DiscoverablesFacet facet = new DiscoverablesFacet(region.getRegion(), border);
 
@@ -48,7 +54,7 @@ public class DiscoverablesProvider implements FacetProvider {
         for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
             for (int wz = worldRegion.minZ(); wz <= worldRegion.maxZ(); wz++) {
                 for (int surfaceHeight : surfacesFacet.getWorldColumn(wx, wz)) {
-                    if (facet.getWorldRegion().contains(wx, surfaceHeight + 1, wz)) {
+                    if (surfaceHeight >= seaLevel && facet.getWorldRegion().contains(wx, surfaceHeight + 1, wz)) {
                         if (noise.noise(wx, wz) < (CHEST_PROBABILITY * 2) - 1) {
                             DiscoverableLocation.Type[] typeList = DiscoverableLocation.Type.values();
                             int typeIndex = (int) (Math.abs(noise.noise(wx, surfaceHeight, wz)) * typeList.length);
