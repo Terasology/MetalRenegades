@@ -49,19 +49,33 @@ public enum MRBiome implements Biome {
         grass = blockManager.getBlock("CoreAssets:Grass");
         snow = blockManager.getBlock("CoreAssets:Snow");
         dirt = blockManager.getBlock("CoreAssets:Dirt");
+        Block sandstone = blockManager.getBlock("GenericRocks:Sandstone");
+        // Sandstone is the substrate that the other strata are in
+        // The most efficient way to achieve that is to just enter it multiple times in the array
         rocks = new Block[]{
-                blockManager.getBlock("MetalRenegades:sandstone"),
+                sandstone,
+                sandstone,
+                sandstone,
+                sandstone,
                 stone,
                 blockManager.getBlock("GenericRocks:HardenedClay"),
+                sandstone,
+                sandstone,
+                sandstone,
                 blockManager.getBlock("GenericRocks:Limestone"),
                 blockManager.getBlock("GenericRocks:Slate"),
+                sandstone,
+                sandstone,
+                sandstone,
         };
     }
 
     public void setSeed(long seed) {
+        // This noise will be directly used as an index in the `rocks` array for strata
+        // The horizontal layout is achieved by making the noise change much more rapidly in the y coordinate
         strataNoise = new SubSampledNoise(
-                new BrownianNoise(new SimplexNoise(seed + 17), 4),
-                new Vector3f(0.002f, 0.0005f, 0.002f), 4);
+                new BrownianNoise(new SimplexNoise(seed + 17), 1),
+                new Vector3f(0.005f, 0.4f, 0.005f), 4);
     }
 
     @Override
@@ -100,10 +114,12 @@ public enum MRBiome implements Biome {
     }
 
     private Block getStratum(Vector3ic pos) {
-        // Generate a strata index with a modulus of the y coordinate, adjusted with noise
-        // Strata are 20 (1/0.05) blocks high on average, but it varies since the noise value depends on height
-        float noise = strataNoise.noise(pos.x(), pos.y(), pos.z());
-        int idx = (int) Math.abs((float) pos.y() * 0.05 + noise * rocks.length + 1000) % rocks.length;
+        // Noise, adjusted to the interval [0,1]
+        float noise = strataNoise.noise(pos.x(), pos.y(), pos.z()) * 0.5f + 0.5f;
+        // Now pick an entry in `rocks` based on the noise
+        int idx = (int) (noise * rocks.length);
+        idx = Math.max(idx, 0);
+        idx = Math.min(idx, rocks.length - 1);
         return rocks[idx];
     }
 
