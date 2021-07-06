@@ -70,6 +70,10 @@
             "minVersion": "1.0.0"
         },
         {
+            "id": "GenericRocks",
+            "minVersion": "1.0.0"
+        },
+        {
             "id": "Gooey",
             "minVersion": "1.0.0"
         },
