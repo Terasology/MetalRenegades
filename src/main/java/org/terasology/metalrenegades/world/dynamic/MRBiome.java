@@ -3,6 +3,7 @@
 
 package org.terasology.metalrenegades.world.dynamic;
 
+import org.joml.Math;
 import org.joml.Vector3f;
 import org.joml.Vector3ic;
 import org.terasology.biomesAPI.Biome;
@@ -35,7 +36,6 @@ public enum MRBiome implements Biome {
     private Block dirt;
     /**
      * All the rock types that can be used in strata.
-     * Strata always come in the same order, and wrap around at the end.
      */
     private Block[] rocks;
 
@@ -117,9 +117,7 @@ public enum MRBiome implements Biome {
         // Noise, adjusted to the interval [0,1]
         float noise = strataNoise.noise(pos.x(), pos.y(), pos.z()) * 0.5f + 0.5f;
         // Now pick an entry in `rocks` based on the noise
-        int idx = (int) (noise * rocks.length);
-        idx = Math.max(idx, 0);
-        idx = Math.min(idx, rocks.length - 1);
+        int idx = Math.clamp(0, rocks.length - 1, (int) (noise * rocks.length));
         return rocks[idx];
     }
 
