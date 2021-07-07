@@ -104,9 +104,16 @@ public enum MRBiome implements Biome {
         switch (this) {
             case ROCKY:
                 return getStratum(pos);
+            case STEPPE:
+                // The steppe has less dirt since it's often visible on the side of mesas
+                if (density > 2) {
+                    return getStratum(pos);
+                } else {
+                    return dirt;
+                }
             default:
                 if (density > 8) {
-                    return stone;
+                    return getStratum(pos);
                 } else {
                     return dirt;
                 }

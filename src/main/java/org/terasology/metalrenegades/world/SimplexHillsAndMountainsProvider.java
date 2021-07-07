@@ -16,6 +16,7 @@ import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.world.dynamic.MRBiome;
 import org.terasology.nui.properties.Range;
 
@@ -36,6 +37,8 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
     private SubSampledNoise mountainNoise;
     private SubSampledNoise hillNoise;
     private SubSampledNoise mountainIntensityNoise;
+    private SubSampledNoise mesaNoise;
+    private SubSampledNoise mesaHeightNoise;
     private SimplexHillsAndMountainsProviderConfiguration configuration =
             new SimplexHillsAndMountainsProviderConfiguration();
     private WhiteNoise whiteNoise;
@@ -51,6 +54,12 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         mountainIntensityNoise = new SubSampledNoise(
                 new BrownianNoise(new SimplexNoise(seed + 5), 4),
                 new Vector2f(0.00005f, 0.00005f), 4);
+        mesaNoise = new SubSampledNoise(
+                new BrownianNoise(new SimplexNoise(seed + 14), 6),
+                new Vector2f(0.001f, 0.001f), 4);
+        mesaHeightNoise = new SubSampledNoise(
+                new BrownianNoise(new SimplexNoise(seed + 15), 3),
+                new Vector2f(0.0002f, 0.0002f), 4);
         whiteNoise = new WhiteNoise((int) (seed % Integer.MAX_VALUE) - 1);
     }
 
@@ -62,20 +71,34 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         float[] mountainData = mountainNoise.noise(facet.getWorldArea());
         float[] hillData = hillNoise.noise(facet.getWorldArea());
         float[] mountainIntensityData = mountainIntensityNoise.noise(facet.getWorldArea());
+        float[] mesaData = mesaNoise.noise(facet.getWorldArea());
+        float[] mesaHeightData = mesaHeightNoise.noise(facet.getWorldArea());
 
         Biome[] biomeData = biomes.getInternal();
         float[] heightData = facet.getInternal();
         Iterator<Vector2ic> positions = facet.getWorldArea().iterator();
         for (int i = 0; i < heightData.length; ++i) {
+            // Noise values between threshold and threshold+smoothness are on the side of a mesa
+            // Noise values smaller than threshold are nothing, and larger than threshold+smoothness are on a steppe
+            float threshold = 0.5f;
+            float smoothness = 0.02f;
+            float mesa = TeraMath.fadeHermite(TeraMath.clamp((mesaData[i] - threshold) / smoothness));
+
             float mountainIntensity = mountainIntensityData[i] * 0.5f + 0.5f;
             float densityMountains = Math.max(mountainData[i] * 2.12f, 0) * mountainIntensity * configuration.mountainAmplitude;
             float densityHills =
                     Math.max(hillData[i] * 2.12f - 0.1f, 0) * (1.0f - mountainIntensity) * configuration.hillAmplitude;
 
-            heightData[i] = heightData[i] + 256 * densityMountains + 64 * densityHills;
+            heightData[i] = heightData[i]
+                    // Get rid of mountains and hills around mesas, so they don't interfere
+                    + (256 * densityMountains + 64 * densityHills) * TeraMath.clamp(2 - 3 * mesaData[i])
+                    + (64 + 32 * mesaHeightData[i]) * mesa;
             Vector2ic pos = positions.next();
-            if (densityMountains > 0.1 + whiteNoise.noise(pos.x(), pos.y()) * 0.02) {
+            if (Math.max(mesa, densityMountains) > 0.1 + whiteNoise.noise(pos.x(), pos.y()) * 0.02) {
                 biomeData[i] = MRBiome.ROCKY;
+                if (mesa > 0.999) {
+                    biomeData[i] = MRBiome.STEPPE;
+                }
             }
         }
     }

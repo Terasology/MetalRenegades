@@ -67,7 +67,7 @@ public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetPr
         public float riverWidth = 10;
 
         @Range(label = "River density", min = 0, max = 4f, increment = 0.1f, precision = 1)
-        public float riverDensity = 0.5f;
+        public float riverDensity = 0.2f;
 
         @Range(label = "River depth", min = 0, max = 64f, increment = 1f, precision = 0, description = "Maximum river Depth")
         public float maxDepth = 16;

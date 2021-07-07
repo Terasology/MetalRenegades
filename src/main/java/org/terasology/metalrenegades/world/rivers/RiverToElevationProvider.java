@@ -33,7 +33,6 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
 
     private Configuration configuration = new Configuration();
     private SubSampledNoise steepnessNoise;
-    private WhiteNoise whiteNoiseHeight;
     private WhiteNoise whiteNoiseRiver;
 
     @Override
@@ -41,7 +40,6 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
         steepnessNoise = new SubSampledNoise(
                 new BrownianNoise(new SimplexNoise(seed + 7), 3),
                 new Vector2f(0.0008f, 0.0008f), SAMPLE_RATE);
-        whiteNoiseHeight = new WhiteNoise((int) (seed % Integer.MAX_VALUE));
         whiteNoiseRiver = new WhiteNoise((int) (seed % Integer.MAX_VALUE) - 4);
     }
 
@@ -61,6 +59,10 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
         Iterator<Vector2ic> positions = elevation.getWorldArea().iterator();
         for (int i = 0; i < surfaceHeights.length; ++i) {
             float steepness = steepnessData[i];
+            // All riverbanks in mesas are maximally steep, because a smooth riverbank on a mesa ruins the look
+            if (biomeData[i] == MRBiome.STEPPE) {
+                steepness = 1;
+            }
             float riverFac = TeraMath.clamp(riversData[i]);
 
             // The river bed height is calculated as the sum of two curves, one for below the water and one above
@@ -84,6 +86,9 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
             Vector2ic pos = positions.next();
             if (riversData[i] > 0.86 + 0.03 * whiteNoiseRiver.noise(pos.x(), pos.y())) {
                 biomeData[i] = MRBiome.RIVER;
+            } else if (biomeData[i] == MRBiome.STEPPE && riverFac > 0.1) {
+                // If this position used to be on top of a mesa but is now on the side, change it to rocky biome
+                biomeData[i] = MRBiome.ROCKY;
             }
         }
     }
