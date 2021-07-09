@@ -3,7 +3,6 @@
 
 package org.terasology.metalrenegades.world.rivers;
 
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
@@ -12,6 +11,7 @@ import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SeaLevelFacet;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.math.TeraMath;
 
 
@@ -53,6 +53,6 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
         this.configuration = (Configuration) configuration;
     }
 
-    private static class Configuration implements Component {
+    private static class Configuration implements Component<Configuration> {
     }
 }

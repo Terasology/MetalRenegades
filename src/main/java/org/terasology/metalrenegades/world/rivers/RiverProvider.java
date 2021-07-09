@@ -4,7 +4,6 @@
 package org.terasology.metalrenegades.world.rivers;
 
 import org.joml.Vector2f;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
@@ -12,6 +11,7 @@ import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
 import org.terasology.engine.world.generation.ScalableFacetProvider;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.nui.properties.Range;
 
 @Produces(RiverFacet.class)
@@ -62,7 +62,7 @@ public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetPr
         setSeed(seed);
     }
 
-    private static class Configuration implements Component {
+    private static class Configuration implements Component<Configuration> {
         @Range(label = "River width", min = 1, max = 64f, increment = 1f, precision = 0, description = "Average river width (approximate)")
         public float riverWidth = 10;
 

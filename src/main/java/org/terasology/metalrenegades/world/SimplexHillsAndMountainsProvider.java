@@ -3,7 +3,6 @@
 package org.terasology.metalrenegades.world;
 
 import org.joml.Vector2f;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
@@ -12,6 +11,7 @@ import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.nui.properties.Range;
 
 /**
@@ -77,7 +77,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         this.configuration = (SimplexHillsAndMountainsProviderConfiguration) configuration;
     }
 
-    private static class SimplexHillsAndMountainsProviderConfiguration implements Component {
+    private static class SimplexHillsAndMountainsProviderConfiguration implements Component<SimplexHillsAndMountainsProviderConfiguration> {
 
         @Range(min = 0, max = 3f, increment = 0.01f, precision = 2, description = "Mountain Amplitude")
         public float mountainAmplitude = 1f;

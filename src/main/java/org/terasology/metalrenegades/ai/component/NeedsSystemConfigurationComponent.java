@@ -3,11 +3,11 @@
 
 package org.terasology.metalrenegades.ai.component;
 
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 import java.util.List;
 
-public class NeedsSystemConfigurationComponent implements Component {
+public class NeedsSystemConfigurationComponent implements Component<NeedsSystemConfigurationComponent> {
 
     public int priority;
 

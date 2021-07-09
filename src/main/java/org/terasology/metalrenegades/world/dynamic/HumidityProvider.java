@@ -4,7 +4,6 @@ package org.terasology.metalrenegades.world.dynamic;
 
 import org.joml.Vector2f;
 import org.joml.Vector2ic;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.PerlinNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
@@ -13,6 +12,7 @@ import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.nui.properties.Range;
 
 @Produces(SurfaceHumidityFacet.class)
@@ -87,7 +87,7 @@ public class HumidityProvider implements ConfigurableFacetProvider {
         return 0.1f;
     }
 
-    public static class Configuration implements Component {
+    public static class Configuration implements Component<Configuration> {
         @Range(min = 0, max = 10.0f, increment = 1f, precision = 0, description = "The number of noise octaves")
         public int octaves = 8;
 

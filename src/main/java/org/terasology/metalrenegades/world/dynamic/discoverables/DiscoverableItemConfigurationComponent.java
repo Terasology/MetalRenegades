@@ -3,11 +3,11 @@
 
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 import java.util.List;
 
-public class DiscoverableItemConfigurationComponent implements Component {
+public class DiscoverableItemConfigurationComponent implements Component<DiscoverableItemConfigurationComponent> {
 
     /**
      * A list of all item definitions that can be generated in hidden chests.

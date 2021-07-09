@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.interaction.component;
 
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 /**
  * A component attached to settlements that contains the natural crop of that particular settlment.
  */
-public class CityCropComponent implements Component {
+public class CityCropComponent implements Component<CityCropComponent> {
     public CityCropComponent() {
 
     }
