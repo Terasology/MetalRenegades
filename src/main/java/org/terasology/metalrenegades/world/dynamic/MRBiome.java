@@ -42,6 +42,18 @@ public enum MRBiome implements Biome {
     MRBiome(String displayName) {
         this.id = new Name("MetalRenegades:" + name());
         this.displayName = displayName;
+    }
+
+    public void setSeed(long seed) {
+        // This noise will be directly used as an index in the `rocks` array for strata
+        // The horizontal layout is achieved by making the noise change much more rapidly in the y coordinate
+        strataNoise = new SubSampledNoise(
+                new BrownianNoise(new SimplexNoise(seed + 17), 1),
+                new Vector3f(0.005f, 0.4f, 0.005f), 4);
+    }
+
+    @Override
+    public void initialize() {
 
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         stone = blockManager.getBlock("CoreAssets:stone");
@@ -68,14 +80,6 @@ public enum MRBiome implements Biome {
                 sandstone,
                 sandstone,
         };
-    }
-
-    public void setSeed(long seed) {
-        // This noise will be directly used as an index in the `rocks` array for strata
-        // The horizontal layout is achieved by making the noise change much more rapidly in the y coordinate
-        strataNoise = new SubSampledNoise(
-                new BrownianNoise(new SimplexNoise(seed + 17), 1),
-                new Vector3f(0.005f, 0.4f, 0.005f), 4);
     }
 
     @Override
