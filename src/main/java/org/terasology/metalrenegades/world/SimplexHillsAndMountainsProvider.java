@@ -81,8 +81,13 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
             // Noise values between threshold and threshold+smoothness are on the side of a mesa
             // Noise values smaller than threshold are nothing, and larger than threshold+smoothness are on a steppe
             float threshold = 0.5f;
-            float smoothness = 0.02f;
-            float mesa = TeraMath.fadeHermite(TeraMath.clamp((mesaData[i] - threshold) / smoothness));
+            float smoothness = 0.05f;
+            float mesaH = TeraMath.fadePerlin(TeraMath.clamp((mesaData[i] - threshold) / smoothness));
+            // Create a slope up to the bottom of the mesa
+            float slopeSteepness = 5;
+            float slopeHeight = 0.7f; // values from 0.5 - 1.5 look fine, might be noise later
+            float mesaL = TeraMath.clamp(slopeSteepness * (mesaData[i] - threshold - 0.5f * smoothness) + 1);
+            float mesa = (mesaH + slopeHeight * mesaL) / (1 + slopeHeight);
 
             float mountainIntensity = mountainIntensityData[i] * 0.5f + 0.5f;
             float densityMountains = Math.max(mountainData[i] * 2.12f, 0) * mountainIntensity * configuration.mountainAmplitude;
