@@ -8,4 +8,8 @@ import org.terasology.gestalt.entitysystem.component.Component;
  * Marks a citizen with which the player can trade
  */
 public class TraderComponent implements Component<TraderComponent> {
+    @Override
+    public void copy(TraderComponent other) {
+
+    }
 }

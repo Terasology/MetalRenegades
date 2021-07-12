@@ -10,4 +10,9 @@ import org.terasology.metalrenegades.ai.system.FactionAlignmentSystem.Alignment;
  */
 public class FactionAlignmentComponent implements Component<FactionAlignmentComponent> {
     public Alignment alignment = Alignment.NEUTRAL;
+
+    @Override
+    public void copy(FactionAlignmentComponent other) {
+        this.alignment = other.alignment;
+    }
 }

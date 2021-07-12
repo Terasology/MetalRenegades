@@ -15,4 +15,8 @@ public class HomeComponent implements Component<HomeComponent> {
      */
     public EntityRef building;
 
+    @Override
+    public void copy(HomeComponent other) {
+        this.building = other.building;
+    }
 }

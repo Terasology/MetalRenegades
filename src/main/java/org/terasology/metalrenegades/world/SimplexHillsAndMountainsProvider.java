@@ -84,5 +84,11 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
 
         @Range(min = 0, max = 2f, increment = 0.01f, precision = 2, description = "Hill Amplitude")
         public float hillAmplitude = 1f;
+
+        @Override
+        public void copy(SimplexHillsAndMountainsProviderConfiguration other) {
+            this.mountainAmplitude = other.mountainAmplitude;
+            this.hillAmplitude = other.hillAmplitude;
+        }
     }
 }

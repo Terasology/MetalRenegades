@@ -23,4 +23,9 @@ public class PotentialHomeComponent implements Component<PotentialHomeComponent>
      */
     public int maxCitizens;
 
+    @Override
+    public void copy(PotentialHomeComponent other) {
+        this.citizens = Lists.newArrayList(other.citizens);
+        this.maxCitizens = other.maxCitizens;
+    }
 }

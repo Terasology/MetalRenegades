@@ -9,4 +9,8 @@ import org.terasology.gestalt.entitysystem.component.Component;
  */
 public class CitizenComponent implements Component<CitizenComponent> {
 
+    @Override
+    public void copy(CitizenComponent other) {
+
+    }
 }

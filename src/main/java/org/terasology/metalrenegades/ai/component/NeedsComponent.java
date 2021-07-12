@@ -15,6 +15,11 @@ import java.util.List;
 public class NeedsComponent implements Component<NeedsComponent> {
 
     @Replicate
-    public List<CitizenNeed> needs = Lists.newArrayList();;
+    public List<CitizenNeed> needs = Lists.newArrayList();
+
+    @Override
+    public void copy(NeedsComponent other) {
+        this.needs = Lists.newArrayList(other.needs);
+    }
 
 }

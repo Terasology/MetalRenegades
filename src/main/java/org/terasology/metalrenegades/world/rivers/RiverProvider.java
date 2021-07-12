@@ -71,5 +71,12 @@ public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetPr
 
         @Range(label = "River depth", min = 0, max = 64f, increment = 1f, precision = 0, description = "Maximum river Depth")
         public float maxDepth = 16;
+
+        @Override
+        public void copy(Configuration other) {
+            this.riverWidth = other.riverWidth;
+            this.riverDensity = other.riverDensity;
+            this.maxDepth = other.maxDepth;
+        }
     }
 }

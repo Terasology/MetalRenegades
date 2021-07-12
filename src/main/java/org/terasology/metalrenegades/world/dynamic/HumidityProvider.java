@@ -93,5 +93,11 @@ public class HumidityProvider implements ConfigurableFacetProvider {
 
         @Range(min = 0.01f, max = 5f, increment = 0.01f, precision = 2, description = "The noise scale")
         public float scale = 0.05f;
+
+        @Override
+        public void copy(Configuration other) {
+            this.octaves = other.octaves;
+            this.scale = other.scale;
+        }
     }
 }

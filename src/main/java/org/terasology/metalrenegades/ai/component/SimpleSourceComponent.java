@@ -10,4 +10,9 @@ import org.terasology.metalrenegades.ai.CitizenNeed;
  */
 public class SimpleSourceComponent implements Component<SimpleSourceComponent> {
     public CitizenNeed.Type needType;
+
+    @Override
+    public void copy(SimpleSourceComponent other) {
+        this.needType = other.needType;
+    }
 }

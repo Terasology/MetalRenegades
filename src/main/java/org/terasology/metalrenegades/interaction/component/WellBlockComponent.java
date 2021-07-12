@@ -9,4 +9,8 @@ import org.terasology.gestalt.entitysystem.component.Component;
  */
 public class WellBlockComponent implements Component<WellBlockComponent> {
 
+    @Override
+    public void copy(WellBlockComponent other) {
+
+    }
 }

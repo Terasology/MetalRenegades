@@ -8,4 +8,8 @@ import org.terasology.gestalt.entitysystem.component.Component;
  * Marks a citizen which will only spawn in markets
  */
 public class MarketCitizenComponent implements Component<MarketCitizenComponent> {
+    @Override
+    public void copy(MarketCitizenComponent other) {
+
+    }
 }

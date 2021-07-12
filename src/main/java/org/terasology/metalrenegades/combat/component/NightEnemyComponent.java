@@ -10,4 +10,8 @@ import org.terasology.gestalt.entitysystem.component.Component;
  */
 public class NightEnemyComponent implements Component<NightEnemyComponent> {
 
+    @Override
+    public void copy(NightEnemyComponent other) {
+
+    }
 }

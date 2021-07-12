@@ -10,4 +10,8 @@ import org.terasology.gestalt.entitysystem.component.Component;
  */
 public class DiscoverableChestComponent implements Component<DiscoverableChestComponent> {
 
+    @Override
+    public void copy(DiscoverableChestComponent other) {
+
+    }
 }

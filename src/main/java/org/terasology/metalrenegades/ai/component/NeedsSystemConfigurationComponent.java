@@ -3,6 +3,7 @@
 
 package org.terasology.metalrenegades.ai.component;
 
+import com.google.common.collect.Lists;
 import org.terasology.gestalt.entitysystem.component.Component;
 
 import java.util.List;
@@ -11,6 +12,11 @@ public class NeedsSystemConfigurationComponent implements Component<NeedsSystemC
 
     public int priority;
 
-    public List<List<String>> needsConfigs;
+    public List<List<String>> needsConfigs = Lists.newArrayList();
 
+    @Override
+    public void copy(NeedsSystemConfigurationComponent other) {
+        this.priority = other.priority;
+        this.needsConfigs = Lists.newArrayList(other.needsConfigs);
+    }
 }
