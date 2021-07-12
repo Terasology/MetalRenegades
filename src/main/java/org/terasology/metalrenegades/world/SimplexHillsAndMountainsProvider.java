@@ -14,8 +14,10 @@ import org.terasology.engine.utilities.procedural.WhiteNoise;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Requires;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.world.dynamic.MRBiome;
 import org.terasology.nui.properties.Range;
@@ -31,6 +33,7 @@ import java.util.Iterator;
  *
  * It also sets the biome to the rocky biome on mountains.
  */
+@Requires(@Facet(SurfaceHumidityFacet.class))
 @Updates({@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)})
 public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvider {
 
@@ -67,6 +70,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
     public void process(GeneratingRegion region) {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         BiomeFacet biomes = region.getRegionFacet(BiomeFacet.class);
+        SurfaceHumidityFacet humidityFacet = region.getRegionFacet(SurfaceHumidityFacet.class);
 
         float[] mountainData = mountainNoise.noise(facet.getWorldArea());
         float[] hillData = hillNoise.noise(facet.getWorldArea());
@@ -74,19 +78,26 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         float[] mesaData = mesaNoise.noise(facet.getWorldArea());
         float[] mesaHeightData = mesaHeightNoise.noise(facet.getWorldArea());
 
+        float[] humidityData = humidityFacet.getInternal();
         Biome[] biomeData = biomes.getInternal();
         float[] heightData = facet.getInternal();
         Iterator<Vector2ic> positions = facet.getWorldArea().iterator();
         for (int i = 0; i < heightData.length; ++i) {
+            // Only place mesas at humidity below humidMax, since they only occur in dry areas like deserts
+            float humidMax = 0.18f;
+            float humidSteepness = 10;
+            float baseMesaNoise =
+                    mesaData[i] * TeraMath.fadePerlin(TeraMath.clamp(humidSteepness - humidSteepness / humidMax * humidityData[i]));
             // Noise values between threshold and threshold+smoothness are on the side of a mesa
             // Noise values smaller than threshold are nothing, and larger than threshold+smoothness are on a steppe
+            // Like rivers, a graph is available to see the details: https://www.desmos.com/calculator/dc04yalbds
             float threshold = 0.5f;
             float smoothness = 0.05f;
-            float mesaH = TeraMath.fadePerlin(TeraMath.clamp((mesaData[i] - threshold) / smoothness));
+            float mesaH = TeraMath.fadePerlin(TeraMath.clamp((baseMesaNoise - threshold) / smoothness));
             // Create a slope up to the bottom of the mesa
             float slopeSteepness = 5;
             float slopeHeight = 0.7f; // values from 0.5 - 1.5 look fine, might be noise later
-            float mesaL = TeraMath.clamp(slopeSteepness * (mesaData[i] - threshold - 0.5f * smoothness) + 1);
+            float mesaL = TeraMath.clamp(slopeSteepness * (baseMesaNoise - threshold - 0.5f * smoothness) + 1);
             float mesa = (mesaH + slopeHeight * mesaL) / (1 + slopeHeight);
 
             float mountainIntensity = mountainIntensityData[i] * 0.5f + 0.5f;
@@ -96,7 +107,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
 
             heightData[i] = heightData[i]
                     // Get rid of mountains and hills around mesas, so they don't interfere
-                    + (256 * densityMountains + 64 * densityHills) * TeraMath.clamp(2 - 3 * mesaData[i])
+                    + (256 * densityMountains + 64 * densityHills) * TeraMath.clamp(2 - 3 * baseMesaNoise)
                     + (64 + 32 * mesaHeightData[i]) * mesa;
             Vector2ic pos = positions.next();
             if (Math.max(mesa, densityMountains) > 0.1 + whiteNoise.noise(pos.x(), pos.y()) * 0.02) {

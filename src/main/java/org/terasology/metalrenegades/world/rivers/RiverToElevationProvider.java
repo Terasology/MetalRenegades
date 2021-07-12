@@ -19,7 +19,6 @@ import org.terasology.engine.world.generation.Requires;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SeaLevelFacet;
-import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.world.dynamic.MRBiome;
 
@@ -27,7 +26,7 @@ import java.util.Iterator;
 
 
 @Requires({@Facet(RiverFacet.class), @Facet(SeaLevelFacet.class)})
-@Updates({@Facet(ElevationFacet.class), @Facet(SurfaceHumidityFacet.class), @Facet(BiomeFacet.class)})
+@Updates({@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)})
 public class RiverToElevationProvider implements ConfigurableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 
@@ -47,22 +46,16 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
     public void process(GeneratingRegion region) {
         RiverFacet rivers = region.getRegionFacet(RiverFacet.class);
         ElevationFacet elevation = region.getRegionFacet(ElevationFacet.class);
-        SurfaceHumidityFacet humidity = region.getRegionFacet(SurfaceHumidityFacet.class);
         BiomeFacet biomes = region.getRegionFacet(BiomeFacet.class);
         int seaLevel = region.getRegionFacet(SeaLevelFacet.class).getSeaLevel();
 
         float[] surfaceHeights = elevation.getInternal();
         float[] riversData = rivers.getInternal();
-        float[] humidityData = humidity.getInternal();
         float[] steepnessData = steepnessNoise.noise(elevation.getWorldArea());
         Biome[] biomeData = biomes.getInternal();
         Iterator<Vector2ic> positions = elevation.getWorldArea().iterator();
         for (int i = 0; i < surfaceHeights.length; ++i) {
             float steepness = steepnessData[i];
-            // All riverbanks in mesas are maximally steep, because a smooth riverbank on a mesa ruins the look
-            if (biomeData[i] == MRBiome.STEPPE) {
-                steepness = 1;
-            }
             float riverFac = TeraMath.clamp(riversData[i]);
 
             // The river bed height is calculated as the sum of two curves, one for below the water and one above
@@ -81,14 +74,10 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
                 riverFac = TeraMath.fadePerlin(riverFac);
                 surfaceHeights[i] = TeraMath.lerp(surfaceHeights[i], riverBedElevation, riverFac);
             }
-            humidityData[i] += Math.max(0, 0.2 * (seaLevel - surfaceHeights[i] + 10) * riversData[i]);
 
             Vector2ic pos = positions.next();
             if (riversData[i] > 0.86 + 0.03 * whiteNoiseRiver.noise(pos.x(), pos.y())) {
                 biomeData[i] = MRBiome.RIVER;
-            } else if (biomeData[i] == MRBiome.STEPPE && riverFac > 0.1) {
-                // If this position used to be on top of a mesa but is now on the side, change it to rocky biome
-                biomeData[i] = MRBiome.ROCKY;
             }
         }
     }
