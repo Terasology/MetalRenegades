@@ -19,7 +19,6 @@ import org.terasology.engine.world.generation.Requires;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SeaLevelFacet;
-import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.world.dynamic.MRBiome;
 
@@ -27,13 +26,12 @@ import java.util.Iterator;
 
 
 @Requires({@Facet(RiverFacet.class), @Facet(SeaLevelFacet.class)})
-@Updates({@Facet(ElevationFacet.class), @Facet(SurfaceHumidityFacet.class), @Facet(BiomeFacet.class)})
+@Updates({@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)})
 public class RiverToElevationProvider implements ConfigurableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 
     private Configuration configuration = new Configuration();
     private SubSampledNoise steepnessNoise;
-    private WhiteNoise whiteNoiseHeight;
     private WhiteNoise whiteNoiseRiver;
 
     @Override
@@ -41,7 +39,6 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
         steepnessNoise = new SubSampledNoise(
                 new BrownianNoise(new SimplexNoise(seed + 7), 3),
                 new Vector2f(0.0008f, 0.0008f), SAMPLE_RATE);
-        whiteNoiseHeight = new WhiteNoise((int) (seed % Integer.MAX_VALUE));
         whiteNoiseRiver = new WhiteNoise((int) (seed % Integer.MAX_VALUE) - 4);
     }
 
@@ -49,13 +46,11 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
     public void process(GeneratingRegion region) {
         RiverFacet rivers = region.getRegionFacet(RiverFacet.class);
         ElevationFacet elevation = region.getRegionFacet(ElevationFacet.class);
-        SurfaceHumidityFacet humidity = region.getRegionFacet(SurfaceHumidityFacet.class);
         BiomeFacet biomes = region.getRegionFacet(BiomeFacet.class);
         int seaLevel = region.getRegionFacet(SeaLevelFacet.class).getSeaLevel();
 
         float[] surfaceHeights = elevation.getInternal();
         float[] riversData = rivers.getInternal();
-        float[] humidityData = humidity.getInternal();
         float[] steepnessData = steepnessNoise.noise(elevation.getWorldArea());
         Biome[] biomeData = biomes.getInternal();
         Iterator<Vector2ic> positions = elevation.getWorldArea().iterator();
@@ -79,7 +74,6 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
                 riverFac = TeraMath.fadePerlin(riverFac);
                 surfaceHeights[i] = TeraMath.lerp(surfaceHeights[i], riverBedElevation, riverFac);
             }
-            humidityData[i] += Math.max(0, 0.2 * (seaLevel - surfaceHeights[i] + 10) * riversData[i]);
 
             Vector2ic pos = positions.next();
             if (riversData[i] > 0.86 + 0.03 * whiteNoiseRiver.noise(pos.x(), pos.y())) {

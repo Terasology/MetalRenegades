@@ -9,12 +9,16 @@ import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
+import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
 import org.terasology.engine.world.generation.ScalableFacetProvider;
+import org.terasology.engine.world.generation.Updates;
+import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.nui.properties.Range;
 
 @Produces(RiverFacet.class)
+@Updates(@Facet(SurfaceHumidityFacet.class))
 public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 
@@ -34,12 +38,15 @@ public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetPr
     public void process(GeneratingRegion region, float scale) {
         RiverFacet facet = new RiverFacet(region.getRegion(), region.getBorderForFacet(RiverFacet.class),
                 configuration.maxDepth);
-        float[] noise = riverNoise.noise(facet.getWorldArea(), scale);
+        SurfaceHumidityFacet humidityFacet = region.getRegionFacet(SurfaceHumidityFacet.class);
 
+        float[] humidity = humidityFacet.getInternal();
+        float[] noise = riverNoise.noise(facet.getWorldArea(), scale);
         float[] rivers = facet.getInternal();
         float noiseMult = 10f / (configuration.riverWidth * configuration.riverDensity);
         for (int i = 0; i < noise.length; ++i) {
             rivers[i] = -Math.min(0, Math.abs(noise[i]) * noiseMult - 1);
+            humidity[i] += Math.max(0, rivers[i] - 0.4) * 0.3;
         }
 
         region.setRegionFacet(RiverFacet.class, facet);
@@ -67,7 +74,7 @@ public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetPr
         public float riverWidth = 10;
 
         @Range(label = "River density", min = 0, max = 4f, increment = 0.1f, precision = 1)
-        public float riverDensity = 0.5f;
+        public float riverDensity = 0.2f;
 
         @Range(label = "River depth", min = 0, max = 64f, increment = 1f, precision = 0, description = "Maximum river Depth")
         public float maxDepth = 16;
