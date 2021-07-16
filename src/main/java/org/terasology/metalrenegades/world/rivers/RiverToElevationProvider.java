@@ -55,7 +55,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
         Biome[] biomeData = biomes.getInternal();
         Iterator<Vector2ic> positions = elevation.getWorldArea().iterator();
         for (int i = 0; i < surfaceHeights.length; ++i) {
-            float steepness = steepnessData[i];
+            float steepness = TeraMath.clamp(steepnessData[i]);
             float riverFac = TeraMath.clamp(riversData[i]);
 
             // The river bed height is calculated as the sum of two curves, one for below the water and one above
