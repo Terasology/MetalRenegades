@@ -59,7 +59,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
                 new Vector2f(0.00005f, 0.00005f), 4);
         mesaNoise = new SubSampledNoise(
                 new BrownianNoise(new SimplexNoise(seed + 14), 6),
-                new Vector2f(0.001f, 0.001f), 4);
+                new Vector2f(0.002f, 0.002f), 4);
         mesaHeightNoise = new SubSampledNoise(
                 new BrownianNoise(new SimplexNoise(seed + 15), 3),
                 new Vector2f(0.0002f, 0.0002f), 4);
@@ -84,14 +84,14 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         Iterator<Vector2ic> positions = facet.getWorldArea().iterator();
         for (int i = 0; i < heightData.length; ++i) {
             // Only place mesas at humidity below humidMax, since they only occur in dry areas like deserts
-            float humidMax = 0.18f;
-            float humidSteepness = 10;
+            float humidMax = 0.17f;
+            float humidSteepness = 5;
             float baseMesaNoise =
-                    mesaData[i] * TeraMath.fadePerlin(TeraMath.clamp(humidSteepness - humidSteepness / humidMax * humidityData[i]));
+                    mesaData[i] * TeraMath.fadePerlin(TeraMath.clamp(humidSteepness * (1 - humidityData[i] / humidMax)));
             // Noise values between threshold and threshold+smoothness are on the side of a mesa
             // Noise values smaller than threshold are nothing, and larger than threshold+smoothness are on a steppe
             // Like rivers, a graph is available to see the details: https://www.desmos.com/calculator/dc04yalbds
-            float threshold = 0.5f;
+            float threshold = 1.1f - 0.2f * configuration.mesaDensity;
             float smoothness = 0.05f;
             float mesaH = TeraMath.fadePerlin(TeraMath.clamp((baseMesaNoise - threshold) / smoothness));
             // Create a slope up to the bottom of the mesa
@@ -141,5 +141,8 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
 
         @Range(min = 0, max = 2f, increment = 0.01f, precision = 2, description = "Hill Amplitude")
         public float hillAmplitude = 1f;
+
+        @Range(min = 0, max = 10f, increment = 0.01f, precision = 2, description = "Mesa density")
+        public float mesaDensity = 4f;
     }
 }
