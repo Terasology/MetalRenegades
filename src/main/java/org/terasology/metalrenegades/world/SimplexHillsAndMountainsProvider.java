@@ -106,8 +106,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
                     Math.max(hillData[i] * 2.12f - 0.1f, 0) * (1.0f - mountainIntensity) * configuration.hillAmplitude;
 
             heightData[i] = heightData[i]
-                    // Get rid of mountains and hills around mesas, so they don't interfere
-                    + (256 * densityMountains + 64 * densityHills) * TeraMath.clamp(2 - 3 * baseMesaNoise)
+                    + 256 * densityMountains + 64 * densityHills
                     + (64 + 32 * mesaHeightData[i]) * mesa;
             Vector2ic pos = positions.next();
             if (Math.max(mesa, densityMountains) > 0.1 + whiteNoise.noise(pos.x(), pos.y()) * 0.02) {
