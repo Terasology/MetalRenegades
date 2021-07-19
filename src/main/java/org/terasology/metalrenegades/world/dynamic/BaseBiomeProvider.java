@@ -14,7 +14,9 @@ import org.terasology.engine.world.generation.FacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
 import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.metalrenegades.world.rivers.RiverFacet;
 
 import java.util.Iterator;
 
@@ -52,7 +54,7 @@ public class BaseBiomeProvider implements FacetProvider {
         for (int i = 0; i < biomeData.length; i++) {
             Vector2ic pos = positions.next();
             // humidity goes from 0 to 0.3, so there's a 2/3 chance of desert
-            if (humidityData[i] > 0.2 + whiteNoise.noise(pos.x(), pos.y()) * 0.03) {
+            if (humidityData[i] > 0.2 + whiteNoise.noise(pos.x(), pos.y()) * 0.01) {
                 biomeData[i] = MRBiome.SCRUBLAND;
             } else {
                 biomeData[i] = CoreBiome.DESERT;
