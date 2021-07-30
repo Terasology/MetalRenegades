@@ -70,7 +70,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
             float riverBedLow = lowFac * TeraMath.fadePerlin(TeraMath.clamp(narrowness * (riverFac - 1) + 1));
             float riverBedElevation = seaLevel + rivers.maxDepth * (riverBedHigh - riverBedLow);
 
-            float humidityAdj = Math.max(0,  12 * (0.3f - humidityData[i]));
+            float humidityAdj = Math.max(0, 15 * (0.4f - humidityData[i]));
             riverBedElevation += rivers.maxDepth * humidityAdj;
 
             // Never raise the surface to the river bed, erosion only goes downward
@@ -82,7 +82,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
             }
 
             Vector2ic pos = positions.next();
-            if (TeraMath.clamp(riversData[i]) - 0.1 * humidityAdj > 0.86 + 0.03 * whiteNoiseRiver.noise(pos.x(), pos.y())) {
+            if (TeraMath.clamp(riversData[i]) - 0.2 * humidityAdj > 0.86 + 0.03 * whiteNoiseRiver.noise(pos.x(), pos.y())) {
                 biomeData[i] = MRBiome.RIVER;
             }
         }
