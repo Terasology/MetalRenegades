@@ -88,7 +88,7 @@ public enum MRBiome implements Biome {
             case ROCKY:
                 return 0.4f;
             case SCRUBLAND:
-                return 0.2f;
+                return 0;
             case STEPPE:
                 return 0.6f;
             case RIVER:
@@ -103,7 +103,7 @@ public enum MRBiome implements Biome {
             case ROCKY:
                 return 0.5f;
             case SCRUBLAND:
-                return 0.8f;
+                return 1;
             case STEPPE:
                 return 0.4f;
             case RIVER:
