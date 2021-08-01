@@ -83,12 +83,42 @@ public enum MRBiome implements Biome {
     }
 
     @Override
+    public float getHumidity() {
+        switch (this) {
+            case ROCKY:
+                return 0.4f;
+            case SCRUBLAND:
+                return 0;
+            case STEPPE:
+                return 0.6f;
+            case RIVER:
+                return 0.8f;
+        }
+        return 0.5f;
+    }
+
+    @Override
+    public float getTemperature() {
+        switch (this) {
+            case ROCKY:
+                return 0.5f;
+            case SCRUBLAND:
+                return 1;
+            case STEPPE:
+                return 0.4f;
+            case RIVER:
+                return 0.5f;
+        }
+        return 0.5f;
+    }
+
+    @Override
     public Block getSurfaceBlock(Vector3ic pos, int seaLevel) {
         switch (this) {
             case ROCKY:
                 return getStratum(pos);
             case SCRUBLAND:
-                return dirt;
+                return grass;
             case RIVER:
                 if (pos.y() < seaLevel) {
                     // Don't put grass under water
