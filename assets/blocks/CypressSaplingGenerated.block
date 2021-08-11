@@ -1,0 +1,7 @@
+{
+  "basedOn": "CoreAssets:plant",
+  "displayName": "Cypress Sapling",
+  "entity": {
+    "prefab": "MetalRenegades:CypressSaplingGenerated"
+  }
+}
