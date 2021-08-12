@@ -10,6 +10,6 @@ import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
 @RegisterPlugin
 public class BaobabSpawn extends GrowthBasedPlantSpawnDefinition {
     public BaobabSpawn() {
-        super(PlantType.TREE, Baobab.ID, "MetalRenegades:scrubland", 0.5f, 0.0004f, x -> true);
+        super(PlantType.TREE, Baobab.ID, "MetalRenegades:scrubland", 0.5f, 0.0004f);
     }
 }
