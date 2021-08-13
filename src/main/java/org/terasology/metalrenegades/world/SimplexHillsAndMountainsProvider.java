@@ -15,6 +15,7 @@ import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.UpdatePriority;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
@@ -34,7 +35,7 @@ import java.util.Iterator;
  * It also sets the biome to the rocky biome on mountains.
  */
 @Requires(@Facet(SurfaceHumidityFacet.class))
-@Updates({@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)})
+@Updates(value = {@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)}, priority = UpdatePriority.PRIORITY_NORMAL)
 public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvider {
 
     private SubSampledNoise mountainNoise;

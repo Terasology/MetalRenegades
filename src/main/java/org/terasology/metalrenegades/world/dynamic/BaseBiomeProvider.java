@@ -13,10 +13,9 @@ import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.FacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
-import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.UpdatePriority;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
-import org.terasology.metalrenegades.world.rivers.RiverFacet;
 
 import java.util.Iterator;
 
@@ -26,7 +25,7 @@ import java.util.Iterator;
  * Providers for features like rivers and mountains will adjust it further.
  */
 @Produces(BiomeFacet.class)
-@Requires(@Facet(SurfaceHumidityFacet.class))
+@Updates(value = @Facet(SurfaceHumidityFacet.class), priority = UpdatePriority.PRIORITY_CRITICAL)
 public class BaseBiomeProvider implements FacetProvider {
 
     private WhiteNoise whiteNoise;
