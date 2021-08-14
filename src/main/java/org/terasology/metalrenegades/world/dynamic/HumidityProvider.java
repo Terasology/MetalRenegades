@@ -95,7 +95,7 @@ public class HumidityProvider implements ConfigurableFacetProvider {
         public float scale = 0.05f;
 
         @Override
-        public void copy(Configuration other) {
+        public void copyFrom(Configuration other) {
             this.octaves = other.octaves;
             this.scale = other.scale;
         }

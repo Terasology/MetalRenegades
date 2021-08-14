@@ -20,7 +20,7 @@ public class WellSourceComponent implements Component<WellSourceComponent> {
     public int capacity;
 
     @Override
-    public void copy(WellSourceComponent other) {
+    public void copyFrom(WellSourceComponent other) {
         this.refillsLeft = other.refillsLeft;
         this.capacity = other.capacity;
     }

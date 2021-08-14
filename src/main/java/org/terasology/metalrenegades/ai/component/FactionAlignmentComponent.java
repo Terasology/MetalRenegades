@@ -12,7 +12,7 @@ public class FactionAlignmentComponent implements Component<FactionAlignmentComp
     public Alignment alignment = Alignment.NEUTRAL;
 
     @Override
-    public void copy(FactionAlignmentComponent other) {
+    public void copyFrom(FactionAlignmentComponent other) {
         this.alignment = other.alignment;
     }
 }

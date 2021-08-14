@@ -20,7 +20,7 @@ public class NearbyCitizenEnemiesComponent implements Component<NearbyCitizenEne
     public EntityRef closestEnemy;
 
     @Override
-    public void copy(NearbyCitizenEnemiesComponent other) {
+    public void copyFrom(NearbyCitizenEnemiesComponent other) {
         this.searchRadius = other.searchRadius;
         this.enemiesWithinRange = Lists.newArrayList(other.enemiesWithinRange);
         this.closestEnemy = other.closestEnemy;

@@ -12,7 +12,7 @@ public class SimpleSourceComponent implements Component<SimpleSourceComponent> {
     public CitizenNeed.Type needType;
 
     @Override
-    public void copy(SimpleSourceComponent other) {
+    public void copyFrom(SimpleSourceComponent other) {
         this.needType = other.needType;
     }
 }

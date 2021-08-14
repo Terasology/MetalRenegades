@@ -27,7 +27,7 @@ public class FarmComponent implements Component<FarmComponent> {
     public double genChance = 0.2;
 
     @Override
-    public void copy(FarmComponent other) {
+    public void copyFrom(FarmComponent other) {
         this.plantableRadius = other.plantableRadius;
         this.generationCycles = other.generationCycles;
         this.genChance = other.genChance;

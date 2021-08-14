@@ -73,7 +73,7 @@ public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetPr
         public float maxDepth = 16;
 
         @Override
-        public void copy(Configuration other) {
+        public void copyFrom(Configuration other) {
             this.riverWidth = other.riverWidth;
             this.riverDensity = other.riverDensity;
             this.maxDepth = other.maxDepth;

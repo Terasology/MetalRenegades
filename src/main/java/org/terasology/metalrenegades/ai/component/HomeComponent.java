@@ -16,7 +16,7 @@ public class HomeComponent implements Component<HomeComponent> {
     public EntityRef building;
 
     @Override
-    public void copy(HomeComponent other) {
+    public void copyFrom(HomeComponent other) {
         this.building = other.building;
     }
 }

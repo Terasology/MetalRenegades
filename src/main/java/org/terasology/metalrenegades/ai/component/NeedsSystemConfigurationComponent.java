@@ -15,7 +15,7 @@ public class NeedsSystemConfigurationComponent implements Component<NeedsSystemC
     public List<List<String>> needsConfigs = Lists.newArrayList();
 
     @Override
-    public void copy(NeedsSystemConfigurationComponent other) {
+    public void copyFrom(NeedsSystemConfigurationComponent other) {
         this.priority = other.priority;
         this.needsConfigs = Lists.newArrayList(other.needsConfigs);
     }

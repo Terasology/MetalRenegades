@@ -20,7 +20,7 @@ public class MarketPriceConfigurationComponent implements Component<MarketPriceC
     public List<List<String>> items = Lists.newArrayList();
 
     @Override
-    public void copy(MarketPriceConfigurationComponent other) {
+    public void copyFrom(MarketPriceConfigurationComponent other) {
         this.items = other.items.stream().map(Lists::newArrayList).collect(Collectors.toList());
     }
 }

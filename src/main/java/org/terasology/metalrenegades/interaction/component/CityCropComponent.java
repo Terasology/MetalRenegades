@@ -28,7 +28,7 @@ public class CityCropComponent implements Component<CityCropComponent> {
     }
 
     @Override
-    public void copy(CityCropComponent other) {
+    public void copyFrom(CityCropComponent other) {
         this.itemName = other.itemName;
         this.plantName = other.plantName;
     }

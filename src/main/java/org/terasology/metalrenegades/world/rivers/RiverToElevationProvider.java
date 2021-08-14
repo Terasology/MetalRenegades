@@ -55,7 +55,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
 
     private static class Configuration implements Component<Configuration> {
         @Override
-        public void copy(Configuration other) {
+        public void copyFrom(Configuration other) {
 
         }
     }

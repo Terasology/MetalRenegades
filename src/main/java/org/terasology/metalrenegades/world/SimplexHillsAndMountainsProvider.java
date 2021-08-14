@@ -86,7 +86,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         public float hillAmplitude = 1f;
 
         @Override
-        public void copy(SimplexHillsAndMountainsProviderConfiguration other) {
+        public void copyFrom(SimplexHillsAndMountainsProviderConfiguration other) {
             this.mountainAmplitude = other.mountainAmplitude;
             this.hillAmplitude = other.hillAmplitude;
         }

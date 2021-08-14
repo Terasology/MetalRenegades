@@ -9,7 +9,7 @@ import org.terasology.gestalt.entitysystem.component.Component;
  */
 public class MarketCitizenComponent implements Component<MarketCitizenComponent> {
     @Override
-    public void copy(MarketCitizenComponent other) {
+    public void copyFrom(MarketCitizenComponent other) {
 
     }
 }

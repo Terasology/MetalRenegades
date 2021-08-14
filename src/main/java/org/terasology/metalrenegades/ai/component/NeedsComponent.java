@@ -18,7 +18,7 @@ public class NeedsComponent implements Component<NeedsComponent> {
     public List<CitizenNeed> needs = Lists.newArrayList();
 
     @Override
-    public void copy(NeedsComponent other) {
+    public void copyFrom(NeedsComponent other) {
         this.needs = Lists.newArrayList(other.needs);
     }
 

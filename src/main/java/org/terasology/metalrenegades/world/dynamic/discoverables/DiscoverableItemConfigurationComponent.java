@@ -17,7 +17,7 @@ public class DiscoverableItemConfigurationComponent implements Component<Discove
     public List<List<String>> items = Lists.newArrayList();
 
     @Override
-    public void copy(DiscoverableItemConfigurationComponent other) {
+    public void copyFrom(DiscoverableItemConfigurationComponent other) {
         this.items = other.items.stream().map(Lists::newArrayList).collect(Collectors.toList());
     }
 }

@@ -15,7 +15,7 @@ public class WaterCupComponent implements Component<WaterCupComponent> {
     public boolean filled;
 
     @Override
-    public void copy(WaterCupComponent other) {
+    public void copyFrom(WaterCupComponent other) {
         this.filled = other.filled;
     }
 }
