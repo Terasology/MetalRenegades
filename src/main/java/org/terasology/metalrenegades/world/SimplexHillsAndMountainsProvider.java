@@ -16,6 +16,7 @@ import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Requires;
 import org.terasology.engine.world.generation.UpdatePriority;
+import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
@@ -36,7 +37,7 @@ import java.util.Iterator;
  */
 @Requires(@Facet(SurfaceHumidityFacet.class))
 @Updates(value = {@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)}, priority = UpdatePriority.PRIORITY_NORMAL)
-public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvider {
+public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvider, ScalableFacetProvider {
 
     private SubSampledNoise mountainNoise;
     private SubSampledNoise hillNoise;
@@ -68,16 +69,16 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
     }
 
     @Override
-    public void process(GeneratingRegion region) {
+    public void process(GeneratingRegion region, float scale) {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         BiomeFacet biomes = region.getRegionFacet(BiomeFacet.class);
         SurfaceHumidityFacet humidityFacet = region.getRegionFacet(SurfaceHumidityFacet.class);
 
-        float[] mountainData = mountainNoise.noise(facet.getWorldArea());
-        float[] hillData = hillNoise.noise(facet.getWorldArea());
-        float[] mountainIntensityData = mountainIntensityNoise.noise(facet.getWorldArea());
-        float[] mesaData = mesaNoise.noise(facet.getWorldArea());
-        float[] mesaHeightData = mesaHeightNoise.noise(facet.getWorldArea());
+        float[] mountainData = mountainNoise.noise(facet.getWorldArea(), scale);
+        float[] hillData = hillNoise.noise(facet.getWorldArea(), scale);
+        float[] mountainIntensityData = mountainIntensityNoise.noise(facet.getWorldArea(), scale);
+        float[] mesaData = mesaNoise.noise(facet.getWorldArea(), scale);
+        float[] mesaHeightData = mesaHeightNoise.noise(facet.getWorldArea(), scale);
 
         float[] humidityData = humidityFacet.getInternal();
         Biome[] biomeData = biomes.getInternal();

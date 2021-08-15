@@ -17,6 +17,7 @@ import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Requires;
 import org.terasology.engine.world.generation.UpdatePriority;
+import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SeaLevelFacet;
@@ -29,7 +30,7 @@ import java.util.Iterator;
 
 @Requires({@Facet(RiverFacet.class), @Facet(SeaLevelFacet.class), @Facet(SurfaceHumidityFacet.class)})
 @Updates(value = {@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)}, priority = UpdatePriority.PRIORITY_LOW)
-public class RiverToElevationProvider implements ConfigurableFacetProvider {
+public class RiverToElevationProvider implements ConfigurableFacetProvider, ScalableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 
     private Configuration configuration = new Configuration();
@@ -45,7 +46,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
     }
 
     @Override
-    public void process(GeneratingRegion region) {
+    public void process(GeneratingRegion region, float scale) {
         RiverFacet rivers = region.getRegionFacet(RiverFacet.class);
         ElevationFacet elevation = region.getRegionFacet(ElevationFacet.class);
         BiomeFacet biomes = region.getRegionFacet(BiomeFacet.class);
@@ -54,7 +55,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
 
         float[] surfaceHeights = elevation.getInternal();
         float[] riversData = rivers.getInternal();
-        float[] steepnessData = steepnessNoise.noise(elevation.getWorldArea());
+        float[] steepnessData = steepnessNoise.noise(elevation.getWorldArea(), scale);
         Biome[] biomeData = biomes.getInternal();
         float[] humidityData = humidityFacet.getInternal();
         Iterator<Vector2ic> positions = elevation.getWorldArea().iterator();
@@ -83,7 +84,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider {
             }
 
             Vector2ic pos = positions.next();
-            if (TeraMath.clamp(riversData[i]) - 0.2 * humidityAdj > 0.86 + 0.03 * whiteNoiseRiver.noise(pos.x(), pos.y())) {
+            if (TeraMath.clamp(riversData[i]) - 0.2 * humidityAdj > 0.86 + 0.03 * whiteNoiseRiver.noise(pos.x() * scale, pos.y() * scale)) {
                 biomeData[i] = MRBiome.RIVER;
             }
         }

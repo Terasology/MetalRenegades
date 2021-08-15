@@ -10,11 +10,11 @@ import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.engine.utilities.procedural.WhiteNoise;
 import org.terasology.engine.world.generation.Border3D;
 import org.terasology.engine.world.generation.Facet;
-import org.terasology.engine.world.generation.FacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
 import org.terasology.engine.world.generation.UpdatePriority;
 import org.terasology.engine.world.generation.Updates;
+import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 
 import java.util.Iterator;
@@ -26,7 +26,7 @@ import java.util.Iterator;
  */
 @Produces(BiomeFacet.class)
 @Updates(value = @Facet(SurfaceHumidityFacet.class), priority = UpdatePriority.PRIORITY_CRITICAL)
-public class BaseBiomeProvider implements FacetProvider {
+public class BaseBiomeProvider implements ScalableFacetProvider {
 
     private WhiteNoise whiteNoise;
 
@@ -42,7 +42,7 @@ public class BaseBiomeProvider implements FacetProvider {
     }
 
     @Override
-    public void process(GeneratingRegion region) {
+    public void process(GeneratingRegion region, float scale) {
         Border3D border = region.getBorderForFacet(BiomeFacet.class);
         BiomeFacet biomes = new BiomeFacet(region.getRegion(), border);
         SurfaceHumidityFacet humidityFacet = region.getRegionFacet(SurfaceHumidityFacet.class);
@@ -53,7 +53,7 @@ public class BaseBiomeProvider implements FacetProvider {
         for (int i = 0; i < biomeData.length; i++) {
             Vector2ic pos = positions.next();
             // humidity goes from 0 to 0.3, so there's a 2/3 chance of desert
-            if (humidityData[i] > 0.2 + whiteNoise.noise(pos.x(), pos.y()) * 0.01) {
+            if (humidityData[i] > 0.2 + whiteNoise.noise(pos.x() * scale, pos.y() * scale) * 0.01) {
                 biomeData[i] = MRBiome.SCRUBLAND;
             } else {
                 biomeData[i] = CoreBiome.DESERT;

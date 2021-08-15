@@ -11,11 +11,12 @@ import org.terasology.engine.world.generation.Border3D;
 import org.terasology.engine.world.generation.FacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 
 @Produces(ElevationFacet.class)
-public class SurfaceProvider implements FacetProvider {
-    private Noise surfaceNoise;
+public class SurfaceProvider implements ScalableFacetProvider {
+    private SubSampledNoise surfaceNoise;
 
     @Override
     public void setSeed(long seed) {
@@ -23,12 +24,14 @@ public class SurfaceProvider implements FacetProvider {
     }
 
     @Override
-    public void process(GeneratingRegion region) {
+    public void process(GeneratingRegion region, float scale) {
         Border3D border = region.getBorderForFacet(ElevationFacet.class);
         ElevationFacet facet = new ElevationFacet(region.getRegion(), border);
 
-        for (Vector2ic position: facet.getWorldArea()) {
-            facet.setWorld(position, surfaceNoise.noise(position.x(), position.y()) * 3 + 10);
+        float[] surfaceData = surfaceNoise.noise(facet.getWorldArea(), scale);
+        float[] surfaceInternal = facet.getInternal();
+        for (int i = 0; i < surfaceInternal.length; i++) {
+            surfaceInternal[i] = surfaceData[i] * 3 + 10;
         }
 
         region.setRegionFacet(ElevationFacet.class, facet);
