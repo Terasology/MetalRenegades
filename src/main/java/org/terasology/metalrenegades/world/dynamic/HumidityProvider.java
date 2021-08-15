@@ -12,11 +12,12 @@ import org.terasology.engine.world.generation.Border3D;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.nui.properties.Range;
 
 @Produces(SurfaceHumidityFacet.class)
-public class HumidityProvider implements ConfigurableFacetProvider {
+public class HumidityProvider implements ConfigurableFacetProvider, ScalableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 
     private SubSampledNoise noise;
@@ -44,12 +45,12 @@ public class HumidityProvider implements ConfigurableFacetProvider {
     }
 
     @Override
-    public void process(GeneratingRegion region) {
+    public void process(GeneratingRegion region, float scale) {
         Border3D border = region.getBorderForFacet(SurfaceHumidityFacet.class);
         SurfaceHumidityFacet facet = new SurfaceHumidityFacet(region.getRegion(), border);
 
         float[] humidityData = facet.getInternal();
-        float[] noiseData = noise.noise(facet.getWorldArea());
+        float[] noiseData = noise.noise(facet.getWorldArea(), scale);
         for (int i = 0; i < humidityData.length; i++) {
             // The base humidity level goes from 0 to 0.3
             humidityData[i] = (noiseData[i] * 0.5f + 0.5f) * 0.3f;
