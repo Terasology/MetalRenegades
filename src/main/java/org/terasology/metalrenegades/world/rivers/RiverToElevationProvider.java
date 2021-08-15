@@ -16,6 +16,7 @@ import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.UpdatePriority;
 import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
@@ -28,7 +29,7 @@ import java.util.Iterator;
 
 
 @Requires({@Facet(RiverFacet.class), @Facet(SeaLevelFacet.class), @Facet(SurfaceHumidityFacet.class)})
-@Updates({@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)})
+@Updates(value = {@Facet(ElevationFacet.class), @Facet(BiomeFacet.class)}, priority = UpdatePriority.PRIORITY_LOW)
 public class RiverToElevationProvider implements ConfigurableFacetProvider, ScalableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 
