@@ -3,7 +3,7 @@
     "mesh": "Gooey:mawgooey",
     "heightOffset": -0.8,
     "material": "Gooey:mawgooeySkinGreen",
-    "animation": "Gooey:mawgooeyIdleFinal",
+    "animation": "Gooey:mawgooey#IdleFinal",
     "loop": true
   },
   "DropGrammar": {

@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic;
 
-import org.terasology.core.world.generator.facetProviders.BiomeProvider;
-import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
+import org.joml.Vector2i;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.core.world.generator.facetProviders.SimplexRoughnessProvider;
+import org.terasology.core.world.generator.facetProviders.SpawnPlateauProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
+import org.terasology.core.world.generator.rasterizers.SunlightRasterizer;
 import org.terasology.dynamicCities.region.RegionEntityProvider;
 import org.terasology.dynamicCities.region.ResourceProvider;
 import org.terasology.dynamicCities.region.RoughnessProvider;
@@ -47,25 +48,27 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SurfaceProvider())
                 .addProvider(new HumidityProvider())
                 .addProvider(new TemperatureProvider())
+                .addProvider(new BaseBiomeProvider())
                 .addProvider(new RiverProvider())
                 .addProvider(new SimplexHillsAndMountainsProvider())
                 .addProvider(new RiverToElevationProvider())
                 .addProvider(new SurfaceToDensityProvider())
                 .addProvider(new SimplexRoughnessProvider())
-                .addProvider(new BiomeProvider())
-                .addProvider(new DefaultFloraProvider())
+                .addProvider(new FloraProvider())
                 .addProvider(new DefaultTreeProvider())
                 .addProvider(new ResourceProvider())
                 .addProvider(new RoughnessProvider())
                 .addProvider(new DiscoverablesProvider())
                 .addProvider(new SiteFacetProvider())
                 .addProvider(new SettlementFacetProvider())
+                .addProvider(new SpawnPlateauProvider(new Vector2i(0, 0)))
                 .addEntities(new RegionEntityProvider())
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())
                 .addRasterizer(new TreeRasterizer())
                 .addRasterizer(new OreRasterizer())
                 .addRasterizer(new DiscoverablesRasterizer())
+                .addRasterizer(new SunlightRasterizer(-20))
                 .addPlugins();
     }
 }

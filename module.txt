@@ -22,6 +22,10 @@
             "minVersion": "1.1.0"
         },
         {
+            "id": "BiomesAPI",
+            "minVersion": "4.1.0"
+        },
+        {
             "id": "Cities",
             "minVersion": "1.1.0"
         },
@@ -63,6 +67,10 @@
         },
         {
             "id": "Fences",
+            "minVersion": "1.0.0"
+        },
+        {
+            "id": "GenericRocks",
             "minVersion": "1.0.0"
         },
         {

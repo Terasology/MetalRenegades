@@ -17,6 +17,7 @@ import org.terasology.nui.util.RectUtility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -31,7 +32,13 @@ public class CharacterOverlay implements MinimapOverlay {
     private static final int ICON_SIZE = 16;
 
     private Vector2i iconSize = new Vector2i(ICON_SIZE, ICON_SIZE);
-    private ArrayList<EntityRef> citizens;
+
+    /**
+     * The list of all citizens that should be rendered on the minimap.
+     *
+     * NOTE: this list contains all entities that should be rendered, regardless of whether they are active or not.
+     */
+    private List<EntityRef> citizens;
     private final Map<String, Texture> overlays = new HashMap<>();
 
 
@@ -64,9 +71,16 @@ public class CharacterOverlay implements MinimapOverlay {
     @Override
     public void render(Canvas canvas, Rectanglei worldRect) {
         for (EntityRef entity : citizens) {
+            if (!entity.isActive()) {
+                // Entities can become inactive, e.g., when they are unloaded together with a chunk. These entities are still contained in
+                // the list of `citizens`.
+                // We skip inactive entities from being rendered on the minimap.
+                continue;
+            }
             LocationComponent locationComponent = entity.getComponent(LocationComponent.class);
             if (locationComponent == null) {
-                logger.warn("Cannot render overlay for entity '{}' - missing LocationComponent", entity.getId());
+                logger.warn("Cannot render overlay for entity '{}' (exists: {}, active: {}, parent: {}) - missing LocationComponent",
+                        entity.getId(), entity.exists(), entity.isActive(), entity.getParentPrefab());
                 continue;
             }
             String citizenType = entity.getParentPrefab().getName();

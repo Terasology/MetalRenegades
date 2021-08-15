@@ -6,17 +6,18 @@ import org.joml.Vector2f;
 import org.joml.Vector2ic;
 import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
-import org.terasology.engine.utilities.procedural.PerlinNoise;
+import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
 import org.terasology.engine.world.generation.Border3D;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.nui.properties.Range;
 
 @Produces(SurfaceHumidityFacet.class)
-public class HumidityProvider implements ConfigurableFacetProvider {
+public class HumidityProvider implements ConfigurableFacetProvider, ScalableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 
     private SubSampledNoise noise;
@@ -44,14 +45,15 @@ public class HumidityProvider implements ConfigurableFacetProvider {
     }
 
     @Override
-    public void process(GeneratingRegion region) {
+    public void process(GeneratingRegion region, float scale) {
         Border3D border = region.getBorderForFacet(SurfaceHumidityFacet.class);
         SurfaceHumidityFacet facet = new SurfaceHumidityFacet(region.getRegion(), border);
 
-        // TODO: Setup humidity
-        for (Vector2ic position: facet.getWorldArea()) {
-            double hum = getRandomHumidity(position);
-            facet.setWorld(position, (float) hum);
+        float[] humidityData = facet.getInternal();
+        float[] noiseData = noise.noise(facet.getWorldArea(), scale);
+        for (int i = 0; i < humidityData.length; i++) {
+            // The base humidity level goes from 0 to 0.3
+            humidityData[i] = (noiseData[i] * 0.5f + 0.5f) * 0.3f;
         }
 
         region.setRegionFacet(SurfaceHumidityFacet.class, facet);
@@ -79,7 +81,7 @@ public class HumidityProvider implements ConfigurableFacetProvider {
     private void reload() {
         float realScale = config.scale * 0.01f;
         Vector2f scale = new Vector2f(realScale, realScale);
-        BrownianNoise brown = new BrownianNoise(new PerlinNoise(seed + 6), config.octaves);
+        BrownianNoise brown = new BrownianNoise(new SimplexNoise(seed + 6), config.octaves);
         noise = new SubSampledNoise(brown, scale, SAMPLE_RATE);
     }
 
@@ -88,10 +90,10 @@ public class HumidityProvider implements ConfigurableFacetProvider {
     }
 
     public static class Configuration implements Component {
-        @Range(min = 0, max = 10.0f, increment = 1f, precision = 0, description = "The number of noise octaves")
-        public int octaves = 8;
+        @Range(min = 0, max = 10, increment = 1, precision = 0, description = "The number of noise octaves")
+        public int octaves = 5;
 
         @Range(min = 0.01f, max = 5f, increment = 0.01f, precision = 2, description = "The noise scale")
-        public float scale = 0.05f;
+        public float scale = 0.08f;
     }
 }
