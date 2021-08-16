@@ -10,6 +10,6 @@ import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
 @RegisterPlugin
 public class CypressSpawn extends GrowthBasedPlantSpawnDefinition {
     public CypressSpawn() {
-        super(PlantType.TREE, Cypress.ID, "MetalRenegades:steppe", 0.5f, 0.0007f);
+        super(PlantType.TREE, Cypress.ID, "MetalRenegades:steppe", 0.5f, 0.0015f);
     }
 }
