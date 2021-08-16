@@ -3,7 +3,8 @@
     "name": "House",
     "templateNames": [
       "MetalRenegades:oldwestResidentialHouse1",
-      "MetalRenegades:oldwestResidentialHouse2"
+      "MetalRenegades:oldwestResidentialHouse2",
+      "MetalRenegades:oldwestResidentialHouse3"
     ],
     "zone": "RESIDENTIAL",
     "minSize": [22, 22],
