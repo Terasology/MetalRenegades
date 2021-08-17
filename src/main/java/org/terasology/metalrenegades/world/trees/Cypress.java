@@ -27,12 +27,12 @@ public class Cypress extends LSystemBasedTreeGrowthDefinition {
         Map<Character, AxionElementReplacement> replacementMap = Maps.newHashMap();
         Map<Character, AxionElementGeneration> blockMap = Maps.newHashMap();
 
-        TreeBlockDefinition sapling = new TreeBlockDefinition("PlantPack:CypressSapling", PartOfTreeComponent.Part.SAPLING);
+        TreeBlockDefinition sapling = new TreeBlockDefinition("MetalRenegades:CypressSapling", PartOfTreeComponent.Part.SAPLING);
         TreeBlockDefinition saplingGenerated = new TreeBlockDefinition(GENERATED_BLOCK, PartOfTreeComponent.Part.SAPLING);
         TreeBlockDefinition leaf = new TreeBlockDefinition("PlantPack:CypressLeaf", PartOfTreeComponent.Part.LEAF);
         TreeBlockDefinition trunk = new TreeBlockDefinition("PlantPack:CypressTrunk", PartOfTreeComponent.Part.TRUNK);
 
-        replacementMap.put('g', new SimpleAxionElementReplacement("s"));
+        replacementMap.put('g', new SimpleAxionElementReplacement("ATTTttL"));
         replacementMap.put('s', new SimpleAxionElementReplacement("ATTTttL"));
         replacementMap.put('A', new SimpleAxionElementReplacement("")
             .addReplacement(0.7f, "&"));

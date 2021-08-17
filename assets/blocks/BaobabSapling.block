@@ -1,0 +1,7 @@
+{
+  "basedOn": "CoreAssets:plant",
+  "displayName": "Baobab Sapling",
+  "entity": {
+    "prefab": "MetalRenegades:BaobabSapling"
+  }
+}

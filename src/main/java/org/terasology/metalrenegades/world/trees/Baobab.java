@@ -28,12 +28,12 @@ public class Baobab extends LSystemBasedTreeGrowthDefinition {
         Map<Character, AxionElementReplacement> replacementMap = Maps.newHashMap();
         Map<Character, AxionElementGeneration> blockMap = Maps.newHashMap();
 
-        TreeBlockDefinition sapling = new TreeBlockDefinition(GENERATED_BLOCK, PartOfTreeComponent.Part.SAPLING);
+        TreeBlockDefinition sapling = new TreeBlockDefinition("MetalRenegades:BaobabSapling", PartOfTreeComponent.Part.SAPLING);
         TreeBlockDefinition saplingGenerated = new TreeBlockDefinition(GENERATED_BLOCK, PartOfTreeComponent.Part.SAPLING);
         TreeBlockDefinition leaf = new TreeBlockDefinition("PlantPack:BaobabLeaf", PartOfTreeComponent.Part.LEAF);
         TreeBlockDefinition trunk = new TreeBlockDefinition("PlantPack:BaobabTrunk", PartOfTreeComponent.Part.TRUNK);
 
-        replacementMap.put('g', new SimpleAxionElementReplacement("s"));
+        replacementMap.put('g', new SimpleAxionElementReplacement("WT"));
         replacementMap.put('s', new SimpleAxionElementReplacement("WT"));
         replacementMap.put('T', new SimpleAxionElementReplacement("WWWU")
                 .addReplacement(0.6f, "WT"));

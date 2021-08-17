@@ -1,6 +1,7 @@
 {
   "basedOn": "CoreAssets:plant",
   "displayName": "Baobab Sapling",
+  "tile": "MetalRenegades:BaobabSapling",
   "entity": {
     "prefab": "MetalRenegades:BaobabSaplingGenerated"
   }

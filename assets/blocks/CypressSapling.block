@@ -3,6 +3,6 @@
   "displayName": "Cypress Sapling",
   "tile": "PlantPack:CypressSapling",
   "entity": {
-    "prefab": "MetalRenegades:CypressSaplingGenerated"
+    "prefab": "MetalRenegades:CypressSapling"
   }
 }
