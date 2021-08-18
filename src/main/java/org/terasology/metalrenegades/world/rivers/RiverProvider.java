@@ -13,12 +13,13 @@ import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
 import org.terasology.engine.world.generation.ScalableFacetProvider;
+import org.terasology.engine.world.generation.UpdatePriority;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.nui.properties.Range;
 
 @Produces(RiverFacet.class)
-@Updates(@Facet(SurfaceHumidityFacet.class))
+@Updates(value = @Facet(SurfaceHumidityFacet.class), priority = UpdatePriority.PRIORITY_HIGH)
 public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetProvider {
     private static final int SAMPLE_RATE = 4;
 

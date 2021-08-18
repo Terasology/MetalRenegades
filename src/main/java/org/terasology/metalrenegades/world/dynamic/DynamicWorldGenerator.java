@@ -8,6 +8,7 @@ import org.terasology.core.world.generator.facetProviders.SimplexRoughnessProvid
 import org.terasology.core.world.generator.facetProviders.SpawnPlateauProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
+import org.terasology.core.world.generator.rasterizers.SunlightRasterizer;
 import org.terasology.dynamicCities.region.RegionEntityProvider;
 import org.terasology.dynamicCities.region.ResourceProvider;
 import org.terasology.dynamicCities.region.RoughnessProvider;
@@ -76,6 +77,7 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addRasterizer(new TreeRasterizer())
                 .addRasterizer(new OreRasterizer())
                 .addRasterizer(new DiscoverablesRasterizer())
+                .addRasterizer(new SunlightRasterizer(-20))
                 .addPlugins();
     }
 }
