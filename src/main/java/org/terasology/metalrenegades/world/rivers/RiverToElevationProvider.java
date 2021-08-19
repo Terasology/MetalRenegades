@@ -72,7 +72,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider, Scal
             float riverBedLow = lowFac * TeraMath.fadePerlin(TeraMath.clamp(narrowness * (riverFac - 1) + 1));
             float riverBedElevation = seaLevel + rivers.maxDepth * (riverBedHigh - riverBedLow);
 
-            float humidityAdj = Math.max(0, 15 * (0.4f - humidityData[i]));
+            float humidityAdj = Math.max(0, 15 * (0.35f - humidityData[i]));
             riverBedElevation += rivers.maxDepth * humidityAdj;
 
             // Never raise the surface to the river bed, erosion only goes downward

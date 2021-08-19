@@ -69,6 +69,7 @@ public class FloraProvider extends SurfaceObjectProvider<Biome, FloraType> imple
         }
 
         register(CoreBiome.DESERT, FloraType.MUSHROOM, 0);
+        register(MRBiome.SCRUBLAND, FloraType.GRASS, 0.2f);
     }
 
     @Override
