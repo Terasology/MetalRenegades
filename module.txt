@@ -22,6 +22,10 @@
             "minVersion": "1.1.0"
         },
         {
+            "id": "BiomesAPI",
+            "minVersion": "4.1.0"
+        },
+        {
             "id": "Cities",
             "minVersion": "1.1.0"
         },
@@ -66,8 +70,16 @@
             "minVersion": "1.0.0"
         },
         {
+            "id": "GenericRocks",
+            "minVersion": "1.0.0"
+        },
+        {
             "id": "Gooey",
             "minVersion": "1.0.0"
+        },
+        {
+            "id": "GrowingFlora",
+            "minVersion": "1.1.0-SNAPSHOT"
         },
         {
             "id": "Health",
@@ -92,6 +104,10 @@
         {
             "id": "OreGeneration",
             "minVersion": "2.0.0"
+        },
+        {
+            "id": "PlantPack",
+            "minVersion": "1.2.2-SNAPSHOT"
         },
         {
             "id": "Rails",

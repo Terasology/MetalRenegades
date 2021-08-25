@@ -8,17 +8,16 @@ import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.PerlinNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
 import org.terasology.engine.world.generation.Border3D;
-import org.terasology.engine.world.generation.FacetProvider;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.facets.SurfaceTemperatureFacet;
 
 @Produces(SurfaceTemperatureFacet.class)
-public class TemperatureProvider implements FacetProvider {
+public class TemperatureProvider implements ScalableFacetProvider {
     private  static final int SAMPLE_RATE = 4;
 
     private SubSampledNoise noise;
-    private float[] temperatures;
 
     @Override
     public void setSeed(long seed) {
@@ -26,33 +25,16 @@ public class TemperatureProvider implements FacetProvider {
     }
 
     @Override
-    public void initialize() {
-
-    }
-
-    @Override
-    public void process(GeneratingRegion region) {
+    public void process(GeneratingRegion region, float scale) {
         Border3D border = region.getBorderForFacet(SurfaceTemperatureFacet.class);
         SurfaceTemperatureFacet facet = new SurfaceTemperatureFacet(region.getRegion(), border);
 
         // TODO: Set temperature
         for (Vector2ic position: facet.getWorldArea()) {
-            double temp = getRandomTemp(position);
-            facet.setWorld(position, (float) temp);
+            float temp = 0.6f;
+            facet.setWorld(position, temp);
         }
 
         region.setRegionFacet(SurfaceTemperatureFacet.class, facet);
-    }
-
-    private float generateWeight() {
-        return 0;
-    }
-
-    private double getRandomTemp(Vector2ic pos) {
-//        float sumOfWeights = 10; // TODO
-//        Random random = new Random();
-////        float f = random.nextFloat() * sumOfWeights;
-//        return Math.sqrt(random.nextFloat());
-        return 0.6f;
     }
 }

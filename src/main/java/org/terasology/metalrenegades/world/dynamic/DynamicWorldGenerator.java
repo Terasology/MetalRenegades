@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.world.dynamic;
 
-import org.terasology.core.world.generator.facetProviders.BiomeProvider;
-import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
+import org.joml.Vector2i;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.core.world.generator.facetProviders.SimplexRoughnessProvider;
+import org.terasology.core.world.generator.facetProviders.SpawnPlateauProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
+import org.terasology.core.world.generator.rasterizers.SunlightRasterizer;
 import org.terasology.dynamicCities.region.RegionEntityProvider;
 import org.terasology.dynamicCities.region.ResourceProvider;
 import org.terasology.dynamicCities.region.RoughnessProvider;
@@ -22,6 +23,10 @@ import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.engine.world.generation.WorldBuilder;
 import org.terasology.engine.world.generator.RegisterWorldGenerator;
 import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
+import org.terasology.gf.generator.BushProvider;
+import org.terasology.gf.generator.FloraFeatureGenerator;
+import org.terasology.gf.generator.FoliageProvider;
+import org.terasology.gf.generator.TreeProvider;
 import org.terasology.metalrenegades.world.SimplexHillsAndMountainsProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesRasterizer;
@@ -47,25 +52,32 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SurfaceProvider())
                 .addProvider(new HumidityProvider())
                 .addProvider(new TemperatureProvider())
+                .addProvider(new BaseBiomeProvider())
                 .addProvider(new RiverProvider())
                 .addProvider(new SimplexHillsAndMountainsProvider())
                 .addProvider(new RiverToElevationProvider())
                 .addProvider(new SurfaceToDensityProvider())
                 .addProvider(new SimplexRoughnessProvider())
-                .addProvider(new BiomeProvider())
-                .addProvider(new DefaultFloraProvider())
+                .addProvider(new FloraProvider())
                 .addProvider(new DefaultTreeProvider())
+                .addProvider(new org.terasology.gf.generator.FloraProvider(seaLevel))
+                .addProvider(new TreeProvider(seaLevel))
+                .addProvider(new BushProvider(seaLevel))
+                .addProvider(new FoliageProvider(seaLevel))
                 .addProvider(new ResourceProvider())
                 .addProvider(new RoughnessProvider())
                 .addProvider(new DiscoverablesProvider())
                 .addProvider(new SiteFacetProvider())
                 .addProvider(new SettlementFacetProvider())
+                .addProvider(new SpawnPlateauProvider(new Vector2i(0, 0)))
                 .addEntities(new RegionEntityProvider())
+                .addRasterizer(new FloraFeatureGenerator())
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())
                 .addRasterizer(new TreeRasterizer())
                 .addRasterizer(new OreRasterizer())
                 .addRasterizer(new DiscoverablesRasterizer())
+                .addRasterizer(new SunlightRasterizer(-20))
                 .addPlugins();
     }
 }
