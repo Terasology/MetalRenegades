@@ -14,7 +14,7 @@ import org.terasology.core.world.generator.facetProviders.SurfaceObjectProvider;
 import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.core.world.generator.facets.FloraFacet;
 import org.terasology.core.world.generator.rasterizers.FloraType;
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.engine.utilities.procedural.Noise;
 import org.terasology.engine.utilities.procedural.WhiteNoise;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
@@ -118,8 +118,13 @@ public class FloraProvider extends SurfaceObjectProvider<Biome, FloraType> imple
         this.configuration = (Configuration) configuration;
     }
 
-    public static class Configuration implements Component {
+    public static class Configuration implements Component<Configuration> {
         @Range(min = 0, max = 1.0f, increment = 0.05f, precision = 2, description = "Define the overall flora density")
         public float density = 0.4f;
+
+        @Override
+        public void copyFrom(Configuration other) {
+            this.density = other.density;
+        }
     }
 }

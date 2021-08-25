@@ -7,7 +7,6 @@ import org.joml.Vector2f;
 import org.joml.Vector2ic;
 import org.terasology.biomesAPI.Biome;
 import org.terasology.core.world.generator.facets.BiomeFacet;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
@@ -22,6 +21,7 @@ import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SeaLevelFacet;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.world.dynamic.MRBiome;
 
@@ -105,6 +105,10 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider, Scal
         this.configuration = (Configuration) configuration;
     }
 
-    private static class Configuration implements Component {
+    private static class Configuration implements Component<Configuration> {
+        @Override
+        public void copyFrom(Configuration other) {
+
+        }
     }
 }

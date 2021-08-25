@@ -4,7 +4,6 @@ package org.terasology.metalrenegades.world.dynamic;
 
 import org.joml.Vector2f;
 import org.joml.Vector2ic;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
@@ -14,6 +13,7 @@ import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Produces;
 import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.nui.properties.Range;
 
 @Produces(SurfaceHumidityFacet.class)
@@ -89,11 +89,17 @@ public class HumidityProvider implements ConfigurableFacetProvider, ScalableFace
         return 0.1f;
     }
 
-    public static class Configuration implements Component {
+    public static class Configuration implements Component<Configuration> {
         @Range(min = 0, max = 10, increment = 1, precision = 0, description = "The number of noise octaves")
         public int octaves = 5;
 
         @Range(min = 0.01f, max = 5f, increment = 0.01f, precision = 2, description = "The noise scale")
         public float scale = 0.08f;
+
+        @Override
+        public void copyFrom(Configuration other) {
+            this.octaves = other.octaves;
+            this.scale = other.scale;
+        }
     }
 }

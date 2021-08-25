@@ -3,8 +3,8 @@
 package org.terasology.metalrenegades.ai.component;
 
 import com.google.common.collect.Lists;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.network.Replicate;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.metalrenegades.ai.CitizenNeed;
 
 import java.util.List;
@@ -12,9 +12,14 @@ import java.util.List;
 /**
  * Component which keeps track of a citizens current need status.
  */
-public class NeedsComponent implements Component {
+public class NeedsComponent implements Component<NeedsComponent> {
 
     @Replicate
-    public List<CitizenNeed> needs = Lists.newArrayList();;
+    public List<CitizenNeed> needs = Lists.newArrayList();
+
+    @Override
+    public void copyFrom(NeedsComponent other) {
+        this.needs = Lists.newArrayList(other.needs);
+    }
 
 }
