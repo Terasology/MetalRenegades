@@ -14,7 +14,7 @@ import org.terasology.core.world.generator.facetProviders.SurfaceObjectProvider;
 import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.core.world.generator.facets.FloraFacet;
 import org.terasology.core.world.generator.rasterizers.FloraType;
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.engine.utilities.procedural.Noise;
 import org.terasology.engine.utilities.procedural.WhiteNoise;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
