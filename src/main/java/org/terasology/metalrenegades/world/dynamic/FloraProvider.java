@@ -118,7 +118,7 @@ public class FloraProvider extends SurfaceObjectProvider<Biome, FloraType> imple
         this.configuration = (Configuration) configuration;
     }
 
-    public static class Configuration implements Component {
+    public static class Configuration implements Component<Configuration> {
         @Range(min = 0, max = 1.0f, increment = 0.05f, precision = 2, description = "Define the overall flora density")
         public float density = 0.4f;
     }
