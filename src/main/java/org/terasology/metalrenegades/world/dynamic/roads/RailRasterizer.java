@@ -62,7 +62,7 @@ public class RailRasterizer extends RoadRasterizer {
      */
     private void placeRail(RasterTarget target, Vector3i pos) {
         Set<Side> connections = new HashSet<>();
-        for (Side side : Side.getAllSides()) {
+        for (Side side : Side.allSides()) {
             BlockFamily family = worldProvider.getBlock(side.getAdjacentPos(pos, new Vector3i())).getBlockFamily();
             if (family instanceof RailBlockFamily) {
                 connections.add(side);

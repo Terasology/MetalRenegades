@@ -78,6 +78,10 @@
             "minVersion": "1.0.0"
         },
         {
+            "id": "GrowingFlora",
+            "minVersion": "1.1.0-SNAPSHOT"
+        },
+        {
             "id": "Health",
             "minVersion": "2.0.0-SNAPSHOT"
         },
@@ -100,6 +104,10 @@
         {
             "id": "OreGeneration",
             "minVersion": "2.0.0"
+        },
+        {
+            "id": "PlantPack",
+            "minVersion": "1.2.2-SNAPSHOT"
         },
         {
             "id": "Rails",

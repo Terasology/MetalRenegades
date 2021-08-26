@@ -6,7 +6,6 @@ import org.joml.Vector2f;
 import org.joml.Vector2ic;
 import org.terasology.biomesAPI.Biome;
 import org.terasology.core.world.generator.facets.BiomeFacet;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
@@ -20,6 +19,7 @@ import org.terasology.engine.world.generation.ScalableFacetProvider;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.world.dynamic.MRBiome;
 import org.terasology.nui.properties.Range;
@@ -135,15 +135,21 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         this.configuration = (SimplexHillsAndMountainsProviderConfiguration) configuration;
     }
 
-    private static class SimplexHillsAndMountainsProviderConfiguration implements Component {
+    private static class SimplexHillsAndMountainsProviderConfiguration implements Component<SimplexHillsAndMountainsProviderConfiguration> {
 
         @Range(min = 0, max = 3f, increment = 0.01f, precision = 2, description = "Mountain Amplitude")
         public float mountainAmplitude = 1f;
 
         @Range(min = 0, max = 2f, increment = 0.01f, precision = 2, description = "Hill Amplitude")
         public float hillAmplitude = 1f;
-
+      
         @Range(min = 0, max = 10f, increment = 0.01f, precision = 2, description = "Mesa density")
         public float mesaDensity = 4f;
+
+        @Override
+        public void copyFrom(SimplexHillsAndMountainsProviderConfiguration other) {
+            this.mountainAmplitude = other.mountainAmplitude;
+            this.hillAmplitude = other.hillAmplitude;
+        }
     }
 }

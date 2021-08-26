@@ -1,0 +1,8 @@
+{
+  "basedOn": "CoreAssets:plant",
+  "displayName": "Cypress Sapling",
+  "tile": "PlantPack:CypressSapling",
+  "entity": {
+    "prefab": "MetalRenegades:CypressSapling"
+  }
+}

@@ -3,14 +3,20 @@
 
 package org.terasology.metalrenegades.ai.component;
 
-import org.terasology.engine.entitySystem.Component;
+import com.google.common.collect.Lists;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 import java.util.List;
 
-public class NeedsSystemConfigurationComponent implements Component {
+public class NeedsSystemConfigurationComponent implements Component<NeedsSystemConfigurationComponent> {
 
     public int priority;
 
-    public List<List<String>> needsConfigs;
+    public List<List<String>> needsConfigs = Lists.newArrayList();
 
+    @Override
+    public void copyFrom(NeedsSystemConfigurationComponent other) {
+        this.priority = other.priority;
+        this.needsConfigs = Lists.newArrayList(other.needsConfigs);
+    }
 }

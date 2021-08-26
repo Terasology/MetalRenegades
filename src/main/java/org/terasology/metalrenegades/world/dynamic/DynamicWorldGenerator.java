@@ -23,6 +23,10 @@ import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.engine.world.generation.WorldBuilder;
 import org.terasology.engine.world.generator.RegisterWorldGenerator;
 import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
+import org.terasology.gf.generator.BushProvider;
+import org.terasology.gf.generator.FloraFeatureGenerator;
+import org.terasology.gf.generator.FoliageProvider;
+import org.terasology.gf.generator.TreeProvider;
 import org.terasology.metalrenegades.world.SimplexHillsAndMountainsProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesProvider;
 import org.terasology.metalrenegades.world.dynamic.discoverables.DiscoverablesRasterizer;
@@ -56,6 +60,10 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SimplexRoughnessProvider())
                 .addProvider(new FloraProvider())
                 .addProvider(new DefaultTreeProvider())
+                .addProvider(new org.terasology.gf.generator.FloraProvider(seaLevel))
+                .addProvider(new TreeProvider(seaLevel))
+                .addProvider(new BushProvider(seaLevel))
+                .addProvider(new FoliageProvider(seaLevel))
                 .addProvider(new ResourceProvider())
                 .addProvider(new RoughnessProvider())
                 .addProvider(new DiscoverablesProvider())
@@ -63,6 +71,7 @@ public class DynamicWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SettlementFacetProvider())
                 .addProvider(new SpawnPlateauProvider(new Vector2i(0, 0)))
                 .addEntities(new RegionEntityProvider())
+                .addRasterizer(new FloraFeatureGenerator())
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())
                 .addRasterizer(new TreeRasterizer())
