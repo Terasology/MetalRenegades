@@ -3,10 +3,9 @@
 package org.terasology.metalrenegades.economy.systems;
 
 
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.gestalt.assets.ResourceUrn;
-import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
 import org.terasology.dynamicCities.playerTracking.PlayerTracker;
@@ -36,7 +35,6 @@ import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.logic.inventory.ItemComponent;
 import org.terasology.engine.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.engine.network.NetworkComponent;
@@ -45,10 +43,14 @@ import org.terasology.engine.registry.Share;
 import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.entity.BlockCommands;
 import org.terasology.engine.world.block.items.BlockItemComponent;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.metalrenegades.economy.events.MarketTransactionRequest;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
+import org.terasology.module.inventory.systems.InventoryManager;
 
+import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -57,6 +59,10 @@ import java.util.Set;
 @Share(MarketManagementSystem.class)
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class MarketManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+
+    private static final Logger logger = LoggerFactory.getLogger(MarketManagementSystem.class);
+
+    private static final int COOLDOWN = 200;
 
     @In
     private EntityManager entityManager;
@@ -85,10 +91,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     @In
     private WalletAuthoritySystem walletAuthoritySystem;
 
-    private final int COOLDOWN = 200;
     private int counter = 0;
-
-    private Logger logger = LoggerFactory.getLogger(MarketManagementSystem.class);
 
     @ReceiveEvent
     public void onPlayerJoin(OnPlayerSpawnedEvent onPlayerSpawnedEvent, EntityRef player) {
@@ -186,13 +189,26 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
     private MarketItem sell(EntityRef character, MarketItem item) {
-        if (item.quantity <=0 || !destroyItemOrBlock(character, item.name)) {
-            logger.warn("Failed to destroy entity");
+        Preconditions.checkArgument(
+                character.hasAllComponents(Arrays.asList(PlayerResourceStoreComponent.class, SettlementRefComponent.class)),
+                "Entity must have both PlayerResourceStoreComponent and SettlementRefComponent when selling items to market.");
+
+        if (item.quantity <= 0 || !destroyItemOrBlock(character, item.name)) {
+            logger.warn("Failed to destroy item entity for '{}' ({})", item.displayName, item.name);
             return item;
         }
+
         EntityRef playerResourceStore = character.getComponent(PlayerResourceStoreComponent.class).resourceStore;
         SettlementRefComponent settlementRefComponent = character.getComponent(SettlementRefComponent.class);
-        playerResourceStore.send(new ResourceStoreEvent(item.name, 1, settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
+
+        if (!settlementRefComponent.settlement.hasComponent(MarketComponent.class)) {
+            logger.error("Cannot sell items to a settlement without MarketComponent: {}",
+                    settlementRefComponent.settlement.toFullDescription());
+            return item;
+        }
+        MarketComponent marketComponent = settlementRefComponent.settlement.getComponent(MarketComponent.class);
+
+        playerResourceStore.send(new ResourceStoreEvent(item.name, 1, marketComponent.market));
 
         character.send(new WalletTransactionEvent(item.cost));
         item.quantity--;
