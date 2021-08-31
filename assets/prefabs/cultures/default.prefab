@@ -6,14 +6,16 @@
       "CLERICAL": 0.5,
       "COMMERCIAL": 0.7,
       "GOVERNMENTAL": 0.5,
-      "RESIDENTIAL": 1.1,
+      "RESIDENTIAL": 3,
       "UTILITY": 0.08
     },
     "growthRate": 8,
     "availableBuildings": [
       "blacksmith",
       "Farm",
-      "House",
+      "House1",
+      "House2",
+      "House3",
       "Jail",
       "Marketplace",
       "Saloon",

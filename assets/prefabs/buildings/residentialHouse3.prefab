@@ -1,14 +1,12 @@
 {
   "GenericBuilding": {
-    "name": "House",
+    "name": "House3",
     "templateNames": [
-      "MetalRenegades:oldwestResidentialHouse1",
-      "MetalRenegades:oldwestResidentialHouse2",
       "MetalRenegades:oldwestResidentialHouse3"
     ],
     "zone": "RESIDENTIAL",
-    "minSize": [22, 22],
-    "maxSize": [22, 22],
+    "minSize": [14, 14],
+    "maxSize": [14, 14],
     "isEntity": true
   },
   "PotentialHome": {
