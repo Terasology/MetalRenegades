@@ -12,6 +12,7 @@
     "growthRate": 8,
     "availableBuildings": [
       "blacksmith",
+      "Church",
       "Farm",
       "House1",
       "House2",
