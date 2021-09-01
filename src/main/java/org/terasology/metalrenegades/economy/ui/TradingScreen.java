@@ -144,7 +144,7 @@ public class TradingScreen extends CoreScreenLayer {
 
     /**
      * Set the player's inventory items
-     * @param list: Content for the player's UIList
+     * @param list Content for the player's UIList
      */
     public void setPlayerItems(List<MarketItem> list) {
         pItems = list;
@@ -152,7 +152,7 @@ public class TradingScreen extends CoreScreenLayer {
 
     /**
      * Set the citizen's inventory items
-     * @param list: Content for the citizen's UIList
+     * @param list Content for the citizen's UIList
      */
     public void setCitizenItems(List<MarketItem> list) {
         this.cItems = list;

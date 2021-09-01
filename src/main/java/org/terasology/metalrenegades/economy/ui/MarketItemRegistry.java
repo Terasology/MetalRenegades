@@ -25,11 +25,12 @@ import java.util.Random;
 @Share(MarketItemRegistry.class)
 public class MarketItemRegistry extends BaseComponentSystem {
 
+    private static final String EMPTY = "empty";
+
     @In
     private PrefabManager prefabManager;
 
-    private final String EMPTY = "empty";
-    private Map<String, MarketItem> details = new HashMap<>();
+    private final Map<String, MarketItem> details = new HashMap<>();
     private boolean isInitialised = false;
 
     /**

@@ -104,8 +104,8 @@ public class CharacterOverlay implements MinimapOverlay {
     /**
      * Checks if the citizen to be drawn lies inside the visible region in the minimap
      *
-     * @param point: the coordinates of the point to be checked
-     * @param box: limits
+     * @param point the coordinates of the point to be checked
+     * @param box limits
      * @return whether point is to be drawn or not
      */
     private boolean isInside(Vector2i point, Rectanglei box) {

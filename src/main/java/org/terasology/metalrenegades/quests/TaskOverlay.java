@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 public class TaskOverlay implements MinimapOverlay {
 
-    private final int ICON_SIZE = 24;
+    private static final int ICON_SIZE = 24;
     private EntityRef beaconEntity;
 
     public TaskOverlay(EntityRef beaconEntity) {
@@ -31,7 +31,8 @@ public class TaskOverlay implements MinimapOverlay {
     public void render(Canvas canvas, Rectanglei worldRect) {
 
         Vector3f localPosition = beaconEntity.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
-        Vector2i mapPoint = RectUtility.map(worldRect, canvas.getRegion(), new Vector2i((int) localPosition.x, (int) localPosition.y), new Vector2i());
+        Vector2i mapPoint =
+                RectUtility.map(worldRect, canvas.getRegion(), new Vector2i((int) localPosition.x, (int) localPosition.y), new Vector2i());
         Vector2i min = clamp(mapPoint, canvas.getRegion());
 
         Rectanglei region = RectUtility.createFromMinAndSize(min.x, min.y, ICON_SIZE, ICON_SIZE);
@@ -51,8 +52,8 @@ public class TaskOverlay implements MinimapOverlay {
     /**
      * Constrains a point to a specified region. Works like a vector clamp.
      *
-     * @param point: the coordinates of the point to be clamped
-     * @param box: limits
+     * @param point the coordinates of the point to be clamped
+     * @param box limits
      * @return new clamped coordinates of point
      */
     private Vector2i clamp(Vector2i point, Rectanglei box) {
