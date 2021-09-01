@@ -5,8 +5,8 @@
       "MetalRenegades:oldwestResidentialHouse2"
     ],
     "zone": "RESIDENTIAL",
-    "minSize": [15, 15],
-    "maxSize": [15, 15],
+    "minSize": [14, 15],
+    "maxSize": [14, 15],
     "isEntity": true
   },
   "PotentialHome": {
