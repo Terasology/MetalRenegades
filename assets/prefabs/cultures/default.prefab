@@ -23,7 +23,9 @@
       "Saloon",
       "SimpleChurch",
       "Townhall",
-      "Well"
+      "Well",
+      "WaterTower1",
+      "WaterTower2"
     ],
     "residentialZones": ["RESIDENTIAL"]
   }

@@ -1,0 +1,13 @@
+{
+    "GenericBuilding": {
+        "name": "WaterTower2",
+        "templateNames" : ["MetalRenegades:waterTower2Template"],
+        "zone": "UTILITY",
+        "minSize": [8, 10],
+        "maxSize": [8, 10],
+        "isEntity": true
+    },
+    "SimpleSource": {
+        "needType": "WATER"
+    }
+}
