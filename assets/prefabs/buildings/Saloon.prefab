@@ -3,8 +3,8 @@
     "name": "Saloon",
     "templateNames": ["MetalRenegades:oldWestSaloonTemplate"],
     "zone": "COMMERCIAL",
-    "minSize": [23, 23],
-    "maxSize": [23, 23],
+    "minSize": [21, 21],
+    "maxSize": [21, 21],
     "isEntity": true
   },
   "SimpleSource": {
