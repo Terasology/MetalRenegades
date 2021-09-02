@@ -56,7 +56,7 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
     /**
      * The maximum number of enemies that can spawn in the world.
      */
-    private static final int MAX_ENEMIES = 30;
+    private static final int MAX_ENEMIES = 15;
 
     @In
     private EntityManager entityManager;
