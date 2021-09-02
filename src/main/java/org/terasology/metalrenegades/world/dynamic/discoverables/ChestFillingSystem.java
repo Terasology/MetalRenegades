@@ -11,12 +11,12 @@ import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.module.inventory.components.InventoryComponent;
-import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.logic.inventory.ItemComponent;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.utilities.random.FastRandom;
 import org.terasology.engine.utilities.random.Random;
+import org.terasology.module.inventory.components.InventoryComponent;
+import org.terasology.module.inventory.systems.InventoryManager;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,7 +29,7 @@ import java.util.Map;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class ChestFillingSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
-    private Logger logger = LoggerFactory.getLogger(ChestFillingSystem.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChestFillingSystem.class);
 
     /**
      * The chance out of one that any particular chest slot will contain an item.

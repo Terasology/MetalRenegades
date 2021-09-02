@@ -20,7 +20,7 @@ public class CheckNeedAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        if(!actor.hasComponent(NeedsComponent.class)) {
+        if (!actor.hasComponent(NeedsComponent.class)) {
             return BehaviorState.FAILURE;
         }
 

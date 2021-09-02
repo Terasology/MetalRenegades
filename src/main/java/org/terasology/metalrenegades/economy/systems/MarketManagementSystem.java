@@ -5,8 +5,6 @@ package org.terasology.metalrenegades.economy.systems;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.gestalt.assets.ResourceUrn;
-import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.dynamicCities.buildings.components.SettlementRefComponent;
 import org.terasology.dynamicCities.construction.events.BuildingEntitySpawnedEvent;
 import org.terasology.dynamicCities.playerTracking.PlayerTracker;
@@ -36,7 +34,6 @@ import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.logic.inventory.ItemComponent;
 import org.terasology.engine.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.engine.network.NetworkComponent;
@@ -45,9 +42,12 @@ import org.terasology.engine.registry.Share;
 import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.entity.BlockCommands;
 import org.terasology.engine.world.block.items.BlockItemComponent;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.metalrenegades.economy.events.MarketTransactionRequest;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
+import org.terasology.module.inventory.systems.InventoryManager;
 
 import java.util.Set;
 
@@ -57,6 +57,8 @@ import java.util.Set;
 @Share(MarketManagementSystem.class)
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class MarketManagementSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+
+    private static final int COOLDOWN = 200;
 
     @In
     private EntityManager entityManager;
@@ -85,7 +87,6 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     @In
     private WalletAuthoritySystem walletAuthoritySystem;
 
-    private final int COOLDOWN = 200;
     private int counter = 0;
 
     private Logger logger = LoggerFactory.getLogger(MarketManagementSystem.class);
@@ -118,7 +119,9 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
                 for (String resource : requestEvent.resources.keySet()) {
                     if (requestEvent.resources.get(resource) != 0) {
                         logger.info("Storing resources in the market...");
-                        bldg.send(new ResourceStoreEvent(resource, requestEvent.resources.get(resource), settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
+                        bldg.send(new ResourceStoreEvent(resource,
+                                requestEvent.resources.get(resource),
+                                settlementRefComponent.settlement.getComponent(MarketComponent.class).market));
                     }
                 }
             }
@@ -164,7 +167,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
     private MarketItem buy(EntityRef character, MarketItem item) {
-        if (!walletAuthoritySystem.isValidTransaction(character,-1 * item.cost)) {
+        if (!walletAuthoritySystem.isValidTransaction(character, -1 * item.cost)) {
             logger.warn("Insufficient funds");
             return item;
         } else if (item.quantity > 0) {
@@ -186,7 +189,7 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     }
 
     private MarketItem sell(EntityRef character, MarketItem item) {
-        if (item.quantity <=0 || !destroyItemOrBlock(character, item.name)) {
+        if (item.quantity <= 0 || !destroyItemOrBlock(character, item.name)) {
             logger.warn("Failed to destroy entity");
             return item;
         }
@@ -209,7 +212,8 @@ public class MarketManagementSystem extends BaseComponentSystem implements Updat
     private boolean createItemOrBlock(EntityRef character, String name) {
         Set<ResourceUrn> matches = assetManager.resolve(name, Prefab.class);
         SettlementRefComponent playerSettlementRef = character.getComponent(SettlementRefComponent.class);
-        ResourceInfoRequestEvent request = playerSettlementRef.settlement.getComponent(MarketComponent.class).market.send(new ResourceInfoRequestEvent());
+        ResourceInfoRequestEvent request =
+                playerSettlementRef.settlement.getComponent(MarketComponent.class).market.send(new ResourceInfoRequestEvent());
 
         if (!request.isHandled || request.resources.get(name) <= 0) {
             return false;

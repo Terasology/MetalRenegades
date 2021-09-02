@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.economy.ui;
 
-import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.characters.interactions.InteractionUtil;
-import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.logic.players.LocalPlayer;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.registry.Share;
 import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.engine.world.block.items.BlockItemComponent;
+import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.metalrenegades.economy.events.TradeScreenRequestEvent;
+import org.terasology.module.inventory.systems.InventoryManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,8 @@ public class TradingUISystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onTradeResponse(TradeResponse response, EntityRef entity) {
-        if (!entity.equals(localPlayer.getCharacterEntity())) { // checks if event is intended for a different character; occurs when client is hosting.
+        // checks if event is intended for a different character; occurs when client is hosting.
+        if (!entity.equals(localPlayer.getCharacterEntity())) {
             return;
         }
 

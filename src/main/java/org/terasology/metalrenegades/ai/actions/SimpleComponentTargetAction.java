@@ -31,7 +31,7 @@ public class SimpleComponentTargetAction extends BaseAction {
 
     @Override
     public BehaviorState modify(Actor actor, BehaviorState result) {
-        if(actor.getComponent(FollowComponent.class) != null) {
+        if (actor.getComponent(FollowComponent.class) != null) {
             return BehaviorState.SUCCESS;
         }
         CitizenNeed.Type needTypeValue = CitizenNeed.Type.valueOf(needType);
@@ -42,9 +42,9 @@ public class SimpleComponentTargetAction extends BaseAction {
 
         for (EntityRef source : entityManager.getEntitiesWith(SimpleSourceComponent.class)) {
             LocationComponent sourceLocationComponent = source.getComponent(LocationComponent.class);
-            if (sourceLocationComponent == null ||
-                    source.equals(actor.getEntity()) || // needed for cases where this actor can itself be a source for other actors (social)
-                    !source.getComponent(SimpleSourceComponent.class).needType.equals(needTypeValue)) {
+            if (sourceLocationComponent == null
+                    || source.equals(actor.getEntity()) // needed for cases where this actor can itself be a source for other actors (social)
+                    || !source.getComponent(SimpleSourceComponent.class).needType.equals(needTypeValue)) {
                 continue;
             }
 

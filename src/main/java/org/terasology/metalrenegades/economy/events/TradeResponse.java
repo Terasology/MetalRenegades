@@ -22,7 +22,7 @@ public class TradeResponse implements Event {
      */
     public String message;
 
-    public TradeResponse() {}
+    public TradeResponse() { }
 
     public TradeResponse(boolean success, String message) {
         this.successful = success;

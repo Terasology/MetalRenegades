@@ -3,7 +3,6 @@
 package org.terasology.metalrenegades;
 
 import org.joml.Vector3f;
-import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
@@ -12,16 +11,18 @@ import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.characters.events.PlayerDeathEvent;
 import org.terasology.engine.logic.console.commandSystem.annotations.Command;
 import org.terasology.engine.logic.console.commandSystem.annotations.Sender;
-import org.terasology.module.inventory.systems.InventoryManager;
-import org.terasology.module.inventory.components.ItemCommands;
-import org.terasology.module.inventory.events.DropItemRequest;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.logic.permission.PermissionManager;
 import org.terasology.engine.logic.players.LocalPlayer;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.BlockManager;
+import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.module.inventory.components.ItemCommands;
+import org.terasology.module.inventory.events.DropItemRequest;
+import org.terasology.module.inventory.systems.InventoryManager;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -53,7 +54,7 @@ public class PlayerInventorySystem extends BaseComponentSystem {
     @In
     private LocalPlayer localPlayer;
 
-    private HashMap<String, Integer> testingItems = new HashMap<>();
+    private Map<String, Integer> testingItems = new HashMap<>();
 
     @Override
     public void postBegin() {
@@ -82,7 +83,7 @@ public class PlayerInventorySystem extends BaseComponentSystem {
                     // Get a random position near the position calculated above
                     // so that the items don't all drop at the same point
                     Vector3f currentItemPos = new Vector3f(position);
-                    currentItemPos.add(rnd.nextFloat() * BOUND,0,rnd.nextFloat() * BOUND);
+                    currentItemPos.add(rnd.nextFloat() * BOUND, 0, rnd.nextFloat() * BOUND);
 
                     character.send(new DropItemRequest(
                         current,

@@ -32,7 +32,7 @@ public class HumidityProvider implements ConfigurableFacetProvider, ScalableFace
 
     /**
      * Create with the given config
-     * @param config: the config to use
+     * @param config the config to use
      */
     public HumidityProvider(Configuration config) {
         this.config = config;
