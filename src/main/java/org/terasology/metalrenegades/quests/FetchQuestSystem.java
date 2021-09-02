@@ -16,7 +16,6 @@ import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
-import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.logic.nameTags.NameTagComponent;
 import org.terasology.engine.logic.players.LocalPlayer;
@@ -24,6 +23,7 @@ import org.terasology.engine.network.ClientComponent;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.utilities.Assets;
 import org.terasology.engine.world.block.BlockArea;
+import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.nui.Color;
 import org.terasology.tasks.CollectBlocksTask;
 import org.terasology.tasks.Task;
@@ -48,6 +48,11 @@ import java.util.Optional;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class FetchQuestSystem extends BaseComponentSystem {
 
+    private static final String HOME_TASK_ID = "returnHome";
+    private static final String FETCH_QUEST_ID = "FetchQuest";
+    private static final String ITEM_ID = "WildAnimals:Meat";
+    private static final int REWARD = 50;
+
     @In
     private EntityManager entityManager;
 
@@ -61,12 +66,7 @@ public class FetchQuestSystem extends BaseComponentSystem {
     private LocalPlayer localPlayer;
 
     private EntityRef activeQuestEntity;
-    private Map<String, Integer> amounts = new HashMap<>();
-
-    private static final String HOME_TASK_ID = "returnHome";
-    private static final String FETCH_QUEST_ID = "FetchQuest";
-    private static final String ITEM_ID = "WildAnimals:Meat";
-    private static final int REWARD = 50;
+    private final Map<String, Integer> amounts = new HashMap<>();
 
     @Override
     public void postBegin() {
@@ -82,7 +82,10 @@ public class FetchQuestSystem extends BaseComponentSystem {
             Optional<Prefab> questPointOptional = Assets.getPrefab("Tasks:QuestPoint");
             if (questPointOptional.isPresent()) {
                 BlockArea area = new BlockArea(dynParcel.getShape());
-                Vector3f spawnPosition = new Vector3f(area.minX() + area.getSizeX() / 2, dynParcel.getHeight() + 2, area.minY() + area.getSizeY() / 2);
+                Vector3f spawnPosition =
+                        new Vector3f(area.minX() + area.getSizeX() / 2,
+                                dynParcel.getHeight() + 2,
+                                area.minY() + area.getSizeY() / 2);
                 EntityRef questPoint = entityManager.create(questPointOptional.get(), spawnPosition);
                 SettlementRefComponent settlementRefComponent = entityRef.getComponent(SettlementRefComponent.class);
                 questPoint.addComponent(settlementRefComponent);

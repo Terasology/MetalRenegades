@@ -46,7 +46,17 @@ import java.util.Queue;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
-    private final Logger logger = LoggerFactory.getLogger(EnemySpawnSystem.class);
+    private static final Logger logger = LoggerFactory.getLogger(EnemySpawnSystem.class);
+
+    /**
+     * The time period between processing updates in seconds.
+     */
+    private static final float UPDATE_PERIOD = 1;
+
+    /**
+     * The maximum number of enemies that can spawn in the world.
+     */
+    private static final int MAX_ENEMIES = 15;
 
     @In
     private EntityManager entityManager;
@@ -69,11 +79,6 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
     private float elapsedTime;
 
     /**
-     * The time period between processing updates in seconds.
-     */
-    private static final float UPDATE_PERIOD = 1;
-
-    /**
      * Contains all enemies currently in the world. Used to remove enemies in spawn order when the maximum number of
      * enemies is reached.
      */
@@ -83,11 +88,6 @@ public class EnemySpawnSystem extends BaseComponentSystem implements UpdateSubsc
      * A list of positions of loaded chunks that enemies can be spawned in
      */
     private List<Vector3i> chunkPositions;
-
-    /**
-     * The maximum number of enemies that can spawn in the world.
-     */
-    private static final int MAX_ENEMIES = 15;
 
     /**
      * True if this system is initialised, false otherwise.

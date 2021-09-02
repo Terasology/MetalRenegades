@@ -4,7 +4,6 @@ package org.terasology.metalrenegades.economy.ui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.economy.events.MarketInfoClientRequestEvent;
 import org.terasology.economy.events.MarketInfoClientResponseEvent;
 import org.terasology.engine.entitySystem.entity.EntityManager;
@@ -14,16 +13,17 @@ import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.characters.interactions.InteractionUtil;
-import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.logic.players.LocalPlayer;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.registry.Share;
 import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.engine.world.block.items.BlockItemComponent;
 import org.terasology.engine.world.time.WorldTimeEvent;
+import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.metalrenegades.economy.events.MarketScreenRequestEvent;
 import org.terasology.metalrenegades.economy.events.TransactionType;
 import org.terasology.metalrenegades.economy.events.UpdateMarketScreenEvent;
+import org.terasology.module.inventory.systems.InventoryManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +119,7 @@ public class MarketUISystem extends BaseComponentSystem {
 
         if (type == TransactionType.BUYING) {
             localPlayer.getCharacterEntity().send(new MarketInfoClientRequestEvent(marketID));
-        } else if (type == TransactionType.SELLING){
+        } else if (type == TransactionType.SELLING) {
             EntityRef player = localPlayer.getCharacterEntity();
             int slots = inventoryManager.getNumSlots(player);
 
@@ -129,7 +129,8 @@ public class MarketUISystem extends BaseComponentSystem {
                     MarketItem item;
                     logger.info(entity.getParentPrefab().getName() + " == " + "blockItemBase");
                     if (entity.getParentPrefab().getName().equalsIgnoreCase("engine:blockItemBase")) {
-                        item = marketItemRegistry.get(entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString(), inventoryManager.getStackSize(entity));
+                        item = marketItemRegistry.get(entity.getComponent(BlockItemComponent.class).blockFamily.getURI().toString(),
+                                inventoryManager.getStackSize(entity));
                     } else {
                         item = marketItemRegistry.get(entity.getParentPrefab().getName(), inventoryManager.getStackSize(entity));
                     }
