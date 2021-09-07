@@ -3,7 +3,7 @@
 package org.terasology.metalrenegades.interaction.events;
 
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.event.Event;
+import org.terasology.gestalt.entitysystem.event.Event;
 
 /**
  * Fires when a player drinks directly from a well.

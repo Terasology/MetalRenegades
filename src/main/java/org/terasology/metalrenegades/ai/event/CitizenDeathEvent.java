@@ -3,7 +3,7 @@
 
 package org.terasology.metalrenegades.ai.event;
 
-import org.terasology.engine.entitySystem.event.Event;
+import org.terasology.gestalt.entitysystem.event.Event;
 
 /**
  * Fired whenever an entity with a citizen component dies
