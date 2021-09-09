@@ -4,7 +4,6 @@ package org.terasology.metalrenegades.ai.system;
 
 import org.terasology.dynamicCities.settlements.events.SettlementRegisterEvent;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.entitySystem.prefab.PrefabManager;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
@@ -13,6 +12,7 @@ import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.registry.Share;
 import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 
 /**

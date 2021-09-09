@@ -4,13 +4,13 @@ package org.terasology.metalrenegades.interaction.systems;
 
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.nameTags.NameTagComponent;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.time.WorldTimeEvent;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 import org.terasology.metalrenegades.interaction.component.WellSourceComponent;
 import org.terasology.metalrenegades.interaction.events.CupFilledEvent;
 import org.terasology.metalrenegades.interaction.events.WellDrinkEvent;
