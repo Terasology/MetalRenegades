@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.EventPriority;
+import org.terasology.engine.entitySystem.event.Priority;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
@@ -26,7 +27,8 @@ public class CitizenDeathSystem extends BaseComponentSystem {
     Logger logger = LoggerFactory.getLogger(CitizenDeathSystem.class);
 
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH)
+    @Priority(EventPriority.PRIORITY_HIGH)
+    @ReceiveEvent
     public void onEntityDestroyed(BeforeDestroyEvent event, EntityRef entityRef,
                                   CitizenComponent citizenComponent) {
         entityRef.send(new CitizenDeathEvent());
