@@ -14,22 +14,22 @@
   },
   "Stand": {
     "animationPool": [
-      "Gooey:mawgooeyIdleFinal"
+      "Gooey:mawgooey#IdleFinal"
     ]
   },
   "Walk": {
     "animationPool": [
-      "Gooey:mawgooeyWalk"
+      "Gooey:mawgooey#Walk"
     ]
   },
   "MeleeAttack": {
     "animationPool": [
-      "Gooey:mawgooeyAttack"
+      "Gooey:mawgooey#Attack"
     ]
   },
   "Die": {
     "animationPool": [
-      "Gooey:mawgooeyDeath"
+      "Gooey:mawgooey#Death"
     ]
   },
   "persisted": true,

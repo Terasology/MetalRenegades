@@ -4,8 +4,6 @@ package org.terasology.metalrenegades.economy.systems;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.gestalt.assets.ResourceUrn;
-import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
@@ -13,16 +11,18 @@ import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
-import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.logic.inventory.ItemComponent;
 import org.terasology.engine.logic.inventory.events.GiveItemEvent;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.entity.BlockCommands;
 import org.terasology.engine.world.block.items.BlockItemComponent;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.economy.events.TradeRequest;
 import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.metalrenegades.economy.ui.MarketItem;
+import org.terasology.module.inventory.systems.InventoryManager;
 
 import java.util.Random;
 import java.util.Set;
@@ -97,8 +97,8 @@ public class TradingSystem extends BaseComponentSystem {
     /**
      * Remove an item from the specified entity's inventory
      *
-     * @param item: MarketItem to be removed
-     * @param entity: Entity to be removed from
+     * @param item MarketItem to be removed
+     * @param entity Entity to be removed from
      */
     private void remove(MarketItem item, EntityRef entity) throws Exception {
         EntityRef itemEntity = EntityRef.NULL;
@@ -129,8 +129,8 @@ public class TradingSystem extends BaseComponentSystem {
     /**
      * Add an item to the specified entity's inventory
      *
-     * @param item: MarketItem to be added
-     * @param entity: Entity to be added to
+     * @param item MarketItem to be added
+     * @param entity Entity to be added to
      * @throws Exception if addition of block to inventory fails
      */
     private void add(MarketItem item, EntityRef entity) throws Exception {
@@ -157,8 +157,8 @@ public class TradingSystem extends BaseComponentSystem {
     /**
      * Determines if two costs are about equal, depending on MARGIN_PERCENTAGE
      *
-     * @param pCost: Integer cost of the player's item
-     * @param cCost: Integer cost of the citizen's item
+     * @param pCost Integer cost of the player's item
+     * @param cCost Integer cost of the citizen's item
      * @return boolean indicating if the two costs are about equal
      */
     private boolean isAboutEqual(int pCost, int cCost) {
@@ -169,8 +169,8 @@ public class TradingSystem extends BaseComponentSystem {
     /**
      * Calculates if the trade is acceptable to the citizen based only on market costs.
      *
-     * @param pItem: MarketItem for the player's item
-     * @param cItem: MarketItem for the citizen's item
+     * @param pItem MarketItem for the player's item
+     * @param cItem MarketItem for the citizen's item
      * @return boolean indicating if the trade is acceptable or not
      */
     public boolean isAcceptable(MarketItem pItem, MarketItem cItem) {

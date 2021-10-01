@@ -39,12 +39,6 @@ import java.util.stream.StreamSupport;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class WellWaterSystem extends BaseComponentSystem {
 
-    @In
-    private EntityManager entityManager;
-
-    @In
-    private Time time;
-
     /**
      * The number of world time cycles it takes for all wells to replenish with one refill.
      */
@@ -53,6 +47,12 @@ public class WellWaterSystem extends BaseComponentSystem {
     private static final String EMPTY_CUP_URI = "MetalRenegades:emptyCup";
 
     private static final String FULL_CUP_URI = "MetalRenegades:filledCup";
+
+    @In
+    private EntityManager entityManager;
+
+    @In
+    private Time time;
 
     /**
      * A timer counting the current number of cycles until all wells are replenished.
@@ -69,7 +69,7 @@ public class WellWaterSystem extends BaseComponentSystem {
         worldTimeCycles++;
     }
 
-    @ReceiveEvent(components = {WellBlockComponent.class})
+    @ReceiveEvent(components = WellBlockComponent.class)
     public void onActivate(ActivateEvent event, EntityRef sourceBlock) {
         EntityRef gatheringCharacter = event.getInstigator();
         EntityRef wellEntity = getWellEntity(sourceBlock);
@@ -93,7 +93,7 @@ public class WellWaterSystem extends BaseComponentSystem {
         wellEntity.saveComponent(wellSourceComp);
     }
 
-    @ReceiveEvent(components = {WaterCupComponent.class})
+    @ReceiveEvent(components = WaterCupComponent.class)
     public void onDrinkConsumed(DrinkConsumedEvent event, EntityRef item) {
         EntityRef drinkingCharacter = event.getInstigator();
         EntityRef cupItem = entityManager.create(EMPTY_CUP_URI);

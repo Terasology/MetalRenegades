@@ -8,7 +8,7 @@ import org.terasology.engine.entitySystem.event.Event;
 /**
  * Fired when the market screen needs to be shown
  */
-public class MarketScreenRequestEvent implements Event{
+public class MarketScreenRequestEvent implements Event {
     public long market;
     public EntityRef talkTo;
     public TransactionType type;
@@ -19,5 +19,5 @@ public class MarketScreenRequestEvent implements Event{
         this.type = type;
     }
 
-    public MarketScreenRequestEvent() {}
+    public MarketScreenRequestEvent() { }
 }
