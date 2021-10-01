@@ -1,0 +1,18 @@
+{
+  "GenericBuilding": {
+    "name": "House4",
+    "templateNames": [
+      "MetalRenegades:oldwestResidentialHouse4"
+    ],
+    "zone": "RESIDENTIAL",
+    "minSize": [14, 15],
+    "maxSize": [14, 15],
+    "isEntity": true
+  },
+  "PotentialHome": {
+    "maxCitizens": 1
+  },
+  "SimpleSource": {
+    "needType": "REST"
+  }
+}

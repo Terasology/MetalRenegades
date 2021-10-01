@@ -117,6 +117,10 @@
             "id": "SimpleFarming",
             "minVersion": "2.1.0"
         },
+        { 
+            "id": "Soils",
+            "minVersion":  "1.0.0"
+        },
         {
             "id": "StructureTemplates",
             "minVersion": "1.0.0"
