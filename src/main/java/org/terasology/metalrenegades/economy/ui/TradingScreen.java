@@ -7,6 +7,7 @@ import org.terasology.engine.registry.In;
 import org.terasology.engine.rendering.nui.CoreScreenLayer;
 import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.metalrenegades.economy.events.TradeRequest;
+import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.nui.databinding.ReadOnlyBinding;
 import org.terasology.nui.itemRendering.StringTextRenderer;
 import org.terasology.nui.widgets.UIButton;
@@ -112,7 +113,12 @@ public class TradingScreen extends CoreScreenLayer {
         // Initialize confirm trade button
         confirm = find("tradeButton", UIButton.class);
         confirm.subscribe(widget -> {
-            localPlayer.getCharacterEntity().send(new TradeRequest(tradingUISystem.getTargetCitizen(), pList.getSelection(), cList.getSelection()));
+            // check that both sides have selected something to trade
+            // getSelection() will also return `null` for empty lists
+            if (pList.getSelection() != null && cList.getSelection() != null) {
+                localPlayer.getCharacterEntity().send(
+                        new TradeRequest(tradingUISystem.getTargetCitizen(), pList.getSelection(), cList.getSelection()));
+            }
         });
 
         // Initialize close dialogue button
