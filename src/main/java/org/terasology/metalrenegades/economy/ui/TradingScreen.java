@@ -7,7 +7,6 @@ import org.terasology.engine.registry.In;
 import org.terasology.engine.rendering.nui.CoreScreenLayer;
 import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.metalrenegades.economy.events.TradeRequest;
-import org.terasology.metalrenegades.economy.events.TradeResponse;
 import org.terasology.nui.databinding.ReadOnlyBinding;
 import org.terasology.nui.itemRendering.StringTextRenderer;
 import org.terasology.nui.widgets.UIButton;
