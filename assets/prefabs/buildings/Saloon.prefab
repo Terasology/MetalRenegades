@@ -1,0 +1,13 @@
+{
+  "GenericBuilding": {
+    "name": "Saloon",
+    "templateNames": ["MetalRenegades:oldWestSaloonTemplate"],
+    "zone": "COMMERCIAL",
+    "minSize": [21, 17],
+    "maxSize": [21, 17],
+    "isEntity": true
+  },
+  "SimpleSource": {
+    "needType": "FOOD"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "GenericBuilding" : {
+    "name" : "Jail",
+    "templateNames" : ["MetalRenegades:oldWestJailTemplate"],
+    "zone" : "GOVERNMENTAL",
+    "minSize" : [16, 19],
+    "maxSize" : [16, 19],
+    "isEntity" : true
+  }
+}
+

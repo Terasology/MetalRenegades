@@ -1,0 +1,12 @@
+{
+    "GenericBuilding" : {
+     "name" : "Church",
+     "templateNames": [
+      "MetalRenegades:oldWestChurch"
+    ],
+     "zone" : "CLERICAL",
+     "minSize" : [15, 21],
+     "maxSize" : [15, 21],
+        "isEntity" : true
+    }
+}

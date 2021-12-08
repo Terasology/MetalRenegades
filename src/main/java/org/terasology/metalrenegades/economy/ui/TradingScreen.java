@@ -112,7 +112,12 @@ public class TradingScreen extends CoreScreenLayer {
         // Initialize confirm trade button
         confirm = find("tradeButton", UIButton.class);
         confirm.subscribe(widget -> {
-            localPlayer.getCharacterEntity().send(new TradeRequest(tradingUISystem.getTargetCitizen(), pList.getSelection(), cList.getSelection()));
+            // check that both sides have selected something to trade
+            // getSelection() will also return `null` for empty lists
+            if (pList.getSelection() != null && cList.getSelection() != null) {
+                localPlayer.getCharacterEntity().send(
+                        new TradeRequest(tradingUISystem.getTargetCitizen(), pList.getSelection(), cList.getSelection()));
+            }
         });
 
         // Initialize close dialogue button
