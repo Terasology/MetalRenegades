@@ -3,7 +3,6 @@
 package org.terasology.metalrenegades.ai.system;
 
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
@@ -11,6 +10,7 @@ import org.terasology.engine.logic.nameTags.NameTagComponent;
 import org.terasology.engine.rendering.logic.SkeletalMeshComponent;
 import org.terasology.engine.utilities.random.FastRandom;
 import org.terasology.engine.utilities.random.Random;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 import org.terasology.metalrenegades.ai.event.CitizenSpawnedEvent;
 import org.terasology.namegenerator.creature.CreatureAssetTheme;
 import org.terasology.namegenerator.creature.CreatureNameProvider;

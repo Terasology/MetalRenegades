@@ -3,7 +3,7 @@
 package org.terasology.metalrenegades.interaction.events;
 
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.event.Event;
+import org.terasology.gestalt.entitysystem.event.Event;
 
 /**
  * Fires when a cup item is filled from a well.
