@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.actions;
 
-import org.terasology.behaviors.components.FollowComponent;
+import org.terasology.module.behaviors.components.FollowComponent;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;

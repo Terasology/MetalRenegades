@@ -6,7 +6,7 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.behaviors.components.StrayRestrictionComponent;
+import org.terasology.module.behaviors.components.StrayRestrictionComponent;
 import org.terasology.dialogs.action.CloseDialogAction;
 import org.terasology.dialogs.components.DialogComponent;
 import org.terasology.dialogs.components.DialogPage;
