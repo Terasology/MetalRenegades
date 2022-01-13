@@ -15,9 +15,10 @@ import org.terasology.engine.registry.In;
 import org.terasology.metalrenegades.ai.component.CitizenComponent;
 import org.terasology.metalrenegades.ai.component.FactionAlignmentComponent;
 import org.terasology.metalrenegades.ai.component.NearbyCitizenEnemiesComponent;
+import org.terasology.module.behaviors.systems.FindNearbyPlayersSystem;
 
 /**
- * Tracks nearby faction enemies much like {@link org.terasology.behaviors.system.FindNearbyPlayersSystem}, and stores
+ * Tracks nearby faction enemies much like {@link FindNearbyPlayersSystem}, and stores
  * the results in each citizens {@link NearbyCitizenEnemiesComponent}.
  */
 @RegisterSystem(value = RegisterMode.AUTHORITY)

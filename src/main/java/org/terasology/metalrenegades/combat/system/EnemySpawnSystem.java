@@ -10,7 +10,7 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.behaviors.system.NightTrackerSystem;
+import org.terasology.module.behaviors.systems.NightTrackerSystem;
 import org.terasology.dynamicCities.settlements.SettlementEntityManager;
 import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;

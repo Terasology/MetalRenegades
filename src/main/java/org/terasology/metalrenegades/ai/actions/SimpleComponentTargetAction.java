@@ -3,7 +3,7 @@
 package org.terasology.metalrenegades.ai.actions;
 
 import org.joml.Vector3f;
-import org.terasology.behaviors.components.FollowComponent;
+import org.terasology.module.behaviors.components.FollowComponent;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.logic.behavior.BehaviorAction;
