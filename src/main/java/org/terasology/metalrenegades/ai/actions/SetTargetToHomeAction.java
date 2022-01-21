@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.ai.actions;
 
+import org.joml.RoundingMode;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.engine.logic.behavior.BehaviorAction;
 import org.terasology.engine.logic.behavior.core.Actor;
 import org.terasology.engine.logic.behavior.core.BaseAction;
@@ -24,11 +26,9 @@ public class SetTargetToHomeAction extends BaseAction {
 
         Vector3f position = homeLocationComponent.getWorldPosition(new Vector3f());
 
-        if (position != null) {
-            MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
-            minionMoveComponent.target = position;
-            actor.save(minionMoveComponent);
-        }
+        MinionMoveComponent minionMoveComponent = actor.getComponent(MinionMoveComponent.class);
+        minionMoveComponent.target = new Vector3i(position, RoundingMode.FLOOR);
+        actor.save(minionMoveComponent);
 
         return BehaviorState.SUCCESS;
     }
