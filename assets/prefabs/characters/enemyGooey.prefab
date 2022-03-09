@@ -38,7 +38,7 @@
   "AliveCharacter": {},
   "WildAnimal": {
     "name": "MawGooey",
-    "icon": "WildAnimals:icons#mawGooey"
+    "icon": "Gooey:MawGooeyGreenTooltip"
   },
   "NPCMovement": {},
   "CreatureNameGenerator": {
