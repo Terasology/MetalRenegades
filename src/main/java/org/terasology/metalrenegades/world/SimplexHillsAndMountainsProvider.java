@@ -135,7 +135,7 @@ public class SimplexHillsAndMountainsProvider implements ConfigurableFacetProvid
         this.configuration = (SimplexHillsAndMountainsProviderConfiguration) configuration;
     }
 
-    private static class SimplexHillsAndMountainsProviderConfiguration implements Component<SimplexHillsAndMountainsProviderConfiguration> {
+    public static class SimplexHillsAndMountainsProviderConfiguration implements Component<SimplexHillsAndMountainsProviderConfiguration> {
 
         @Range(min = 0, max = 3f, increment = 0.01f, precision = 2, description = "Mountain Amplitude")
         public float mountainAmplitude = 1f;
