@@ -70,7 +70,7 @@ public class RiverProvider implements ScalableFacetProvider, ConfigurableFacetPr
         setSeed(seed);
     }
 
-    private static class Configuration implements Component<Configuration> {
+    public static class Configuration implements Component<Configuration> {
         @Range(label = "River width", min = 1, max = 64f, increment = 1f, precision = 0, description = "Average river width (approximate)")
         public float riverWidth = 10;
 

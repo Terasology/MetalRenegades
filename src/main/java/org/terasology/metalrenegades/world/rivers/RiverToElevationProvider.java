@@ -105,7 +105,7 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider, Scal
         this.configuration = (Configuration) configuration;
     }
 
-    private static class Configuration implements Component<Configuration> {
+    public static class Configuration implements Component<Configuration> {
         @Override
         public void copyFrom(Configuration other) {
 
