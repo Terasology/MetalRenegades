@@ -2,15 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.metalrenegades.interaction.component;
 
-import org.terasology.gestalt.entitysystem.component.Component;
+import org.terasology.gestalt.entitysystem.component.EmptyComponent;
 
 /**
  * Indicates a water source block inside of a well entity, which the player interacts with to gather water.
  */
-public class WellBlockComponent implements Component<WellBlockComponent> {
-
-    @Override
-    public void copyFrom(WellBlockComponent other) {
-
-    }
+public class WellBlockComponent extends EmptyComponent<WellBlockComponent> {
 }

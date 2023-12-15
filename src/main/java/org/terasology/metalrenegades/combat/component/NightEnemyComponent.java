@@ -3,15 +3,10 @@
 
 package org.terasology.metalrenegades.combat.component;
 
-import org.terasology.gestalt.entitysystem.component.Component;
+import org.terasology.gestalt.entitysystem.component.EmptyComponent;
 
 /**
  * Marks a nighttime enemy character, that will be removed when the time cycle reaches daytime.
  */
-public class NightEnemyComponent implements Component<NightEnemyComponent> {
-
-    @Override
-    public void copyFrom(NightEnemyComponent other) {
-
-    }
+public class NightEnemyComponent extends EmptyComponent<NightEnemyComponent> {
 }

@@ -22,6 +22,7 @@ import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.engine.world.generation.facets.SeaLevelFacet;
 import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.gestalt.entitysystem.component.Component;
+import org.terasology.gestalt.entitysystem.component.EmptyComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.metalrenegades.world.dynamic.MRBiome;
 
@@ -105,10 +106,6 @@ public class RiverToElevationProvider implements ConfigurableFacetProvider, Scal
         this.configuration = (Configuration) configuration;
     }
 
-    public static class Configuration implements Component<Configuration> {
-        @Override
-        public void copyFrom(Configuration other) {
-
-        }
+    public static class Configuration extends EmptyComponent<Configuration> {
     }
 }

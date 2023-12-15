@@ -3,15 +3,10 @@
 
 package org.terasology.metalrenegades.world.dynamic.discoverables;
 
-import org.terasology.gestalt.entitysystem.component.Component;
+import org.terasology.gestalt.entitysystem.component.EmptyComponent;
 
 /**
  * Attached to a discoverable chest that is yet to be filled with items.
  */
-public class DiscoverableChestComponent implements Component<DiscoverableChestComponent> {
-
-    @Override
-    public void copyFrom(DiscoverableChestComponent other) {
-
-    }
+public class DiscoverableChestComponent extends EmptyComponent<DiscoverableChestComponent> {
 }
